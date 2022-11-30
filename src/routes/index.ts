@@ -1,8 +1,7 @@
-import AddTaskIcon from '@mui/icons-material/AddTask';
 import BugReportIcon from '@mui/icons-material/BugReport';
-import GitHubIcon from '@mui/icons-material/GitHub';
 import HomeIcon from '@mui/icons-material/Home';
-import TerrainIcon from '@mui/icons-material/Terrain';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
+import LoginIcon from '@mui/icons-material/Login';
 
 import asyncComponentLoader from '@/utils/loader';
 
@@ -15,23 +14,22 @@ const routes: Routes = {
     title: 'Welcome',
     icon: HomeIcon,
   },
-  [Pages.Page1]: {
-    component: asyncComponentLoader(() => import('@/pages/Page1')),
-    path: '/page-1',
-    title: 'Page 1',
-    icon: GitHubIcon,
+  [Pages.SignUp]: {
+    component: asyncComponentLoader(() => import('@/pages/SignUp')),
+    path: '/sign-up',
+    title: 'Sign Up',
+    icon: HowToRegIcon,
   },
-  [Pages.Page2]: {
-    component: asyncComponentLoader(() => import('@/pages/Page2')),
-    path: '/page-2',
-    title: 'Page 2',
-    icon: AddTaskIcon,
+  [Pages.LogIn]: {
+    component: asyncComponentLoader(() => import('@/pages/LogIn')),
+    path: '/log-in',
+    title: 'LogIn',
+    icon: LoginIcon,
   },
-  [Pages.Page3]: {
-    component: asyncComponentLoader(() => import('@/pages/Page3')),
-    path: '/page-3',
-    title: 'Page 3',
-    icon: TerrainIcon,
+  [Pages.StravaLink]: {
+    component: asyncComponentLoader(() => import('@/pages/StravaLink')),
+    path: '/strava-link',
+    title: 'Strava Link',
   },
   [Pages.Page4]: {
     component: asyncComponentLoader(() => import('@/pages/Page4')),

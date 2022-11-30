@@ -1,31 +1,38 @@
-import GitHubIcon from '@mui/icons-material/GitHub';
-import ThemeIcon from '@mui/icons-material/InvertColors';
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
+import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
-import Tooltip from '@mui/material/Tooltip';
 
+// import Typography from '@mui/material/Typography';
 import { FlexBox } from '@/components/styled';
-import { repository, title } from '@/config';
-import useHotKeysDialog from '@/store/hotkeys';
+import { title } from '@/config';
+import { supabase } from '@/services/supabase';
+import { useSession } from '@/store/auth';
 import useNotifications from '@/store/notifications';
 import useSidebar from '@/store/sidebar';
-import useTheme from '@/store/theme';
 
-import { HotKeysButton } from './styled';
 import { getRandomJoke } from './utils';
 
 function Header() {
   const [, sidebarActions] = useSidebar();
-  const [, themeActions] = useTheme();
   const [, notificationsActions] = useNotifications();
-  const [, hotKeysDialogActions] = useHotKeysDialog();
+  const { session } = useSession();
+  const navigate = useNavigate();
+
+  const logOut = async () => {
+    supabase.auth.signOut().then(() => {
+      navigate('/log-in', { replace: true });
+    });
+  };
 
   function showNotification() {
     notificationsActions.push({
@@ -67,30 +74,30 @@ function Header() {
             </Button>
           </FlexBox>
           <FlexBox>
-            <FlexBox>
-              <Tooltip title="Hot keys" arrow>
-                <HotKeysButton
-                  size="small"
-                  variant="outlined"
-                  aria-label="open hotkeys dialog"
-                  onClick={hotKeysDialogActions.open}
-                >
-                  alt + /
-                </HotKeysButton>
-              </Tooltip>
-            </FlexBox>
-            <Divider orientation="vertical" flexItem />
-            <Tooltip title="It's open source" arrow>
-              <IconButton color="info" size="large" component="a" href={repository} target="_blank">
-                <GitHubIcon />
+            {session ? (
+              //   <Chip icon={<FaceIcon />} label="" variant="outlined" />
+              // ) : (
+              <IconButton
+                onClick={logOut}
+                size="large"
+                edge="end"
+                sx={{ color: 'primary.main' }}
+                aria-label="log in"
+              >
+                <LogoutIcon />
               </IconButton>
-            </Tooltip>
-            <Divider orientation="vertical" flexItem />
-            <Tooltip title="Switch theme" arrow>
-              <IconButton color="info" edge="end" size="large" onClick={themeActions.toggle}>
-                <ThemeIcon />
+            ) : (
+              <IconButton
+                component={Link}
+                to="/log-in"
+                size="large"
+                edge="end"
+                sx={{ color: 'primary.main' }}
+                aria-label="log in"
+              >
+                <LoginIcon />
               </IconButton>
-            </Tooltip>
+            )}
           </FlexBox>
         </Toolbar>
       </AppBar>

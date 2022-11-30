@@ -5,6 +5,11 @@ const FlexBox = styled(Box)({
   display: 'flex',
 });
 
+const FullSizeBox = styled(Box)({
+  width: '100%',
+  height: '100%',
+});
+
 const CenteredFlexBox = styled(FlexBox)({
   justifyContent: 'center',
   alignItems: 'center',
@@ -20,4 +25,4 @@ const FullSizeCenteredFlexBox = styled(CenteredFlexBox)({
   height: '100%',
 });
 
-export { FlexBox, CenteredFlexBox, FullSizeFlexBox, FullSizeCenteredFlexBox };
+export { FlexBox, CenteredFlexBox, FullSizeFlexBox, FullSizeCenteredFlexBox, FullSizeBox };
