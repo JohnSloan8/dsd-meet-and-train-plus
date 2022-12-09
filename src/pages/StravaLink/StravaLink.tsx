@@ -39,8 +39,9 @@ function StravaLink() {
             sex: d.athlete.sex,
             access_token: d.access_token,
             refresh_token: d.refresh_token,
+            token_expires_at: d.expires_at,
           }).then((p: any) => {
-            setStravaProfile(p);
+            setStravaProfile(p[0]);
             navigate('/', { replace: true });
           });
         });

@@ -20,9 +20,13 @@ function Welcome() {
 
   useEffect(() => {
     if (session) {
-      getStravaProfile(session.user.id).then((d: any) => {
-        setStravaProfile(d[0]);
-      });
+      if (stravaProfile === undefined) {
+        getStravaProfile(session.user.id).then((d: any) => {
+          setStravaProfile(d[0]);
+        });
+      } else {
+        console.log('already set Strava Profile:', stravaProfile);
+      }
     } else {
       navigate('/log-in', { replace: true });
     }
