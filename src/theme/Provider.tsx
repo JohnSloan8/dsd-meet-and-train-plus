@@ -1,14 +1,14 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
-import useTheme from '@/store/theme';
-
-import themes from './themes';
+import theme from './theme';
 import type { CustomThemeProviderProps } from './types';
 
-function CustomThemeProvider({ children }: CustomThemeProviderProps) {
-  const [theme] = useTheme();
+type CustomThemeProviderProps = {
+  children: JSX.Element;
+};
 
-  return <ThemeProvider theme={createTheme(themes[theme])}>{children}</ThemeProvider>;
+function CustomThemeProvider({ children }: CustomThemeProviderProps) {
+  return <ThemeProvider theme={createTheme(theme)}>{children}</ThemeProvider>;
 }
 
 export default CustomThemeProvider;
