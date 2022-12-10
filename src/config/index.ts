@@ -2,11 +2,11 @@ import isMobile from '@/utils/is-mobile';
 
 import type { Notifications } from './types';
 
-const title = 'React PWA';
+const title = 'Meet & Train +';
 
-const email = 'auther-email@gmail.com';
+const email = 'johnsloan1984@gmail.com';
 
-const repository = 'https://github.com/suren-atoyan/react-pwa';
+const repository = 'https://github.com/JohnSloan8/dsd-meet-and-train-plus';
 
 const messages = {
   app: {
@@ -24,7 +24,7 @@ const messages = {
   images: {
     failed: 'something went wrong during image loading :(',
   },
-  404: 'Hey bro? What are you looking for?',
+  404: 'Not found',
 };
 
 const dateFormat = 'MMMM DD, YYYY';
@@ -48,7 +48,7 @@ const loader = {
 
 const defaultMetaTags = {
   image: '/cover.png',
-  description: 'Starter kit for modern web applications',
+  description: 'Training and Performance Monitor',
 };
 const giphy404 = 'https://giphy.com/embed/xTiN0L7EW5trfOvEk0';
 

@@ -10,7 +10,7 @@ const getStravaProfile = async (userID: string) => {
       .eq('user_id', userID);
 
     if (data) {
-      return data;
+      return data[0];
     }
 
     if (error) {
