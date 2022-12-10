@@ -6,13 +6,13 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 
 import { CenteredFlexBox, FullSizeBox } from '@/components/styled';
-import { useWeekDays } from '@/store/weekDays';
+import { useWeekDay } from '@/store/weekDay';
 
-function Weekdays() {
-  const { weekDays, setWeekDays } = useWeekDays();
+function WeekDays() {
+  const { weekDay, setWeekDay } = useWeekDay();
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setWeekDays(newValue);
+    setWeekDay(newValue);
   };
 
   useEffect(() => {
@@ -23,16 +23,16 @@ function Weekdays() {
     const day = new Date().getDay();
     switch (day) {
       case 0 || 1:
-        setWeekDays(3);
+        setWeekDay(3);
         break;
       case 2 || 3:
-        setWeekDays(0);
+        setWeekDay(0);
         break;
       case 4 || 5:
-        setWeekDays(1);
+        setWeekDay(1);
         break;
       default:
-        setWeekDays(2);
+        setWeekDay(2);
     }
   };
 
@@ -40,7 +40,7 @@ function Weekdays() {
     <FullSizeBox>
       <CenteredFlexBox p={0}>
         <Tabs
-          value={weekDays}
+          value={weekDay}
           onChange={handleChange}
           variant="fullWidth"
           aria-label="basic tabs example"
@@ -55,4 +55,4 @@ function Weekdays() {
   );
 }
 
-export default Weekdays;
+export default WeekDays;

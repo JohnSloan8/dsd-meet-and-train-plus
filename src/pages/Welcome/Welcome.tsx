@@ -9,7 +9,7 @@ import Attendance from '@/sections/Attendance';
 import ConnectStrava from '@/sections/ConnectStrava';
 import TrainingSession from '@/sections/TrainingSession';
 import Week from '@/sections/Week';
-import Weekdays from '@/sections/Weekdays';
+import WeekDays from '@/sections/WeekDays';
 import { getStravaProfile } from '@/services/supabase';
 import { useSession } from '@/store/auth';
 import { useStravaProfile } from '@/store/strava-profile';
@@ -46,7 +46,7 @@ function Welcome() {
     <>
       <Meta title="Welcome" />
       <Week />
-      <Weekdays />
+      <WeekDays />
       <TrainingSession />
       <Attendance />
       {showConnectStrava ? <ConnectStrava /> : null}

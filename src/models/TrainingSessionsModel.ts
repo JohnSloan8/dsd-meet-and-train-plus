@@ -1,5 +1,5 @@
 interface TrainingSessionsModel {
-  location: number;
+  location: string;
   time: string;
   date: string;
   session: SessionModel[];
