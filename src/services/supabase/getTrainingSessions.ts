@@ -4,7 +4,7 @@ const getTrainingSessions = async (weekStart: date, weekEnd: date) => {
   try {
     const { data, error } = await supabase
       .from('training_sessions')
-      .select(`location(name), time, date, session`)
+      .select(`location(name), time, date, session, coach(name, coaching_role(type))`)
       .gte('date', weekStart)
       .lte('date', weekEnd)
       .order('date', { ascending: true });

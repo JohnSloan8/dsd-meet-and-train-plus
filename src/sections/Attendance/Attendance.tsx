@@ -1,18 +1,28 @@
-import Button from '@mui/material/Button';
+// import { useEffect } from 'react';
+import Typography from '@mui/material/Typography';
 
 import { CenteredFlexBox } from '@/components/styled';
 
+// import { useTrainingSessions } from '@/store/trainingSessions';
+// import { useWeekDay } from '@/store/weekDay';
+
 function Attendance() {
+  // const { trainingSessionAttendance, setTrainingSessionAttendance } =
+  //   useTrainingSessionAttendance();
+  // const { trainingSessions, setTrainingSessions } = useTrainingSessions();
+  // const { weekDay } = useWeekDay();
+  // useEffect(() => {
+  //   if (trainingSessions !== undefined) {
+  //     getTrainingSessionsAttendance().then((a: any) => {
+  //       console.log('a', a);
+  //       setTrainingSessionsAttendance(d);
+  //     });
+  //   }
+  // }, []);
+
   return (
-    <CenteredFlexBox p={2} sx={{ width: '100%', position: 'fixed', bottom: 0 }}>
-      <Button
-        size="large"
-        variant="contained"
-        color="warning"
-        href="http://www.strava.com/oauth/authorize?client_id=60039&response_type=code&redirect_uri=http://localhost:3000/strava-link&approval_prompt=force&scope=activity:read"
-      >
-        link strava account
-      </Button>
+    <CenteredFlexBox p={1}>
+      <Typography variant="h6">Attendance</Typography>
     </CenteredFlexBox>
   );
 }

@@ -5,7 +5,10 @@ import { useEffect } from 'react';
 
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import SportsIcon from '@mui/icons-material/Sports';
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 import { CenteredFlexBox } from '@/components/styled';
@@ -33,35 +36,56 @@ function TrainingSession() {
   }, [trainingSessions]);
 
   return (
-    <Box backgroundColor="primary.main" pt={3} color="#fff" sx={{ overflowY: 'scroll' }}>
+    <Box height={150} backgroundColor="primary.main" color="#fff">
       {trainingSessions !== undefined ? (
-        <Box>
-          <Box>
-            <CenteredFlexBox>
-              <LocationOnIcon />
-              <Typography align="center" variant="h6">
-                {trainingSessions[weekDay].location.name}
-              </Typography>
+        <Grid container>
+          <Grid item xs={6}>
+            <CenteredFlexBox pt={2}>
+              <Box>
+                <CenteredFlexBox>
+                  <LocationOnIcon />
+
+                  <Typography align="center" variant="h6">
+                    {trainingSessions[weekDay].location.name}
+                  </Typography>
+                </CenteredFlexBox>
+                <CenteredFlexBox my={0.5}>
+                  <AccessTimeIcon fontSize="small" />
+
+                  <Typography ml={0.5} variant="body2" align="center">
+                    {trainingSessions[weekDay].time.substring(0, 5)}
+                  </Typography>
+                </CenteredFlexBox>
+                <CenteredFlexBox>
+                  <SportsIcon fontSize="medium" />
+
+                  <Typography ml={0.5} variant="body2" align="center">
+                    {trainingSessions[weekDay].coach.name}
+                  </Typography>
+                </CenteredFlexBox>
+              </Box>
             </CenteredFlexBox>
-            <CenteredFlexBox>
-              <AccessTimeIcon />
-              <Typography ml={0.5} align="center">
-                {trainingSessions[weekDay].time.substring(0, 5)}
-              </Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <CenteredFlexBox p={1} height={150}>
+              <Card elevation={4} sx={{ height: 130, width: '100%' }}>
+                <CenteredFlexBox height={130} sx={{ overflowY: 'scroll' }}>
+                  <Box p={1}>
+                    {trainingSessions[weekDay].session.map((s, i) => (
+                      <Typography variant="body2" key={i} align="center">
+                        {`${s.reps !== 1 ? s.reps + 'x' : ''}${
+                          s.distance !== undefined ? s.distance : s.time
+                        } ${s.pace === 'strides' ? 'strides' : '@' + s.pace + ','} ${
+                          s.recovery ? s.recovery + ' rec.' : ''
+                        }`}
+                      </Typography>
+                    ))}
+                  </Box>
+                </CenteredFlexBox>
+              </Card>
             </CenteredFlexBox>
-          </Box>
-          <Box m={2} p={1} border={2} borderRadius={3} sx={{ borderColor: 'white' }}>
-            {trainingSessions[weekDay].session.map((s, i) => (
-              <Typography key={i} align="center">
-                {`${s.reps !== 1 ? s.reps + 'x' : ''}${
-                  s.distance !== undefined ? s.distance : s.time
-                } ${s.pace === 'strides' ? 'strides' : '@' + s.pace} ${
-                  s.recovery ? s.recovery + ' rec.' : ''
-                }`}
-              </Typography>
-            ))}
-          </Box>
-        </Box>
+          </Grid>
+        </Grid>
       ) : null}
     </Box>
   );

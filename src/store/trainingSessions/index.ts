@@ -12,4 +12,16 @@ const useTrainingSessions = () => {
   return { trainingSessions, setTrainingSessions };
 };
 
+// const trainingSessionAttendanceState = atom<TrainingSessionAttendanceModel[] | undefined>({
+//   key: 'training-sessionAttendance',
+//   default: undefined,
+// });
+
+// const useTrainingSessionAttendance = () => {
+//   const [trainingSessionAttendance, setTrainingSessionAttendance] = useRecoilState(
+//     trainingSessionAttendanceState,
+//   );
+//   return { trainingSessionAttendance, setTrainingSessionAttendance };
+// };
+
 export { useTrainingSessions };
