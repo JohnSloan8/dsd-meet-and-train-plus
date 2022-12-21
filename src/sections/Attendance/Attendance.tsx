@@ -69,7 +69,7 @@ function Attendance() {
           {[0, 0, 0, 0, 0, 0].map(() =>
             trainingSessionAttendanceProfiles.map((p, i) => (
               <Grid key={i} item xs={1.7} mb={-0.7}>
-                <CenteredFlexBox sx={{ '&:hover': { pointer: 'cursor' } }}>
+                <CenteredFlexBox>
                   <Avatar
                     src={p.profile_pic}
                     sx={{
