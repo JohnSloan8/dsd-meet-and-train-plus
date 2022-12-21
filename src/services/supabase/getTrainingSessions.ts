@@ -5,7 +5,7 @@ const getTrainingSessions = async (weekStart: date, weekEnd: date) => {
     const { data, error } = await supabase
       .from('training_sessions')
       .select(
-        `id, location(name, latitude, longitude), time, date, session, coach(name, coaching_role(type))`,
+        `id, location(name, latitude, longitude), time, date, session, coach(name, coaching_role(type), picture)`,
       )
       .gte('date', weekStart)
       .lte('date', weekEnd)

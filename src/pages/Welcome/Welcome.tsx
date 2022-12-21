@@ -53,7 +53,7 @@ function Welcome() {
       <TrainingSession />
 
       <Box
-        border={5}
+        border={3}
         borderColor={'primary.main'}
         height={200}
         width={'100%'}

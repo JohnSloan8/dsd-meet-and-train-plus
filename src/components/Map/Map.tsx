@@ -19,11 +19,28 @@ interface OpenMapProps {
 const OpenMap = ({ lat, lon, polylines }: OpenMapProps) => {
   const center = transform([lon, lat], 'EPSG:4326', 'EPSG:3857');
   const mapRef = useRef(null);
-  console.log('poylines:', polylines);
-  const geoJSONObject = decode_polyline(
-    'ysjdIfo_e@DuBPsABk@?UMa@Ki@GIKEQQcBURh@TjAj@fGHvAL`@Fp@DzCDjAHvF?pGCTA_ABQEpAAPCDAUFc@Ai@BOC|ACVDsBBGKlBAHFeBBQEfBEFEsA@YFE@DBx@Aj@ELGcABo@DGBJ?rACRAKBkADMIbBB{ABK@?@@EzACNEBCC?OFyDBQDI@D@|AE~BAHCBAI@oAAsBBWDGBF@`@CjCCf@EFByAAwBDSD|A?b@E\\IHE?Da@@PY|FEvABXR\\`@RJBHADOJsBHo@RaA~@uBRYHQZgAZwAvAoD|@oCFa@VwEFOPOj@]VSJQHWDe@GiAUgCIk@EOGGa@U{@_@S[Uo@KIu@l@OHi@N]Ee@U[Gq@[OCOBEDO`@MrAMnDCdBBrF?bGChCBpCElBCNGDDUBAJ@@B@GAIECCDCTEt@UnCIjAAn@BZNVh@d@RHBABIZuDTkAt@uBRc@|@_C^aAXaAx@aB\\iATqAL_DHo@n@q@h@_@Re@Bm@YcEIy@EOMK}@Oc@MOIKQQw@IOE@{@p@a@JSAc@IiBo@WDKLMhAS~I@lAH|CClG@jHEn@@HDBBMCY@QIaA@qACk@@iBEmC?`BFvC@lDB\\A??BCEAD@??AMHGJOdAUtDClA?JDHJ@BK?QIo@HmAJc@@_ALcA?kAB?ABGAI~AQjBGvAC|ADRTZNL\\RL@DCFYTeBBc@?a@CMKQ{@a@U_@C[PiB@uAWvDSpFBVFRj@f@VJL?FQXqC@k@GUMOw@]IEKSAe@NiB@}@EB?RBHGT]lEEjA?`ABPFH|@t@RFD?FWNuB?m@EMKKm@QMMKSAe@PeD?UCG@JEL@JA@IfCW~BE`C@FHLb@Xb@JJ?BCBO?i@XmB?UGMECk@KQKOQIYAi@JcBBeA@BAF@TGLGh@EzA]fF@JFNd@^f@VD?DE@IFgANmA@m@',
-  );
 
+  let geoJSONObject;
+
+  if (polylines.length === 0) {
+    geoJSONObject = {
+      type: 'FeatureCollection',
+      features: [
+        {
+          type: 'Feature',
+          properties: {},
+          geometry: {
+            coordinates: transform([lon, lat], 'EPSG:4326', 'EPSG:3857'),
+            type: 'Point',
+          },
+        },
+      ],
+    };
+  } else {
+    geoJSONObject = decode_polyline(
+      'ysjdIfo_e@DuBPsABk@?UMa@Ki@GIKEQQcBURh@TjAj@fGHvAL`@Fp@DzCDjAHvF?pGCTA_ABQEpAAPCDAUFc@Ai@BOC|ACVDsBBGKlBAHFeBBQEfBEFEsA@YFE@DBx@Aj@ELGcABo@DGBJ?rACRAKBkADMIbBB{ABK@?@@EzACNEBCC?OFyDBQDI@D@|AE~BAHCBAI@oAAsBBWDGBF@`@CjCCf@EFByAAwBDSD|A?b@E\\IHE?Da@@PY|FEvABXR\\`@RJBHADOJsBHo@RaA~@uBRYHQZgAZwAvAoD|@oCFa@VwEFOPOj@]VSJQHWDe@GiAUgCIk@EOGGa@U{@_@S[Uo@KIu@l@OHi@N]Ee@U[Gq@[OCOBEDO`@MrAMnDCdBBrF?bGChCBpCElBCNGDDUBAJ@@B@GAIECCDCTEt@UnCIjAAn@BZNVh@d@RHBABIZuDTkAt@uBRc@|@_C^aAXaAx@aB\\iATqAL_DHo@n@q@h@_@Re@Bm@YcEIy@EOMK}@Oc@MOIKQQw@IOE@{@p@a@JSAc@IiBo@WDKLMhAS~I@lAH|CClG@jHEn@@HDBBMCY@QIaA@qACk@@iBEmC?`BFvC@lDB\\A??BCEAD@??AMHGJOdAUtDClA?JDHJ@BK?QIo@HmAJc@@_ALcA?kAB?ABGAI~AQjBGvAC|ADRTZNL\\RL@DCFYTeBBc@?a@CMKQ{@a@U_@C[PiB@uAWvDSpFBVFRj@f@VJL?FQXqC@k@GUMOw@]IEKSAe@NiB@}@EB?RBHGT]lEEjA?`ABPFH|@t@RFD?FWNuB?m@EMKKm@QMMKSAe@PeD?UCG@JEL@JA@IfCW~BE`C@FHLb@Xb@JJ?BCBO?i@XmB?UGMECk@KQKOQIYAi@JcBBeA@BAF@TGLGh@EzA]fF@JFNd@^f@VD?DE@IFgANmA@m@',
+    );
+  }
   const vectorSource = new VectorSource({
     features: new GeoJSON().readFeatures(geoJSONObject),
   });
