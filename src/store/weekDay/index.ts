@@ -1,8 +1,8 @@
 import { atom, useRecoilState } from 'recoil';
 
-const weekDayState = atom<number | undefined>({
+const weekDayState = atom<number>({
   key: 'week-day',
-  default: undefined,
+  default: 0,
 });
 
 const useWeekDay = () => {

@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 
-import { CenteredFlexBox, FullSizeBox } from '@/components/styled';
+import { CenteredFlexBox } from '@/components/styled';
 import { useWeekDay } from '@/store/weekDay';
 
 function WeekDays() {
@@ -21,15 +21,19 @@ function WeekDays() {
 
   const initWeekday = () => {
     const day = new Date().getDay();
+    console.log('day:', day);
     switch (day) {
-      case 0 || 1:
-        setWeekDay(3);
-        break;
-      case 2 || 3:
+      case 0:
+      case 1:
+      case 2:
         setWeekDay(0);
         break;
-      case 4 || 5:
+      case 3:
+      case 4:
         setWeekDay(1);
+        break;
+      case 5:
+        setWeekDay(2);
         break;
       default:
         setWeekDay(2);
@@ -37,21 +41,18 @@ function WeekDays() {
   };
 
   return (
-    <FullSizeBox>
-      <CenteredFlexBox p={0}>
-        <Tabs
-          value={weekDay}
-          onChange={handleChange}
-          variant="fullWidth"
-          aria-label="basic tabs example"
-        >
-          <Tab label="Tue" />
-          <Tab label="Thu" />
-          <Tab label="Sat" />
-          <Tab label="Sun" />
-        </Tabs>
-      </CenteredFlexBox>
-    </FullSizeBox>
+    <CenteredFlexBox mt={-1}>
+      <Tabs
+        value={weekDay}
+        onChange={handleChange}
+        variant="fullWidth"
+        aria-label="basic tabs example"
+      >
+        {['Tue', 'Thu', 'Sat', 'Sun'].map((d, i) => (
+          <Tab label={d} key={i} />
+        ))}
+      </Tabs>
+    </CenteredFlexBox>
   );
 }
 

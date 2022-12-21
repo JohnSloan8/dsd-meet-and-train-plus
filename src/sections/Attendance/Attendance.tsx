@@ -1,29 +1,94 @@
-// import { useEffect } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect } from 'react';
+
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 import { CenteredFlexBox } from '@/components/styled';
-
-// import { useTrainingSessions } from '@/store/trainingSessions';
-// import { useWeekDay } from '@/store/weekDay';
+import { getTrainingSessionAttendance } from '@/services/supabase';
+import { getTrainingSessionAttendanceProfiles } from '@/services/supabase';
+import {
+  useTrainingSessionAttendance,
+  useTrainingSessionAttendanceProfiles,
+  useTrainingSessions,
+} from '@/store/trainingSessions';
+import { useWeekDay } from '@/store/weekDay';
 
 function Attendance() {
-  // const { trainingSessionAttendance, setTrainingSessionAttendance } =
-  //   useTrainingSessionAttendance();
-  // const { trainingSessions, setTrainingSessions } = useTrainingSessions();
-  // const { weekDay } = useWeekDay();
-  // useEffect(() => {
-  //   if (trainingSessions !== undefined) {
-  //     getTrainingSessionsAttendance().then((a: any) => {
-  //       console.log('a', a);
-  //       setTrainingSessionsAttendance(d);
-  //     });
-  //   }
-  // }, []);
+  const { trainingSessionAttendance, setTrainingSessionAttendance } =
+    useTrainingSessionAttendance();
+  const { trainingSessionAttendanceProfiles, setTrainingSessionAttendanceProfiles } =
+    useTrainingSessionAttendanceProfiles();
+
+  const { trainingSessions } = useTrainingSessions();
+  const { weekDay } = useWeekDay();
+  useEffect(() => {
+    if (trainingSessions.length !== 0 && trainingSessions[weekDay] !== undefined) {
+      const todaysDate = new Date();
+      const trainingDate = new Date(
+        `${trainingSessions[weekDay].date} ${trainingSessions[weekDay].time}`,
+      );
+      if (todaysDate - trainingDate > 0) {
+        getTrainingSessionAttendance(trainingSessions[weekDay].id).then(
+          (user_id_list: string[]) => {
+            if (user_id_list.length > 0) {
+              setTrainingSessionAttendance(user_id_list);
+            }
+          },
+        );
+      }
+    }
+  }, [trainingSessions, weekDay]);
+
+  useEffect(() => {
+    console.log('trainingSessionAttendance:', trainingSessionAttendance);
+    if (trainingSessionAttendance && trainingSessionAttendance.length > 0) {
+      getTrainingSessionAttendanceProfiles(trainingSessionAttendance).then((d) => {
+        setTrainingSessionAttendanceProfiles(d);
+      });
+    }
+  }, [trainingSessionAttendance]);
+
+  useEffect(() => {
+    console.log('trainingSessionAttendanceProfiles:', trainingSessionAttendanceProfiles);
+  }, [trainingSessionAttendanceProfiles]);
+
+  const clickAvatar = (userID: string) => {
+    console.log('userID:', userID);
+  };
 
   return (
-    <CenteredFlexBox p={1}>
-      <Typography variant="h6">Attendance</Typography>
-    </CenteredFlexBox>
+    <Box p={1}>
+      <Typography variant="h6" align="center">
+        Attendance
+      </Typography>
+      <CenteredFlexBox p={1}>
+        <Grid container>
+          {[0, 0, 0, 0, 0, 0].map(() =>
+            trainingSessionAttendanceProfiles.map((p, i) => (
+              <Grid key={i} item xs={1.7} mb={-0.7}>
+                <CenteredFlexBox sx={{ '&:hover': { pointer: 'cursor' } }}>
+                  <Avatar
+                    src={p.profile_pic}
+                    sx={{
+                      border: '2px solid white',
+                      width: 58,
+                      height: 58,
+                    }}
+                    alt={p.first_name}
+                    onClick={() => {
+                      clickAvatar(p.user_id);
+                    }}
+                  />
+                </CenteredFlexBox>
+              </Grid>
+            )),
+          )}
+        </Grid>
+      </CenteredFlexBox>
+    </Box>
   );
 }
 

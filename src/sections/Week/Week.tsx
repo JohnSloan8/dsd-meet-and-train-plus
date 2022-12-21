@@ -1,6 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 import { CenteredFlexBox, FullSizeBox } from '@/components/styled';
@@ -30,20 +33,35 @@ function Week() {
         weekEndDate.setDate(date.getDate() + (7 - day));
         break;
     }
-    console.log('week:', [
-      new Date(weekStartDate).toISOString().substring(0, 10),
-      new Date(weekEndDate).toISOString().substring(0, 10),
-    ]);
     // console.log('week:', [weekStartDate.toISOString(), weekEndDate.toISOString()]);
+    // setWeek([
+    //   new Date(weekStartDate).toISOString().substring(0, 10),
+    //   new Date(weekEndDate).toISOString().substring(0, 10),
+    // ]);
+    setWeek([new Date(weekStartDate), new Date(weekEndDate)]);
+  };
+
+  const changeWeek = (backward: boolean) => {
+    let change = 7;
+    if (backward) {
+      change = -7;
+    }
     setWeek([
-      new Date(weekStartDate).toISOString().substring(0, 10),
-      new Date(weekEndDate).toISOString().substring(0, 10),
+      new Date(week[0].setDate(week[0].getDate() + change)),
+      new Date(week[1].setDate(week[1].getDate() + change)),
     ]);
   };
 
   return (
     <FullSizeBox>
-      <CenteredFlexBox pt={2} pb={0}>
+      <CenteredFlexBox pt={1} pb={0}>
+        <Button
+          onClick={() => {
+            changeWeek(true);
+          }}
+        >
+          <KeyboardArrowLeftIcon />
+        </Button>
         {week !== undefined ? (
           <Typography>{`${new Date(week[0]).getDate()} ${new Date(week[0]).toLocaleString('en-US', {
             month: 'short',
@@ -53,6 +71,13 @@ function Week() {
         ) : (
           <Typography>undefined</Typography>
         )}
+        <Button
+          onClick={() => {
+            changeWeek(false);
+          }}
+        >
+          <KeyboardArrowRightIcon />
+        </Button>
       </CenteredFlexBox>
     </FullSizeBox>
   );

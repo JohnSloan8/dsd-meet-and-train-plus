@@ -4,9 +4,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import Box from '@mui/material/Box';
+
 import Meta from '@/components/Meta';
 import Attendance from '@/sections/Attendance';
 import ConnectStrava from '@/sections/ConnectStrava';
+import OpenMapCtrl from '@/sections/MapCtrl';
 import TrainingSession from '@/sections/TrainingSession';
 import Week from '@/sections/Week';
 import WeekDays from '@/sections/WeekDays';
@@ -48,6 +51,16 @@ function Welcome() {
       <Week />
       <WeekDays />
       <TrainingSession />
+
+      <Box
+        border={5}
+        borderColor={'primary.main'}
+        height={200}
+        width={'100%'}
+        sx={{ position: 'relative' }}
+      >
+        <OpenMapCtrl />
+      </Box>
       <Attendance />
       {showConnectStrava ? <ConnectStrava /> : null}
     </>

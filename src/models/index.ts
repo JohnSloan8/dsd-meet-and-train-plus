@@ -1,3 +1,7 @@
 import { StravaProfileModel } from './StravaProfileModel';
+import {
+  TrainingSessionAttendanceProfileModel,
+  TrainingSessionModel,
+} from './TrainingSessionModel';
 
-export type { StravaProfileModel };
+export type { StravaProfileModel, TrainingSessionAttendanceProfileModel, TrainingSessionModel };
