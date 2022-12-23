@@ -3,9 +3,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
 
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+// import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
+// import LocationOnIcon from '@mui/icons-material/LocationOn';
 import SportsIcon from '@mui/icons-material/Sports';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -13,6 +13,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 import { CenteredFlexBox, FullSizeCenteredFlexBox } from '@/components/styled';
+import Weather from '@/sections/Weather';
 import { getTrainingSessions } from '@/services/supabase';
 import { useTrainingSessions } from '@/store/trainingSessions';
 import { useWeek } from '@/store/week';
@@ -75,56 +76,61 @@ function TrainingSession() {
       {trainingSessions.length !== 0 && trainingSessions[weekDay] !== undefined ? (
         <>
           <Grid container>
-            <Grid item xs={3}>
+            <Grid item xs={2.75}>
               <FullSizeCenteredFlexBox>
                 <Avatar
                   src={trainingSessions[weekDay].coach.picture}
                   sx={{
-                    border: '2px solid white',
-                    width: 72,
-                    height: 72,
+                    border: '2px solid gold',
+                    width: 64,
+                    height: 64,
                   }}
                   alt={trainingSessions[weekDay].coach.name}
                 />{' '}
               </FullSizeCenteredFlexBox>
             </Grid>
-            <Grid item xs={6}>
-              <Box px={1} pt={1} pb={0.5}>
-                <CenteredFlexBox py={0.2}>
-                  <LocationOnIcon />
-                  <Typography ml={1} variant="h6">
+            <Grid item xs={6.5}>
+              <Box px={1} pt={0.5}>
+                <CenteredFlexBox py={0}>
+                  {/* <LocationOnIcon fontSize="medium" sx={{color: "primary.dark"}}/> */}
+                  <Typography ml={1} sx={{ fontWeight: 'bold' }} variant="h6">
                     {trainingSessions[weekDay].location.name}
                   </Typography>
                 </CenteredFlexBox>
-                <CenteredFlexBox py={0.2}>
-                  <AccessTimeIcon />
-                  <Typography variant="body1" ml={1}>
+                <CenteredFlexBox>
+                  {/* <AccessTimeFilledIcon fontSize="xsmall" /> */}
+                  <Typography
+                    variant="h6"
+                    mt={-0.8}
+                    mb={-0.4}
+                    ml={1}
+                    p={-1}
+                    sx={{ fontFamily: 'digital' }}
+                  >
                     {trainingSessions[weekDay].time.substring(0, 5)}
                   </Typography>
                 </CenteredFlexBox>
-                <CenteredFlexBox py={0.5} sx={{ alignItems: 'center' }}>
-                  <SportsIcon fontSize="medium" />
-                  <Typography ml={1} variant="body2" align="left">
+                <CenteredFlexBox sx={{ alignItems: 'center' }}>
+                  <SportsIcon fontSize="small" sx={{ color: 'gold' }} />
+                  <Typography ml={1} variant="body1" align="left">
                     {trainingSessions[weekDay].coach.name}
                   </Typography>
                 </CenteredFlexBox>
               </Box>
             </Grid>
 
-            <Grid item xs={3}>
+            <Grid item xs={2.75}>
               <FullSizeCenteredFlexBox>
-                <Typography variant="body1" align="center">
-                  Weather TBD
-                </Typography>
+                <Weather />
               </FullSizeCenteredFlexBox>
             </Grid>
 
-            <Grid item xs={12} mt={-0.5}>
-              <Box px={1} pb={1}>
+            <Grid item xs={12}>
+              <Box mb={0.5}>
                 <CenteredFlexBox>
-                  <DirectionsRunIcon />
+                  <DirectionsRunIcon fontSize="medium" sx={{ color: 'primary.dark' }} />
 
-                  <Typography ml={0.5} variant="body2">
+                  <Typography ml={0.5} variant="body1">
                     {sessionString}
                   </Typography>
                 </CenteredFlexBox>

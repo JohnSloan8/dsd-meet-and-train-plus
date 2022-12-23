@@ -10,6 +10,7 @@ interface TrainingSessionModel {
 interface CoachModel {
   name: string;
   coaching_role: CoachingRoleModel;
+  picture: string;
 }
 
 interface CoachingRoleModel {

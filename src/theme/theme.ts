@@ -3,10 +3,11 @@ import { blue, red } from '@mui/material/colors';
 const theme = {
   palette: {
     primary: {
-      main: blue[500],
+      dark: blue[900],
+      main: blue[400],
     },
     secondary: {
-      main: red[500],
+      main: red[400],
     },
     background: {
       default: '#fafafa',

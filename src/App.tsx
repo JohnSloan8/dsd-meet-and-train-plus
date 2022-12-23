@@ -15,6 +15,8 @@ import Sidebar from '@/sections/Sidebar';
 import { supabase } from '@/services/supabase';
 import { useSession } from '@/store/auth';
 
+import './index.css';
+
 function App() {
   const { setSession } = useSession();
 

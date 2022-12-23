@@ -53,9 +53,9 @@ function Welcome() {
       <TrainingSession />
 
       <Box
-        border={3}
-        borderColor={'primary.main'}
-        height={200}
+        // border={3}
+        // borderColor={'primary.main'}
+        height={160}
         width={'100%'}
         sx={{ position: 'relative' }}
       >
