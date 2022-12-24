@@ -13,6 +13,10 @@ const corsHeaders = {
 serve(async (req) => {
 
   console.log('request made to weather');
+  const u = new URL(req.url);
+  const reqParams = u.searchParams
+  const reqType = reqParams.get('requestType')
+  console.log('reqParams:', reqType)
   try {
     // Create a Supabase client with the Auth context of the logged in user.
     // const supabaseClient = createClient(
@@ -24,6 +28,7 @@ serve(async (req) => {
       method: 'GET'
     };
   
+    if ( reqType === "weather") {
     try {
       const data = await fetch(
         `http://metwdb-openaccess.ichec.ie/metno-wdb2ts/locationforecast?lat=53.2729276;long=-6.2723167`,
@@ -42,6 +47,25 @@ serve(async (req) => {
     } catch (error) {
       console.log('error in getActivityFromStrava:', error.message);
     }
+  } else if ( reqType === "sunset") {
+    try {
+      const url = `https://api.sunrise-sunset.org/json?lat=53.2729276;lng=-6.2723167&date=${reqParams.get('date')}`
+      console.log('sunsetURL:', url)
+      const data = await fetch(
+        url,
+        requestOptions,
+      );
+      if (data) {
+        const sunsetData = await data.json()
+        console.log('sunsetData:', sunsetData)
+        return new Response(JSON.stringify(sunsetData), {
+          headers: {...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+    } catch (error) {
+      console.log('error in getActivityFromStrava:', error.message);
+    }
+  }
       
   } catch (error) {
     console.error(error);

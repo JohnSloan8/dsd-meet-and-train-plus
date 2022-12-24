@@ -5,6 +5,12 @@ interface TrainingSessionModel {
   time: string;
   date: string;
   session: SessionModel[];
+  weather: WeatherModel;
+}
+
+interface WeatherModel {
+  temperature: number;
+  code: number;
 }
 
 interface CoachModel {
@@ -38,4 +44,4 @@ interface TrainingSessionAttendanceProfileModel {
   user_id: string;
 }
 
-export type { TrainingSessionModel, TrainingSessionAttendanceProfileModel };
+export type { TrainingSessionModel, TrainingSessionAttendanceProfileModel, WeatherModel };

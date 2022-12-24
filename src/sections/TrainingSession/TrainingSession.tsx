@@ -72,12 +72,12 @@ function TrainingSession() {
   }, [trainingSessions, weekDay]);
 
   return (
-    <Box backgroundColor="primary.main" color="#fff" px={1}>
+    <Box backgroundColor="primary.dark" color="#fff">
       {trainingSessions.length !== 0 && trainingSessions[weekDay] !== undefined ? (
         <>
           <Grid container>
             <Grid item xs={2.75}>
-              <FullSizeCenteredFlexBox>
+              <FullSizeCenteredFlexBox pl={1}>
                 <Avatar
                   src={trainingSessions[weekDay].coach.picture}
                   sx={{
@@ -90,7 +90,7 @@ function TrainingSession() {
               </FullSizeCenteredFlexBox>
             </Grid>
             <Grid item xs={6.5}>
-              <Box px={1} pt={0.5}>
+              <Box pt={0.5}>
                 <CenteredFlexBox py={0}>
                   {/* <LocationOnIcon fontSize="medium" sx={{color: "primary.dark"}}/> */}
                   <Typography ml={1} sx={{ fontWeight: 'bold' }} variant="h6">
@@ -120,15 +120,15 @@ function TrainingSession() {
             </Grid>
 
             <Grid item xs={2.75}>
-              <FullSizeCenteredFlexBox>
+              <FullSizeCenteredFlexBox pr={1}>
                 <Weather />
               </FullSizeCenteredFlexBox>
             </Grid>
 
             <Grid item xs={12}>
-              <Box mb={0.5}>
+              <Box py={0.25} my={0.75} sx={{ backgroundColor: 'warning.dark' }}>
                 <CenteredFlexBox>
-                  <DirectionsRunIcon fontSize="medium" sx={{ color: 'primary.dark' }} />
+                  <DirectionsRunIcon fontSize="medium" sx={{ color: '0xffffff' }} />
 
                   <Typography ml={0.5} variant="body1">
                     {sessionString}

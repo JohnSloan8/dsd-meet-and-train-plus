@@ -33,8 +33,8 @@ serve(async (req) => {
       console.log('activityData:', activityData);
       if (activityData.aspect_type === 'create' || activityData.aspect_type === 'update') {
         // if new activity, then create
-        //
-        const userProfile = await getUserProfile(supabaseClient, activityData.owner_id);
+        
+        let userProfile = await getUserProfile(supabaseClient, activityData.owner_id);
 
         console.log('userProfile:', userProfile);
 

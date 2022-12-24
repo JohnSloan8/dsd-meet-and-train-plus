@@ -4,6 +4,7 @@ import getTrainingSessionAttendance from './getTrainingSessionAttendance';
 import getTrainingSessionAttendanceProfiles from './getTrainingSessionAttendanceProfiles';
 import getTrainingSessions from './getTrainingSessions';
 import supabase from './supabase';
+import updateTrainingSessionWeather from './updateTrainingSessionWeather';
 
 export {
   supabase,
@@ -12,4 +13,5 @@ export {
   getTrainingSessions,
   getTrainingSessionAttendance,
   getTrainingSessionAttendanceProfiles,
+  updateTrainingSessionWeather,
 };

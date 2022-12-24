@@ -49,7 +49,7 @@ const OpenMap = ({ lat, lon, polylines }: OpenMapProps) => {
       anchor: [24, 0],
       anchorXUnits: 'pixels',
       anchorYUnits: 'pixels',
-      src: 'https://onblcbnmhbprhpgkhtep.supabase.co/storage/v1/object/public/images/dsd-map-location-icon.png',
+      src: 'https://onblcbnmhbprhpgkhtep.supabase.co/storage/v1/object/public/images/dsd-map-location-icon.png?t=2022-12-24T17%3A30%3A22.186Z',
     }),
   });
   iconFeature.setStyle(iconStyle);

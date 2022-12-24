@@ -1,14 +1,14 @@
 import axios from 'axios';
 
-const getWeather = async () => {
+const getSunset = async (date: string) => {
   try {
     const { data } = await axios({
       method: 'get',
-      url: `https://onblcbnmhbprhpgkhtep.functions.supabase.co/weather?requestType=weather`,
+      url: `https://onblcbnmhbprhpgkhtep.functions.supabase.co/weather?requestType=sunset&date=${date}`,
       timeout: 10000,
     });
     if (data) {
-      console.log('weather data:', data);
+      console.log('Sunset data:', data);
       return data;
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -18,4 +18,4 @@ const getWeather = async () => {
   }
 };
 
-export default getWeather;
+export default getSunset;
