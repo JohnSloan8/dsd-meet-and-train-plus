@@ -8,7 +8,6 @@ const getWeather = async () => {
       timeout: 10000,
     });
     if (data) {
-      console.log('weather data:', data);
       return data;
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

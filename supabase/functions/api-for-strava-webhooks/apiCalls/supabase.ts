@@ -48,7 +48,6 @@ const doesActivityExist = async (supabaseClient: SupabaseClient, activity_id: nu
     .eq('strava_activity_id', activity_id);
   if (error) throw error;
 
-  console.log('count:', count);
   if (count === 1) {
     return true;
   }
@@ -75,12 +74,57 @@ const createActivity = async (
   return data;
 };
 
-const updateActivity = async (supabaseClient: SupabaseClient, id: number, strava_data: any) => {
+const updateActivity = async (
+  supabaseClient: SupabaseClient,
+  id: number,
+  strava_data: any,
+  coords: any[],
+  session_id: number,
+) => {
   const { data, error } = await supabaseClient
     .from('activities')
-    .upsert({ id: id, strava_data: strava_data })
+    .upsert({ id: id, strava_data: strava_data, coords: coords, training_session_id: session_id })
     .select();
   if (error) throw error;
+  return data;
+};
+
+const getTrainingSession = async (supabaseClient: SupabaseClient, sessionStartDate: string) => {
+  try {
+    const { data, error } = await supabaseClient
+      .from('training_sessions')
+      .select(`id, location(latitude, longitude), time, date`)
+      .single()
+      .limit(1)
+      .eq('date', sessionStartDate);
+
+    if (data) {
+      return data;
+    }
+
+    if (error) {
+      throw error;
+    }
+  } catch (error: any) {
+    console.log(error.message);
+  }
+};
+
+const createTrainingSessionAttendance = async (
+  supabaseClient: SupabaseClient,
+  user_id: string,
+  session_id: number,
+) => {
+  const { data, error } = await supabaseClient
+    .from('training_session_attendance')
+    .insert({
+      user_id: user_id,
+      training_session_id: session_id,
+    })
+    .select();
+
+  if (error) throw error;
+
   return data;
 };
 
@@ -91,4 +135,6 @@ export {
   createActivity,
   updateActivity,
   doesActivityExist,
+  getTrainingSession,
+  createTrainingSessionAttendance,
 };

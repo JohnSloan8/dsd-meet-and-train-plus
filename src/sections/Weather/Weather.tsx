@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
 
@@ -7,56 +9,98 @@ import Typography from '@mui/material/Typography';
 import { CenteredFlexBox } from '@/components/styled';
 import { getWeather } from '@/services/met';
 import { getSunset } from '@/services/met';
-import { updateTrainingSessionWeather } from '@/services/supabase';
+import { updateTrainingSessionSunset, updateTrainingSessionWeather } from '@/services/supabase';
 // import { useWeek } from '@/store/weekDay';
 import { useTrainingSessions } from '@/store/trainingSessions';
 import { useWeekDay } from '@/store/weekDay';
 
+import { convert12HrTimeTo24, getForecasts } from './utils';
+
 const Weather = () => {
   const { trainingSessions } = useTrainingSessions();
   const { weekDay } = useWeekDay();
-  const [symbolNumber /*, setSymbolNumber*/] = useState('01d');
-  const [temperature /*, setTemperature */] = useState(0);
+  const [symbolNumber, setSymbolNumber] = useState('01d');
+  const [temperature, setTemperature] = useState(0);
+  const [daylight, setDaylight] = useState('d');
+  const [code, setCode] = useState('1');
 
   const symbolURL = `https://cdn-a.metweb.ie//images/web-meteogram-small/${symbolNumber}.png?v=5001`;
 
   useEffect(() => {
-    getWeather().then((w: any) => {
-      console.log('w:', w.weatherdata.product.time);
-      let code = 0;
-      let temperature = 0;
+    let weatherNeedsUpdating = false;
+    if (trainingSessions[weekDay].weather === null) {
+      weatherNeedsUpdating = true;
+    } else {
+      const timeElapsedSinceUpdate =
+        Date.now() - new Date(trainingSessions[weekDay].weather.updatedAt);
+      console.log('timeElapsedSinceUpdate:', timeElapsedSinceUpdate);
+      if (timeElapsedSinceUpdate / 36000 > 60) {
+        // console.log('weather needs updating :', true);
+        weatherNeedsUpdating = true;
+      }
+    }
+    console.log('weatherNeedsUpdating:', weatherNeedsUpdating);
 
-      w.weatherdata.product.time.find((hourlyForecast: any) => {
-        const timeDiff =
-          new Date(hourlyForecast['@from']) -
-          new Date(`${trainingSessions[weekDay].date}T${trainingSessions[weekDay].time}`);
-        if (timeDiff >= -1800000 && timeDiff <= 1800000) {
-          // console.log('hourlyForecast:', hourlyForecast);
-          if (hourlyForecast['@from'] !== hourlyForecast['@to']) {
-            code = hourlyForecast.location.symbol['@number'];
-            // if (symbol.length === 1) {
-            //   symbol = '0' + symbol;
-            // }
-            // symbol += 'd';
-            // setSymbolNumber(symbol);
+    if (weatherNeedsUpdating) {
+      getWeather().then((w: any) => {
+        let apiCode = 0;
+        let apiTemperature = 0;
+        const forecasts = getForecasts(w.weatherdata.product.time, trainingSessions[weekDay]);
+        forecasts.map((f) => {
+          if (f['@from'] !== f['@to']) {
+            apiCode = f.location.symbol['@number'];
+            setCode(apiCode);
           } else {
-            temperature = Math.round(hourlyForecast.location.temperature['@value']);
-            // setTemperature(Math.round(hourlyForecast.location.temperature['@value']));
+            apiTemperature = Math.round(f.location.temperature['@value']);
+            setTemperature(apiTemperature);
           }
-        }
-      });
-      updateTrainingSessionWeather(trainingSessions[weekDay].id, {
-        code: code,
-        temperature: temperature,
-      }).then((d: any) => {
-        console.log('weather d:', d);
-      });
-    });
+        });
 
-    getSunset(trainingSessions[weekDay].date).then((s: any) => {
-      console.log('s:', s.results.sunset);
-    });
+        updateTrainingSessionWeather(trainingSessions[weekDay].id, {
+          code: apiCode,
+          temperature: apiTemperature,
+          updatedAt: Date.now(),
+        }).then((d: any) => {
+          console.log('weather updated:', d);
+        });
+      });
+    } else {
+      setCode(trainingSessions[weekDay].weather.code);
+      setTemperature(Math.round(trainingSessions[weekDay].weather.temperature));
+    }
+
+    if (trainingSessions[weekDay].sunset === null) {
+      getSunset(trainingSessions[weekDay].date).then((s: any) => {
+        const sunset24Hr = convert12HrTimeTo24(s.results.sunset);
+        updateTrainingSessionSunset(trainingSessions[weekDay].id, sunset24Hr);
+        checkDaylight(sunset24Hr);
+      });
+    } else {
+      checkDaylight(trainingSessions[weekDay].sunset);
+    }
   }, [weekDay, trainingSessions]);
+
+  useEffect(() => {
+    let displayCode = code.toString();
+
+    if (displayCode.length === 1) {
+      displayCode = '0' + code;
+    }
+
+    setSymbolNumber(displayCode + daylight);
+  }, [daylight, code]);
+
+  const checkDaylight = (sunset24Hr: string) => {
+    const sunset = new Date(`${trainingSessions[weekDay].date}T${sunset24Hr}`);
+    const trainingTime = new Date(
+      `${trainingSessions[weekDay].date}T${trainingSessions[weekDay].time}`,
+    );
+    if (sunset < trainingTime) {
+      setDaylight('n');
+    } else {
+      setDaylight('d');
+    }
+  };
 
   return (
     <Box>
@@ -66,7 +110,9 @@ const Weather = () => {
           {temperature}&#8451;
         </Typography>
       </CenteredFlexBox>
-
+      <Typography align="center" variant="body2">
+        no warnings
+      </Typography>
       <Typography align="center" variant="body2"></Typography>
     </Box>
   );

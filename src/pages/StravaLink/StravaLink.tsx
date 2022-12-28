@@ -24,7 +24,6 @@ function StravaLink() {
 
     if (error === null && session !== null) {
       const code = searchParams.get('code');
-      console.log('code:', code);
       if (code !== null) {
         getProfile(code).then((d: any) => {
           createStravaProfile({

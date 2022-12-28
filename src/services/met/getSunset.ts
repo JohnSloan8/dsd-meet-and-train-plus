@@ -8,7 +8,6 @@ const getSunset = async (date: string) => {
       timeout: 10000,
     });
     if (data) {
-      console.log('Sunset data:', data);
       return data;
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -4,7 +4,7 @@ const clientSecret = Deno.env.get('STRAVA_CLIENT_SECRET');
 
 const generateNewAccessToken = async (refresh_token: string) => {
   const url = `https://www.strava.com/oauth/token?client_id=${clientID}&client_secret=${clientSecret}&refresh_token=${refresh_token}&grant_type=refresh_token`;
-  console.log('refresh url:', url);
+
   try {
     const data = await fetch(url, {
       method: 'POST',

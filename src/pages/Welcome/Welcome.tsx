@@ -39,7 +39,7 @@ function Welcome() {
   }, []);
 
   useEffect(() => {
-    console.log('stravaProfile changed: ', stravaProfile);
+    // console.log('stravaProfile changed: ', stravaProfile);
     if (stravaProfile === undefined) {
       setShowConnectStrava(true);
     }

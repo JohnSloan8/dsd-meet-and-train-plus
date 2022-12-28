@@ -26,7 +26,6 @@ function SignUp() {
     if (error) {
       console.log(error);
     } else {
-      console.log(data.user);
       if (data.user !== null) {
         navigate('/', { replace: true });
       } else {

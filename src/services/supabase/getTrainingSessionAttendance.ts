@@ -11,7 +11,6 @@ const getTrainingSessionAttendance = async (tSID: number) => {
       const user_ids = data.map((d) => {
         return d.user_id;
       });
-      console.log('user_ids:', user_ids);
       return user_ids;
     }
 

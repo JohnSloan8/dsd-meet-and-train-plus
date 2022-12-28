@@ -5,14 +5,13 @@ const getTrainingSessions = async (weekStart: date, weekEnd: date) => {
     const { data, error } = await supabase
       .from('training_sessions')
       .select(
-        `id, location(name, latitude, longitude), time, date, session, coach(name, coaching_role(type), picture)`,
+        `id, location(name, latitude, longitude), time, date, session, coach(name, coaching_role(type), picture), weather, sunset`,
       )
       .gte('date', weekStart)
       .lte('date', weekEnd)
       .order('date', { ascending: true });
 
     if (data) {
-      console.log('data:', data);
       return data;
     }
 

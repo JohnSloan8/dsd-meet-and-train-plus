@@ -1,8 +1,6 @@
 import { supabase } from '@/services/supabase';
 
-const updateTrainingSessionWeather = async (id: number, sunset: string) => {
-  console.log('id:', id);
-
+const updateTrainingSessionSunset = async (id: number, sunset: string) => {
   try {
     const { data, error } = await supabase
       .from('training_sessions')
@@ -10,7 +8,6 @@ const updateTrainingSessionWeather = async (id: number, sunset: string) => {
       .select();
 
     if (data) {
-      console.log('sunset data:', data);
       return data;
     }
 
@@ -23,4 +20,4 @@ const updateTrainingSessionWeather = async (id: number, sunset: string) => {
   }
 };
 
-export default updateTrainingSessionWeather;
+export default updateTrainingSessionSunset;

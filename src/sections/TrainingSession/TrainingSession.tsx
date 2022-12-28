@@ -15,12 +15,15 @@ import Typography from '@mui/material/Typography';
 import { CenteredFlexBox, FullSizeCenteredFlexBox } from '@/components/styled';
 import Weather from '@/sections/Weather';
 import { getTrainingSessions } from '@/services/supabase';
+import { getActivities } from '@/services/supabase';
+import { useActivities } from '@/store/activities';
 import { useTrainingSessions } from '@/store/trainingSessions';
 import { useWeek } from '@/store/week';
 import { useWeekDay } from '@/store/weekDay';
 
 function TrainingSession() {
   const { trainingSessions, setTrainingSessions } = useTrainingSessions();
+  const { setActivities } = useActivities();
   const { week } = useWeek();
   const { weekDay } = useWeekDay();
   const [sessionString, setSessionString] = useState('');
@@ -31,7 +34,6 @@ function TrainingSession() {
         week[0].toISOString().substring(0, 10),
         week[1].toISOString().substring(0, 10),
       ).then((d: any) => {
-        console.log('d', d);
         setTrainingSessions(d);
       });
     }
@@ -66,8 +68,12 @@ function TrainingSession() {
         }
       });
 
-      console.log('tempString:', tempString);
       setSessionString(tempString);
+
+      getActivities(trainingSessions[weekDay].id).then((activities: any) => {
+        console.log('activities:', activities);
+        setActivities(activities);
+      });
     }
   }, [trainingSessions, weekDay]);
 

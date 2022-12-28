@@ -33,9 +33,7 @@ function Attendance() {
       if (todaysDate - trainingDate > 0) {
         getTrainingSessionAttendance(trainingSessions[weekDay].id).then(
           (user_id_list: string[]) => {
-            if (user_id_list.length > 0) {
-              setTrainingSessionAttendance(user_id_list);
-            }
+            setTrainingSessionAttendance(user_id_list);
           },
         );
       }
@@ -43,11 +41,12 @@ function Attendance() {
   }, [trainingSessions, weekDay]);
 
   useEffect(() => {
-    console.log('trainingSessionAttendance:', trainingSessionAttendance);
     if (trainingSessionAttendance && trainingSessionAttendance.length > 0) {
       getTrainingSessionAttendanceProfiles(trainingSessionAttendance).then((d) => {
         setTrainingSessionAttendanceProfiles(d);
       });
+    } else {
+      setTrainingSessionAttendanceProfiles([]);
     }
   }, [trainingSessionAttendance]);
 
@@ -66,26 +65,24 @@ function Attendance() {
       </Typography>
       <CenteredFlexBox p={1}>
         <Grid container>
-          {[0, 0, 0, 0, 0, 0].map(() =>
-            trainingSessionAttendanceProfiles.map((p, i) => (
-              <Grid key={i} item xs={1.7} mb={-0.7}>
-                <CenteredFlexBox>
-                  <Avatar
-                    src={p.profile_pic}
-                    sx={{
-                      border: '2px solid white',
-                      width: 58,
-                      height: 58,
-                    }}
-                    alt={p.first_name}
-                    onClick={() => {
-                      clickAvatar(p.user_id);
-                    }}
-                  />
-                </CenteredFlexBox>
-              </Grid>
-            )),
-          )}
+          {trainingSessionAttendanceProfiles.map((p, i) => (
+            <Grid key={i} item xs={1.7} mb={-0.7}>
+              <CenteredFlexBox>
+                <Avatar
+                  src={p.profile_pic}
+                  sx={{
+                    border: '2px solid white',
+                    width: 58,
+                    height: 58,
+                  }}
+                  alt={p.first_name}
+                  onClick={() => {
+                    clickAvatar(p.user_id);
+                  }}
+                />
+              </CenteredFlexBox>
+            </Grid>
+          ))}
         </Grid>
       </CenteredFlexBox>
     </Box>

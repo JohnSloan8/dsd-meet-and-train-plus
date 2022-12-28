@@ -4,40 +4,23 @@ import React, { useEffect, useRef } from 'react';
 import Feature from 'ol/Feature.js';
 import Map from 'ol/Map.js';
 import View from 'ol/View.js';
-// import GeoJSON from 'ol/format/GeoJSON';
+import GeoJSON from 'ol/format/GeoJSON';
 import Point from 'ol/geom/Point.js';
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer';
 import { transform } from 'ol/proj';
 import { OSM, Vector as VectorSource } from 'ol/source';
 import { Icon, Style } from 'ol/style.js';
 
-// import decode_polyline from '@/utils/polyline_decoder';
-
 interface OpenMapProps {
   lat: number;
   lon: number;
-  polylines: string[];
+  coords: [number, number][][];
 }
 
-const OpenMap = ({ lat, lon, polylines }: OpenMapProps) => {
+const OpenMap = ({ lat, lon, coords }: OpenMapProps) => {
   const center = transform([lon, lat], 'EPSG:4326', 'EPSG:3857');
   const mapRef = useRef(null);
-  console.log('polylines:', polylines);
-  // let geoJSONObject;
 
-  // geoJSONObject = {
-  //   type: 'FeatureCollection',
-  //   features: [
-  //     {
-  //       type: 'Feature',
-  //       properties: {},
-  //       geometry: {
-  //         coordinates: transform([lon, lat], 'EPSG:4326', 'EPSG:3857'),
-  //         type: 'Point',
-  //       },
-  //     },
-  //   ],
-  // };
   const iconFeature = new Feature({
     geometry: new Point(transform([lon, lat], 'EPSG:4326', 'EPSG:3857')),
   });
@@ -61,23 +44,41 @@ const OpenMap = ({ lat, lon, polylines }: OpenMapProps) => {
   const iconLayer = new VectorLayer({
     source: iconSource,
   });
-
-  // if (polylines.length > 0) {
-  //   geoJSONObject = decode_polyline(
-  //     'ysjdIfo_e@DuBPsABk@?UMa@Ki@GIKEQQcBURh@TjAj@fGHvAL`@Fp@DzCDjAHvF?pGCTA_ABQEpAAPCDAUFc@Ai@BOC|ACVDsBBGKlBAHFeBBQEfBEFEsA@YFE@DBx@Aj@ELGcABo@DGBJ?rACRAKBkADMIbBB{ABK@?@@EzACNEBCC?OFyDBQDI@D@|AE~BAHCBAI@oAAsBBWDGBF@`@CjCCf@EFByAAwBDSD|A?b@E\\IHE?Da@@PY|FEvABXR\\`@RJBHADOJsBHo@RaA~@uBRYHQZgAZwAvAoD|@oCFa@VwEFOPOj@]VSJQHWDe@GiAUgCIk@EOGGa@U{@_@S[Uo@KIu@l@OHi@N]Ee@U[Gq@[OCOBEDO`@MrAMnDCdBBrF?bGChCBpCElBCNGDDUBAJ@@B@GAIECCDCTEt@UnCIjAAn@BZNVh@d@RHBABIZuDTkAt@uBRc@|@_C^aAXaAx@aB\\iATqAL_DHo@n@q@h@_@Re@Bm@YcEIy@EOMK}@Oc@MOIKQQw@IOE@{@p@a@JSAc@IiBo@WDKLMhAS~I@lAH|CClG@jHEn@@HDBBMCY@QIaA@qACk@@iBEmC?`BFvC@lDB\\A??BCEAD@??AMHGJOdAUtDClA?JDHJ@BK?QIo@HmAJc@@_ALcA?kAB?ABGAI~AQjBGvAC|ADRTZNL\\RL@DCFYTeBBc@?a@CMKQ{@a@U_@C[PiB@uAWvDSpFBVFRj@f@VJL?FQXqC@k@GUMOw@]IEKSAe@NiB@}@EB?RBHGT]lEEjA?`ABPFH|@t@RFD?FWNuB?m@EMKKm@QMMKSAe@PeD?UCG@JEL@JA@IfCW~BE`C@FHLb@Xb@JJ?BCBO?i@XmB?UGMECk@KQKOQIYAi@JcBBeA@BAF@TGLGh@EzA]fF@JFNd@^f@VD?DE@IFgANmA@m@',
-  //   );
-  // }
-  // const vectorSource = new VectorSource({
-  //   features: new GeoJSON().readFeatures(geoJSONObject),
-  // });
-
-  // const vectorLayer = new VectorLayer({
-  //   source: vectorSource,
-  // });
+  const geoJSONObject = {
+    type: 'FeatureCollection',
+    features: [],
+  };
+  const layers = [new TileLayer({ source: new OSM() })];
 
   useEffect(() => {
+    coords.map((c) => {
+      geoJSONObject.features.push({
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'LineString',
+          coordinates: c,
+        },
+      });
+    });
+
+    console.log('coords:', coords);
+
+    const vectorSource = new VectorSource({
+      features: new GeoJSON().readFeatures(geoJSONObject),
+    });
+
+    const vectorLayer = new VectorLayer({
+      source: vectorSource,
+    });
+
+    if (coords.length !== 0) {
+      layers.push(vectorLayer);
+    } else {
+      layers.push(iconLayer);
+    }
     const map = new Map({
-      layers: [new TileLayer({ source: new OSM() }), iconLayer],
+      layers: layers,
       view: new View({
         center: center,
         zoom: 15,
@@ -86,7 +87,7 @@ const OpenMap = ({ lat, lon, polylines }: OpenMapProps) => {
       controls: [],
     });
     return () => map.setTarget(undefined);
-  }, [lat]);
+  }, [lon, lat, coords]);
 
   return <div ref={mapRef} style={{ width: '100%', height: '100%' }}></div>;
 };

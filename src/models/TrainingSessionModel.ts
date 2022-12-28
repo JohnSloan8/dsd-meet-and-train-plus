@@ -11,6 +11,7 @@ interface TrainingSessionModel {
 interface WeatherModel {
   temperature: number;
   code: number;
+  updated: time;
 }
 
 interface CoachModel {

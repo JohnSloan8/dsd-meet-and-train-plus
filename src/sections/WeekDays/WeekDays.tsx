@@ -21,7 +21,6 @@ function WeekDays() {
 
   const initWeekday = () => {
     const day = new Date().getDay();
-    console.log('day:', day);
     switch (day) {
       case 0:
       case 1:
