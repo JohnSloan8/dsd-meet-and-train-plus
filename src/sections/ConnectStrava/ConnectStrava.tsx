@@ -9,7 +9,7 @@ function ConnectStrava() {
         size="large"
         variant="contained"
         color="warning"
-        href="http://www.strava.com/oauth/authorize?client_id=60039&response_type=code&redirect_uri=http://localhost:3000/strava-link&approval_prompt=force&scope=activity:read"
+        href="http://www.strava.com/oauth/authorize?client_id=60039&response_type=code&redirect_uri=https://meet-and-train-plus.pages.dev/strava-link&approval_prompt=force&scope=activity:read"
       >
         link strava account
       </Button>
