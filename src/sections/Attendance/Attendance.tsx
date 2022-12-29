@@ -6,7 +6,6 @@ import { useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
 
 import { CenteredFlexBox } from '@/components/styled';
 import { getTrainingSessionAttendance } from '@/services/supabase';
@@ -36,6 +35,8 @@ function Attendance() {
         getTrainingSessionAttendance(trainingSessions[weekDay].id).then((user_id_list: any) => {
           setTrainingSessionAttendance(user_id_list);
         });
+      } else {
+        setTrainingSessionAttendance([]);
       }
     }
   }, [trainingSessions, weekDay]);
@@ -59,10 +60,7 @@ function Attendance() {
   };
 
   return (
-    <Box p={1}>
-      <Typography variant="h6" align="center">
-        Attendance
-      </Typography>
+    <Box p={1} height={150} sx={{ backgroundColor: 'primary.main' }}>
       <CenteredFlexBox p={1}>
         <Grid container>
           {trainingSessionAttendanceProfiles.map((p, i) => (

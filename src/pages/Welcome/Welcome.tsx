@@ -30,18 +30,17 @@ function Welcome() {
         getStravaProfile(session.user.id).then((d: any) => {
           setStravaProfile(d);
         });
-      } else {
-        console.log('already set Strava Profile:', stravaProfile);
       }
     } else {
       navigate('/log-in', { replace: true });
     }
-  }, []);
+  }, [session]);
 
   useEffect(() => {
-    // console.log('stravaProfile changed: ', stravaProfile);
     if (stravaProfile === undefined) {
       setShowConnectStrava(true);
+    } else {
+      setShowConnectStrava(false);
     }
   }, [stravaProfile]);
 

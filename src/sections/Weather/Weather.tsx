@@ -28,16 +28,24 @@ const Weather = () => {
 
   useEffect(() => {
     let weatherNeedsUpdating = false;
-    if (trainingSessions[weekDay].weather === null) {
-      weatherNeedsUpdating = true;
-    } else {
-      const timeElapsedSinceUpdate =
-        Date.now() - new Date(trainingSessions[weekDay].weather.updatedAt).getTime();
-      console.log('timeElapsedSinceUpdate:', timeElapsedSinceUpdate);
-      if (timeElapsedSinceUpdate / 36000 > 60) {
-        // console.log('weather needs updating :', true);
+    if (
+      Date.now() -
+        new Date(`${trainingSessions[weekDay].date}T${trainingSessions[weekDay].time}`).getTime() <
+      0
+    ) {
+      if (trainingSessions[weekDay].weather === null) {
         weatherNeedsUpdating = true;
+      } else {
+        const timeElapsedSinceUpdate =
+          Date.now() - new Date(trainingSessions[weekDay].weather.updatedAt).getTime();
+        console.log('timeElapsedSinceUpdate:', timeElapsedSinceUpdate);
+        if (timeElapsedSinceUpdate / 36000 > 60) {
+          // console.log('weather needs updating :', true);
+          weatherNeedsUpdating = true;
+        }
       }
+    } else {
+      console.log('no weather update - session in the past');
     }
     console.log('weatherNeedsUpdating:', weatherNeedsUpdating);
 

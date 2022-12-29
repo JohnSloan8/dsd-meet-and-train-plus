@@ -132,7 +132,7 @@ function TrainingSession() {
             </Grid>
 
             <Grid item xs={12}>
-              <Box py={0.25} my={0.75} sx={{ backgroundColor: 'warning.dark' }}>
+              <Box py={0.25} my={0.75} sx={{ backgroundColor: 'primary.main' }}>
                 <CenteredFlexBox>
                   <DirectionsRunIcon fontSize="medium" sx={{ color: '0xffffff' }} />
 
