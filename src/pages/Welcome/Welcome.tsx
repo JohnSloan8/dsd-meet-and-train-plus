@@ -11,7 +11,6 @@ import Attendance from '@/sections/Attendance';
 import ConnectStrava from '@/sections/ConnectStrava';
 import OpenMapCtrl from '@/sections/MapCtrl';
 import TrainingSession from '@/sections/TrainingSession';
-import Week from '@/sections/Week';
 import WeekDays from '@/sections/WeekDays';
 import { getStravaProfile } from '@/services/supabase';
 import { useSession } from '@/store/auth';
@@ -47,17 +46,10 @@ function Welcome() {
   return (
     <>
       <Meta title="Welcome" />
-      <Week />
       <WeekDays />
       <TrainingSession />
 
-      <Box
-        // border={3}
-        // borderColor={'primary.main'}
-        height={160}
-        width={'100%'}
-        sx={{ position: 'relative' }}
-      >
+      <Box height={200} width={'100%'} sx={{ position: 'relative' }}>
         <OpenMapCtrl />
       </Box>
       <Attendance />

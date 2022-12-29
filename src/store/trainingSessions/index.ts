@@ -36,4 +36,19 @@ const useTrainingSessionAttendanceProfiles = () => {
   return { trainingSessionAttendanceProfiles, setTrainingSessionAttendanceProfiles };
 };
 
-export { useTrainingSessions, useTrainingSessionAttendance, useTrainingSessionAttendanceProfiles };
+const daylightState = atom<'d' | 'n'>({
+  key: 'daylight-state',
+  default: 'd',
+});
+
+const useDaylight = () => {
+  const [daylight, setDaylight] = useRecoilState(daylightState);
+  return { daylight, setDaylight };
+};
+
+export {
+  useTrainingSessions,
+  useTrainingSessionAttendance,
+  useTrainingSessionAttendanceProfiles,
+  useDaylight,
+};

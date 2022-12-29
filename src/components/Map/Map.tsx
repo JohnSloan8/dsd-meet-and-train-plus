@@ -11,7 +11,7 @@ import Point from 'ol/geom/Point.js';
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer';
 import { transform } from 'ol/proj';
 import { OSM, Vector as VectorSource } from 'ol/source';
-import { Icon, Style } from 'ol/style.js';
+import { Icon, Stroke, Style } from 'ol/style.js';
 
 import { ActivityModel } from '@/models';
 
@@ -65,16 +65,27 @@ const OpenMap = ({ lat, lon, activities }: OpenMapProps) => {
     coordinates: [number, number][];
   }
 
-  const geoJSONObject: geoJSONObjectModel = {
-    type: 'FeatureCollection',
-    features: [],
-  };
   const layers: any[] = [];
+
+  const hexValues = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F'];
+  const generateHex = () => {
+    let hex = '#';
+
+    for (let i = 0; i < 6; i++) {
+      const index = Math.floor(Math.random() * hexValues.length);
+      hex += hexValues[index];
+    }
+    return hex;
+  };
 
   useEffect(() => {
     layers.push(new TileLayer({ source: new OSM() }));
     if (activities.length !== 0) {
       activities.map((a) => {
+        const geoJSONObject: geoJSONObjectModel = {
+          type: 'FeatureCollection',
+          features: [],
+        };
         geoJSONObject.features.push({
           type: 'Feature',
           properties: {},
@@ -83,19 +94,24 @@ const OpenMap = ({ lat, lon, activities }: OpenMapProps) => {
             coordinates: a.coords,
           },
         });
+
+        // console.log('coords:', coords);
+
+        const vectorSource = new VectorSource({
+          features: new GeoJSON().readFeatures(geoJSONObject),
+        });
+
+        const vectorLayer = new VectorLayer({
+          source: vectorSource,
+          style: new Style({
+            stroke: new Stroke({
+              color: generateHex(),
+              width: 2,
+            }),
+          }),
+        });
+        layers.push(vectorLayer);
       });
-
-      // console.log('coords:', coords);
-
-      const vectorSource = new VectorSource({
-        features: new GeoJSON().readFeatures(geoJSONObject),
-      });
-
-      const vectorLayer = new VectorLayer({
-        source: vectorSource,
-      });
-
-      layers.push(vectorLayer);
     } else {
       layers.push(iconLayer);
     }

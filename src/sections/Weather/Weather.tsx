@@ -11,7 +11,7 @@ import { getWeather } from '@/services/met';
 import { getSunset } from '@/services/met';
 import { updateTrainingSessionSunset, updateTrainingSessionWeather } from '@/services/supabase';
 // import { useWeek } from '@/store/weekDay';
-import { useTrainingSessions } from '@/store/trainingSessions';
+import { useDaylight, useTrainingSessions } from '@/store/trainingSessions';
 import { useWeekDay } from '@/store/weekDay';
 
 import { convert12HrTimeTo24, getForecasts } from './utils';
@@ -21,7 +21,7 @@ const Weather = () => {
   const { weekDay } = useWeekDay();
   const [symbolNumber, setSymbolNumber] = useState('01d');
   const [temperature, setTemperature] = useState(0);
-  const [daylight, setDaylight] = useState('d');
+  const { daylight, setDaylight } = useDaylight();
   const [code, setCode] = useState(0);
 
   const symbolURL = `https://cdn-a.metweb.ie//images/web-meteogram-small/${symbolNumber}.png?v=5001`;

@@ -60,7 +60,7 @@ function Attendance() {
   };
 
   return (
-    <Box p={1} height={150} sx={{ backgroundColor: 'primary.main' }}>
+    <Box p={1} height={150}>
       <CenteredFlexBox p={1}>
         <Grid container>
           {trainingSessionAttendanceProfiles.map((p, i) => (

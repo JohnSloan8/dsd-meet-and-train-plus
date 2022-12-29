@@ -17,7 +17,7 @@ import Weather from '@/sections/Weather';
 import { getTrainingSessions } from '@/services/supabase';
 import { getActivities } from '@/services/supabase';
 import { useActivities } from '@/store/activities';
-import { useTrainingSessions } from '@/store/trainingSessions';
+import { useDaylight, useTrainingSessions } from '@/store/trainingSessions';
 import { useWeek } from '@/store/week';
 import { useWeekDay } from '@/store/weekDay';
 
@@ -27,6 +27,7 @@ function TrainingSession() {
   const { week } = useWeek();
   const { weekDay } = useWeekDay();
   const [sessionString, setSessionString] = useState('');
+  const { daylight } = useDaylight();
 
   useEffect(() => {
     if (week !== undefined) {
@@ -78,7 +79,14 @@ function TrainingSession() {
   }, [trainingSessions, weekDay]);
 
   return (
-    <Box sx={{ backgroundColor: 'primary.dark' }} color="#fff">
+    <Box
+      sx={{
+        backgroundColor: daylight === 'n' ? 'primary.dark' : 'primary.light',
+        color: 'white',
+      }}
+      color="#fff"
+      pt={1}
+    >
       {trainingSessions.length !== 0 && trainingSessions[weekDay] !== undefined ? (
         <>
           <Grid container>
@@ -87,7 +95,7 @@ function TrainingSession() {
                 <Avatar
                   src={trainingSessions[weekDay].coach.picture}
                   sx={{
-                    border: '2px solid gold',
+                    border: '2px solid white',
                     width: 64,
                     height: 64,
                   }}
@@ -98,15 +106,19 @@ function TrainingSession() {
             <Grid item xs={6.5}>
               <Box pt={0.5}>
                 <CenteredFlexBox py={0}>
-                  {/* <LocationOnIcon fontSize="medium" sx={{color: "primary.dark"}}/> */}
                   <Typography ml={1} sx={{ fontWeight: 'bold' }} variant="h6">
                     {trainingSessions[weekDay].location.name}
                   </Typography>
                 </CenteredFlexBox>
                 <CenteredFlexBox>
-                  {/* <AccessTimeFilledIcon fontSize="xsmall" /> */}
+                  <Typography variant="body2">
+                    {`${new Date(trainingSessions[weekDay].date).toLocaleString('en-US', {
+                      day: 'numeric',
+                      month: 'short',
+                    })}`}
+                  </Typography>
                   <Typography
-                    variant="h6"
+                    variant="h5"
                     mt={-0.8}
                     mb={-0.4}
                     ml={1}
@@ -117,7 +129,7 @@ function TrainingSession() {
                   </Typography>
                 </CenteredFlexBox>
                 <CenteredFlexBox sx={{ alignItems: 'center' }}>
-                  <SportsIcon fontSize="small" sx={{ color: 'gold' }} />
+                  <SportsIcon fontSize="small" />
                   <Typography ml={1} variant="body1" align="left">
                     {trainingSessions[weekDay].coach.name}
                   </Typography>
@@ -132,7 +144,8 @@ function TrainingSession() {
             </Grid>
 
             <Grid item xs={12}>
-              <Box py={0.25} my={0.75} sx={{ backgroundColor: 'primary.main' }}>
+              <Box pb={1} mt={2}>
+                <Box borderTop={1} pb={0.75} mx={2}></Box>
                 <CenteredFlexBox>
                   <DirectionsRunIcon fontSize="medium" sx={{ color: '0xffffff' }} />
 
