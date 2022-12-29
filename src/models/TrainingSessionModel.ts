@@ -6,12 +6,13 @@ interface TrainingSessionModel {
   date: string;
   session: SessionModel[];
   weather: WeatherModel;
+  sunset: string;
 }
 
 interface WeatherModel {
   temperature: number;
   code: number;
-  updated: time;
+  updatedAt: number;
 }
 
 interface CoachModel {

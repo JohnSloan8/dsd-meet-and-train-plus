@@ -1,6 +1,6 @@
 import { supabase } from '@/services/supabase';
 
-const getTrainingSessions = async (weekStart: date, weekEnd: date) => {
+const getTrainingSessions = async (weekStart: string, weekEnd: string) => {
   try {
     const { data, error } = await supabase
       .from('training_sessions')

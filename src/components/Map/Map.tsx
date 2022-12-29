@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef } from 'react';
 
@@ -11,13 +13,15 @@ import { transform } from 'ol/proj';
 import { OSM, Vector as VectorSource } from 'ol/source';
 import { Icon, Style } from 'ol/style.js';
 
+import { ActivityModel } from '@/models';
+
 interface OpenMapProps {
   lat: number;
   lon: number;
-  coords: [number, number][][];
+  activities: ActivityModel[];
 }
 
-const OpenMap = ({ lat, lon, coords }: OpenMapProps) => {
+const OpenMap = ({ lat, lon, activities }: OpenMapProps) => {
   const center = transform([lon, lat], 'EPSG:4326', 'EPSG:3857');
   const mapRef = useRef(null);
 
@@ -44,50 +48,70 @@ const OpenMap = ({ lat, lon, coords }: OpenMapProps) => {
   const iconLayer = new VectorLayer({
     source: iconSource,
   });
-  const geoJSONObject = {
+
+  interface geoJSONObjectModel {
+    type: string;
+    features: FeatureModel[];
+  }
+
+  interface FeatureModel {
+    type: string;
+    properties: any;
+    geometry: GeometryModel;
+  }
+
+  interface GeometryModel {
+    type: string;
+    coordinates: [number, number][];
+  }
+
+  const geoJSONObject: geoJSONObjectModel = {
     type: 'FeatureCollection',
     features: [],
   };
-  const layers = [new TileLayer({ source: new OSM() })];
+  const layers: any[] = [];
 
   useEffect(() => {
-    coords.map((c) => {
-      geoJSONObject.features.push({
-        type: 'Feature',
-        properties: {},
-        geometry: {
-          type: 'LineString',
-          coordinates: c,
-        },
+    layers.push(new TileLayer({ source: new OSM() }));
+    if (activities.length !== 0) {
+      activities.map((a) => {
+        geoJSONObject.features.push({
+          type: 'Feature',
+          properties: {},
+          geometry: {
+            type: 'LineString',
+            coordinates: a.coords,
+          },
+        });
       });
-    });
 
-    console.log('coords:', coords);
+      // console.log('coords:', coords);
 
-    const vectorSource = new VectorSource({
-      features: new GeoJSON().readFeatures(geoJSONObject),
-    });
+      const vectorSource = new VectorSource({
+        features: new GeoJSON().readFeatures(geoJSONObject),
+      });
 
-    const vectorLayer = new VectorLayer({
-      source: vectorSource,
-    });
+      const vectorLayer = new VectorLayer({
+        source: vectorSource,
+      });
 
-    if (coords.length !== 0) {
       layers.push(vectorLayer);
     } else {
       layers.push(iconLayer);
     }
-    const map = new Map({
-      layers: layers,
-      view: new View({
-        center: center,
-        zoom: 15,
-      }),
-      target: mapRef.current,
-      controls: [],
-    });
-    return () => map.setTarget(undefined);
-  }, [lon, lat, coords]);
+    if (mapRef.current !== null) {
+      const map = new Map({
+        layers: layers,
+        view: new View({
+          center: center,
+          zoom: 15,
+        }),
+        target: mapRef.current,
+        controls: [],
+      });
+      return () => map.setTarget(undefined);
+    }
+  }, [lon, lat, activities]);
 
   return <div ref={mapRef} style={{ width: '100%', height: '100%' }}></div>;
 };

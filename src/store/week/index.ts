@@ -1,6 +1,6 @@
 import { atom, useRecoilState } from 'recoil';
 
-const weekState = atom<string[] | undefined>({
+const weekState = atom<Date[] | undefined>({
   key: 'week',
   default: undefined,
 });

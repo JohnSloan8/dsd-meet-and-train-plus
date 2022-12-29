@@ -3,7 +3,7 @@ import { atom, useRecoilState } from 'recoil';
 import { ActivityModel } from '@/models';
 
 const activitiesState = atom<ActivityModel[]>({
-  key: 'activities',
+  key: 'activities-state',
   default: [],
 });
 

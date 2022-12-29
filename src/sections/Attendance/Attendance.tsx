@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 
@@ -26,23 +28,21 @@ function Attendance() {
   const { weekDay } = useWeekDay();
   useEffect(() => {
     if (trainingSessions.length !== 0 && trainingSessions[weekDay] !== undefined) {
-      const todaysDate = new Date();
+      const todaysDate = Date.now();
       const trainingDate = new Date(
         `${trainingSessions[weekDay].date} ${trainingSessions[weekDay].time}`,
       );
-      if (todaysDate - trainingDate > 0) {
-        getTrainingSessionAttendance(trainingSessions[weekDay].id).then(
-          (user_id_list: string[]) => {
-            setTrainingSessionAttendance(user_id_list);
-          },
-        );
+      if (todaysDate - trainingDate.getTime() > 0) {
+        getTrainingSessionAttendance(trainingSessions[weekDay].id).then((user_id_list: any) => {
+          setTrainingSessionAttendance(user_id_list);
+        });
       }
     }
   }, [trainingSessions, weekDay]);
 
   useEffect(() => {
     if (trainingSessionAttendance && trainingSessionAttendance.length > 0) {
-      getTrainingSessionAttendanceProfiles(trainingSessionAttendance).then((d) => {
+      getTrainingSessionAttendanceProfiles(trainingSessionAttendance).then((d: any) => {
         setTrainingSessionAttendanceProfiles(d);
       });
     } else {

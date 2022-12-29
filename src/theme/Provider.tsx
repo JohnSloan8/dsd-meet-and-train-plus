@@ -1,7 +1,6 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import theme from './theme';
-import type { CustomThemeProviderProps } from './types';
 
 type CustomThemeProviderProps = {
   children: JSX.Element;

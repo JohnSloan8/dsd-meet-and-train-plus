@@ -78,7 +78,7 @@ function TrainingSession() {
   }, [trainingSessions, weekDay]);
 
   return (
-    <Box backgroundColor="primary.dark" color="#fff">
+    <Box sx={{ backgroundColor: 'primary.dark' }} color="#fff">
       {trainingSessions.length !== 0 && trainingSessions[weekDay] !== undefined ? (
         <>
           <Grid container>

@@ -46,10 +46,12 @@ function Week() {
     if (backward) {
       change = -7;
     }
-    setWeek([
-      new Date(week[0].setDate(week[0].getDate() + change)),
-      new Date(week[1].setDate(week[1].getDate() + change)),
-    ]);
+    if (week !== undefined) {
+      setWeek([
+        new Date(week[0].setDate(week[0].getDate() + change)),
+        new Date(week[1].setDate(week[1].getDate() + change)),
+      ]);
+    }
   };
 
   return (

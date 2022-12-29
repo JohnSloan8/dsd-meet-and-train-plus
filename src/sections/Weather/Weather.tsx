@@ -22,7 +22,7 @@ const Weather = () => {
   const [symbolNumber, setSymbolNumber] = useState('01d');
   const [temperature, setTemperature] = useState(0);
   const [daylight, setDaylight] = useState('d');
-  const [code, setCode] = useState('1');
+  const [code, setCode] = useState(0);
 
   const symbolURL = `https://cdn-a.metweb.ie//images/web-meteogram-small/${symbolNumber}.png?v=5001`;
 
@@ -32,7 +32,7 @@ const Weather = () => {
       weatherNeedsUpdating = true;
     } else {
       const timeElapsedSinceUpdate =
-        Date.now() - new Date(trainingSessions[weekDay].weather.updatedAt);
+        Date.now() - new Date(trainingSessions[weekDay].weather.updatedAt).getTime();
       console.log('timeElapsedSinceUpdate:', timeElapsedSinceUpdate);
       if (timeElapsedSinceUpdate / 36000 > 60) {
         // console.log('weather needs updating :', true);
@@ -46,7 +46,7 @@ const Weather = () => {
         let apiCode = 0;
         let apiTemperature = 0;
         const forecasts = getForecasts(w.weatherdata.product.time, trainingSessions[weekDay]);
-        forecasts.map((f) => {
+        forecasts.map((f: any) => {
           if (f['@from'] !== f['@to']) {
             apiCode = f.location.symbol['@number'];
             setCode(apiCode);

@@ -11,6 +11,7 @@ interface StravaProfileModel {
   sex?: string;
   access_token?: string;
   refresh_token?: string;
+  token_expires_at?: string;
 }
 
 export type { StravaProfileModel };

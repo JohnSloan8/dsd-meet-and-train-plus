@@ -8,7 +8,6 @@ enum Pages {
   SignUp,
   LogIn,
   StravaLink,
-  Page4,
   NotFound,
 }
 

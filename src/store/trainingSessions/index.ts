@@ -12,7 +12,7 @@ const useTrainingSessions = () => {
   return { trainingSessions, setTrainingSessions };
 };
 
-const trainingSessionAttendanceState = atom<string[]>({
+const trainingSessionAttendanceState = atom<[] | string[]>({
   key: 'training-session-attendance',
   default: [],
 });
