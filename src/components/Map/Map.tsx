@@ -19,7 +19,7 @@ interface OpenMapProps {
   lat: number;
   lon: number;
   activities: ActivityModel[];
-  selectedAthlete: string;
+  selectedAthlete: string | undefined;
 }
 
 const OpenMap = ({ lat, lon, activities, selectedAthlete }: OpenMapProps) => {
@@ -80,7 +80,7 @@ const OpenMap = ({ lat, lon, activities, selectedAthlete }: OpenMapProps) => {
 
   // const tileLayer = [new TileLayer({ source: new OSM() })];
   const tileLayer = new TileLayer({ source: new OSM() });
-  const transparentTileLayers = [tileLayer];
+  const transparentTileLayers: any[] = [tileLayer];
   tileLayer.setOpacity(1);
 
   // const backgroundTileLayer = new TileLayer({ source: new OSM() });
@@ -112,7 +112,7 @@ const OpenMap = ({ lat, lon, activities, selectedAthlete }: OpenMapProps) => {
           style: new Style({
             stroke: new Stroke({
               color:
-                a.user_id === selectedAthlete ? 'rgba(13, 71, 161, 1)' : 'rgba(13, 71, 161, 0.3)',
+                a.user_id === selectedAthlete ? 'rgba(13, 71, 161, 1)' : 'rgba(13, 71, 161, 0.25)',
               width: 2,
             }),
           }),

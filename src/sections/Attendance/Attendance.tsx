@@ -124,7 +124,6 @@ function Attendance() {
                         width: 58,
                         height: 58,
                       }}
-                      border={2}
                     />
                   </IconButton>
                 </CenteredFlexBox>
