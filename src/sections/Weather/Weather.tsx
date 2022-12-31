@@ -3,6 +3,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
 
+import AirIcon from '@mui/icons-material/Air';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
@@ -21,6 +23,8 @@ const Weather = () => {
   const { weekDay } = useWeekDay();
   const [symbolNumber, setSymbolNumber] = useState('01d');
   const [temperature, setTemperature] = useState(0);
+  const [windSpeed, setWindSpeed] = useState(0);
+  const [windDirection, setWindDirection] = useState(0);
   const { daylight, setDaylight } = useDaylight();
   const [code, setCode] = useState(0);
 
@@ -28,20 +32,23 @@ const Weather = () => {
 
   useEffect(() => {
     let weatherNeedsUpdating = false;
-    if (
+    const sessionInPast =
       Date.now() -
-        new Date(`${trainingSessions[weekDay].date}T${trainingSessions[weekDay].time}`).getTime() <
+        new Date(`${trainingSessions[weekDay].date}T${trainingSessions[weekDay].time}`).getTime() >
       0
-    ) {
+        ? true
+        : false;
+    if (!sessionInPast) {
       if (trainingSessions[weekDay].weather === null) {
+        console.log('weather is null');
         weatherNeedsUpdating = true;
       } else {
         const timeElapsedSinceUpdate =
           Date.now() - new Date(trainingSessions[weekDay].weather.updatedAt).getTime();
         console.log('timeElapsedSinceUpdate:', timeElapsedSinceUpdate);
-        if (timeElapsedSinceUpdate / 36000 > 60) {
-          // console.log('weather needs updating :', true);
+        if (timeElapsedSinceUpdate / 3600000 > 60) {
           weatherNeedsUpdating = true;
+          console.log('too much time elapsed');
         }
       }
     } else {
@@ -53,7 +60,10 @@ const Weather = () => {
       getWeather().then((w: any) => {
         let apiCode = 0;
         let apiTemperature = 0;
+        let apiWindSpeed = 0;
+        let apiWindDirection = 0;
         const forecasts = getForecasts(w.weatherdata.product.time, trainingSessions[weekDay]);
+        console.log('forecasts:', forecasts);
         forecasts.map((f: any) => {
           if (f['@from'] !== f['@to']) {
             apiCode = f.location.symbol['@number'];
@@ -61,20 +71,37 @@ const Weather = () => {
           } else {
             apiTemperature = Math.round(f.location.temperature['@value']);
             setTemperature(apiTemperature);
+            apiWindSpeed = Math.round(f.location.windSpeed['@mps'] * 3.6);
+            setWindSpeed(apiWindSpeed);
+            apiWindDirection = Math.round(f.location.windDirection['@deg']);
+            setWindDirection(apiWindDirection);
           }
         });
 
         updateTrainingSessionWeather(trainingSessions[weekDay].id, {
           code: apiCode,
           temperature: apiTemperature,
+          windSpeed: apiWindSpeed,
+          windDirection: apiWindDirection,
           updatedAt: Date.now(),
         }).then((d: any) => {
           console.log('weather updated:', d);
         });
       });
     } else {
-      setCode(trainingSessions[weekDay].weather.code);
-      setTemperature(Math.round(trainingSessions[weekDay].weather.temperature));
+      if (!sessionInPast) {
+        setCode(trainingSessions[weekDay].weather.code);
+        setTemperature(Math.round(trainingSessions[weekDay].weather.temperature));
+        setWindSpeed(trainingSessions[weekDay].weather.windSpeed);
+        setWindDirection(trainingSessions[weekDay].weather.windDirection);
+      } else {
+        if (trainingSessions[weekDay].weather !== null) {
+          setCode(trainingSessions[weekDay].weather.code);
+          setTemperature(Math.round(trainingSessions[weekDay].weather.temperature));
+          setWindSpeed(trainingSessions[weekDay].weather.windSpeed);
+          setWindDirection(trainingSessions[weekDay].weather.windDirection);
+        }
+      }
     }
 
     if (trainingSessions[weekDay].sunset === null) {
@@ -86,6 +113,8 @@ const Weather = () => {
     } else {
       checkDaylight(trainingSessions[weekDay].sunset);
     }
+
+    console.log('weather data:', trainingSessions[weekDay].weather);
   }, [weekDay, trainingSessions]);
 
   useEffect(() => {
@@ -110,13 +139,21 @@ const Weather = () => {
     }
   };
 
-  return (
+  return trainingSessions[weekDay].weather === null ? null : (
     <Box>
       <CenteredFlexBox>
         <img src={symbolURL} />
-        <Typography align="center" variant="body2">
-          {temperature}&#8451;
+        <Typography ml={0.5} align="center" variant="body1">
+          {temperature}
         </Typography>
+        <Typography variant="body2">&#8451;</Typography>
+      </CenteredFlexBox>
+
+      <CenteredFlexBox py={1}>
+        <AirIcon />
+        <Typography ml={0.5} variant="body1">{`${windSpeed}`}</Typography>
+        <Typography ml={0.2} variant="body2">{` kph`}</Typography>
+        <ArrowDownwardIcon sx={{ transform: `rotate(${windDirection}deg)` }} />
       </CenteredFlexBox>
       <Typography align="center" variant="body2">
         no warnings

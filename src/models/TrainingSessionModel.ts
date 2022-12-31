@@ -12,6 +12,8 @@ interface TrainingSessionModel {
 interface WeatherModel {
   temperature: number;
   code: number;
+  windSpeed: number;
+  windDirection: number;
   updatedAt: number;
 }
 

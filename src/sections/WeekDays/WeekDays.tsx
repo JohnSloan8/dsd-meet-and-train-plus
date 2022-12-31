@@ -43,7 +43,6 @@ function WeekDays() {
   const initWeekday = () => {
     const day = new Date().getDay();
     switch (day) {
-      case 0:
       case 1:
       case 2:
         setWeekDay(0);
@@ -53,6 +52,7 @@ function WeekDays() {
         setWeekDay(1);
         break;
       case 5:
+      case 6:
         setWeekDay(2);
         break;
       default:

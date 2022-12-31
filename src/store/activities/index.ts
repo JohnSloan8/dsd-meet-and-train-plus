@@ -12,4 +12,14 @@ const useActivities = () => {
   return { activities, setActivities };
 };
 
-export { useActivities };
+const selectedAthleteState = atom<string | undefined>({
+  key: 'selected-athlete-state',
+  default: undefined,
+});
+
+const useSelectedAthlete = () => {
+  const [selectedAthlete, setSelectedAthlete] = useRecoilState(selectedAthleteState);
+  return { selectedAthlete, setSelectedAthlete };
+};
+
+export { useActivities, useSelectedAthlete };

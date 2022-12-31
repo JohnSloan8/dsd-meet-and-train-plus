@@ -19,11 +19,13 @@ interface OpenMapProps {
   lat: number;
   lon: number;
   activities: ActivityModel[];
+  selectedAthlete: string;
 }
 
-const OpenMap = ({ lat, lon, activities }: OpenMapProps) => {
+const OpenMap = ({ lat, lon, activities, selectedAthlete }: OpenMapProps) => {
   const center = transform([lon, lat], 'EPSG:4326', 'EPSG:3857');
   const mapRef = useRef(null);
+  const mapRefTrans = useRef(null);
 
   const iconFeature = new Feature({
     geometry: new Point(transform([lon, lat], 'EPSG:4326', 'EPSG:3857')),
@@ -65,21 +67,25 @@ const OpenMap = ({ lat, lon, activities }: OpenMapProps) => {
     coordinates: [number, number][];
   }
 
-  const layers: any[] = [];
+  // const hexValues = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F'];
+  // const generateHex = () => {
+  //   let hex = '#';
 
-  const hexValues = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F'];
-  const generateHex = () => {
-    let hex = '#';
+  //   for (let i = 0; i < 6; i++) {
+  //     const index = Math.floor(Math.random() * hexValues.length);
+  //     hex += hexValues[index];
+  //   }
+  //   return hex;
+  // };
 
-    for (let i = 0; i < 6; i++) {
-      const index = Math.floor(Math.random() * hexValues.length);
-      hex += hexValues[index];
-    }
-    return hex;
-  };
+  // const tileLayer = [new TileLayer({ source: new OSM() })];
+  const tileLayer = new TileLayer({ source: new OSM() });
+  const transparentTileLayers = [tileLayer];
+  tileLayer.setOpacity(1);
+
+  // const backgroundTileLayer = new TileLayer({ source: new OSM() });
 
   useEffect(() => {
-    layers.push(new TileLayer({ source: new OSM() }));
     if (activities.length !== 0) {
       activities.map((a) => {
         const geoJSONObject: geoJSONObjectModel = {
@@ -105,31 +111,52 @@ const OpenMap = ({ lat, lon, activities }: OpenMapProps) => {
           source: vectorSource,
           style: new Style({
             stroke: new Stroke({
-              color: generateHex(),
+              color:
+                a.user_id === selectedAthlete ? 'rgba(13, 71, 161, 1)' : 'rgba(13, 71, 161, 0.3)',
               width: 2,
             }),
           }),
         });
-        layers.push(vectorLayer);
+        transparentTileLayers.push(vectorLayer);
       });
     } else {
-      layers.push(iconLayer);
+      transparentTileLayers.push(iconLayer);
     }
-    if (mapRef.current !== null) {
-      const map = new Map({
-        layers: layers,
+    if (mapRefTrans.current !== null) {
+      const transMap = new Map({
+        layers: transparentTileLayers,
         view: new View({
           center: center,
           zoom: 15,
         }),
-        target: mapRef.current,
+        target: mapRefTrans.current,
         controls: [],
       });
-      return () => map.setTarget(undefined);
+      return () => transMap.setTarget(undefined);
     }
-  }, [lon, lat, activities]);
+  }, [selectedAthlete, activities]);
 
-  return <div ref={mapRef} style={{ width: '100%', height: '100%' }}></div>;
+  // useEffect(() => {
+  //   if (mapRef.current !== null) {
+  //     const Map = new Map({
+  //       layers: backgroundTileLayer,
+  //       view: new View({
+  //         center: center,
+  //         zoom: 15,
+  //       }),
+  //       target: mapRef.current,
+  //       controls: [],
+  //     });
+  //     return () => Map.setTarget(undefined);
+  //   }
+  // }, [activities]);
+
+  return (
+    <div style={{ width: '100%', height: '100%' }}>
+      <div ref={mapRefTrans} style={{ width: '100%', height: '100%' }}></div>
+      <div ref={mapRef} style={{ width: '100%', height: '100%' }}></div>
+    </div>
+  );
 };
 
 export default OpenMap;

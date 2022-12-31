@@ -3,10 +3,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
 
-// import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
-import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
-// import LocationOnIcon from '@mui/icons-material/LocationOn';
 import SportsIcon from '@mui/icons-material/Sports';
+import WatchIcon from '@mui/icons-material/Watch';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -79,7 +77,7 @@ function TrainingSession() {
   }, [trainingSessions, weekDay]);
 
   return (
-    <Box
+    <CenteredFlexBox
       sx={{
         backgroundColor: daylight === 'n' ? 'primary.dark' : 'primary.light',
         color: 'white',
@@ -88,66 +86,71 @@ function TrainingSession() {
       pt={1}
     >
       {trainingSessions.length !== 0 && trainingSessions[weekDay] !== undefined ? (
-        <>
+        <Box maxWidth="sm">
           <Grid container>
-            <Grid item xs={2.75}>
-              <FullSizeCenteredFlexBox pl={1}>
-                <Avatar
-                  src={trainingSessions[weekDay].coach.picture}
-                  sx={{
-                    border: '2px solid white',
-                    width: 64,
-                    height: 64,
-                  }}
-                  alt={trainingSessions[weekDay].coach.name}
-                />{' '}
-              </FullSizeCenteredFlexBox>
+            <Grid item xs={3.5}>
+              <Box>
+                <CenteredFlexBox>
+                  <Avatar
+                    src={trainingSessions[weekDay].coach.picture}
+                    sx={{
+                      // border: '2px solid white',
+                      width: 64,
+                      height: 64,
+                    }}
+                    alt={trainingSessions[weekDay].coach.name}
+                  />
+                  <SportsIcon
+                    sx={{ position: 'absolute', zIndex: 100, marginTop: 8, color: 'gold' }}
+                  />
+                </CenteredFlexBox>
+
+                <Box>
+                  <CenteredFlexBox>
+                    <Typography mt={1} variant="body1">
+                      {trainingSessions[weekDay].coach.name.split(' ')[0]}
+                    </Typography>
+                  </CenteredFlexBox>
+                  <CenteredFlexBox>
+                    <Typography variant="body1">
+                      {trainingSessions[weekDay].coach.name.split(' ')[1]}
+                    </Typography>
+                  </CenteredFlexBox>
+                </Box>
+              </Box>
             </Grid>
-            <Grid item xs={6.5}>
-              <Box pt={0.5}>
-                <CenteredFlexBox py={0}>
-                  <Typography ml={1} sx={{ fontWeight: 'bold' }} variant="h6">
+            <Grid item xs={5}>
+              <FullSizeCenteredFlexBox>
+                <Box>
+                  <Typography align="center" sx={{ fontWeight: 'bold' }} variant="h6" pt={1}>
                     {trainingSessions[weekDay].location.name}
                   </Typography>
-                </CenteredFlexBox>
-                <CenteredFlexBox>
-                  <Typography variant="body2">
+                  <Typography variant="body2" align="center">
                     {`${new Date(trainingSessions[weekDay].date).toLocaleString('en-US', {
                       day: 'numeric',
                       month: 'short',
                     })}`}
                   </Typography>
-                  <Typography
-                    variant="h5"
-                    mt={-0.8}
-                    mb={-0.4}
-                    ml={1}
-                    p={-1}
-                    sx={{ fontFamily: 'digital' }}
-                  >
-                    {trainingSessions[weekDay].time.substring(0, 5)}
-                  </Typography>
-                </CenteredFlexBox>
-                <CenteredFlexBox sx={{ alignItems: 'center' }}>
-                  <SportsIcon fontSize="small" />
-                  <Typography ml={1} variant="body1" align="left">
-                    {trainingSessions[weekDay].coach.name}
-                  </Typography>
-                </CenteredFlexBox>
-              </Box>
+                  <CenteredFlexBox>
+                    <Typography variant="h4" sx={{ fontFamily: 'digital' }}>
+                      {trainingSessions[weekDay].time.substring(0, 5)}
+                    </Typography>
+                  </CenteredFlexBox>
+                </Box>
+              </FullSizeCenteredFlexBox>
             </Grid>
 
-            <Grid item xs={2.75}>
-              <FullSizeCenteredFlexBox pr={1}>
+            <Grid item xs={3.5}>
+              <FullSizeCenteredFlexBox>
                 <Weather />
               </FullSizeCenteredFlexBox>
             </Grid>
 
             <Grid item xs={12}>
-              <Box pb={1} mt={2}>
-                <Box borderTop={1} pb={0.75} mx={2}></Box>
-                <CenteredFlexBox>
-                  <DirectionsRunIcon fontSize="medium" sx={{ color: '0xffffff' }} />
+              <Box mt={1}>
+                <Box borderTop={1} mx={2}></Box>
+                <CenteredFlexBox py={0.75}>
+                  <WatchIcon fontSize="small" />
 
                   <Typography ml={0.5} variant="body1">
                     {sessionString}
@@ -156,9 +159,9 @@ function TrainingSession() {
               </Box>
             </Grid>
           </Grid>
-        </>
+        </Box>
       ) : null}
-    </Box>
+    </CenteredFlexBox>
   );
 }
 

@@ -1,15 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
+import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
 
 import { CenteredFlexBox } from '@/components/styled';
 import { getTrainingSessionAttendance } from '@/services/supabase';
 import { getTrainingSessionAttendanceProfiles } from '@/services/supabase';
+import { useSelectedAthlete } from '@/store/activities';
 import {
   useTrainingSessionAttendance,
   useTrainingSessionAttendanceProfiles,
@@ -24,7 +28,10 @@ function Attendance() {
     useTrainingSessionAttendanceProfiles();
 
   const { trainingSessions } = useTrainingSessions();
+  const { selectedAthlete, setSelectedAthlete } = useSelectedAthlete();
+  const [selectedAthleteName, setSelectedAthleteName] = useState('');
   const { weekDay } = useWeekDay();
+
   useEffect(() => {
     if (trainingSessions.length !== 0 && trainingSessions[weekDay] !== undefined) {
       const todaysDate = Date.now();
@@ -56,32 +63,75 @@ function Attendance() {
   }, [trainingSessionAttendanceProfiles]);
 
   const clickAvatar = (userID: string) => {
-    console.log('userID:', userID);
+    if (userID === selectedAthlete) {
+      setSelectedAthlete(undefined);
+    } else {
+      setSelectedAthlete(userID);
+    }
   };
 
+  useEffect(() => {
+    const selectedAthleteProfile = trainingSessionAttendanceProfiles.find((p) => {
+      return p.user_id === selectedAthlete;
+    });
+    if (selectedAthleteProfile !== undefined) {
+      const name = `${selectedAthleteProfile.first_name} ${selectedAthleteProfile.surname}`;
+      setSelectedAthleteName(name);
+    } else {
+      setSelectedAthleteName('');
+    }
+  }, [selectedAthlete]);
+
+  useEffect(() => {
+    setSelectedAthlete(undefined);
+  }, [weekDay, trainingSessions]);
+
   return (
-    <Box p={1} height={150}>
-      <CenteredFlexBox p={1}>
-        <Grid container>
-          {trainingSessionAttendanceProfiles.map((p, i) => (
-            <Grid key={i} item xs={1.7} mb={-0.7}>
-              <CenteredFlexBox>
-                <Avatar
-                  src={p.profile_pic}
-                  sx={{
-                    border: '2px solid white',
-                    width: 58,
-                    height: 58,
-                  }}
-                  alt={p.first_name}
-                  onClick={() => {
-                    clickAvatar(p.user_id);
-                  }}
-                />
-              </CenteredFlexBox>
-            </Grid>
-          ))}
-        </Grid>
+    <Box>
+      <CenteredFlexBox pt={1} pb={0.5} height={40}>
+        <DirectionsRunIcon sx={{ color: 'primary.dark' }} fontSize="medium" />
+
+        <Typography
+          color={'primary.dark'}
+          ml={0.5}
+          sx={{ visibility: selectedAthleteName !== '' ? 'visible' : 'hidden' }}
+        >
+          {selectedAthleteName}
+        </Typography>
+      </CenteredFlexBox>
+      <CenteredFlexBox>
+        <Box px={3} py={0} width={440}>
+          <Grid container>
+            {trainingSessionAttendanceProfiles.map((p, i) => (
+              <Grid key={i} item width={46} mb={-0.7}>
+                <CenteredFlexBox>
+                  <IconButton
+                    onClick={() => {
+                      clickAvatar(p.user_id);
+                    }}
+                    sx={{
+                      width: 58,
+                      height: 58,
+                      zIndex: selectedAthlete === p.user_id ? 101 : 100 - i,
+                    }}
+                  >
+                    <Avatar
+                      src={p.profile_pic}
+                      alt={p.first_name}
+                      sx={{
+                        border:
+                          selectedAthlete === p.user_id ? `2px solid #0d47a1` : '2px solid white',
+                        width: 58,
+                        height: 58,
+                      }}
+                      border={2}
+                    />
+                  </IconButton>
+                </CenteredFlexBox>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
       </CenteredFlexBox>
     </Box>
   );
