@@ -1,4 +1,4 @@
-import { atom, useRecoilState } from 'recoil';
+import { atom, selector, useRecoilState } from 'recoil';
 
 import { ActivityModel } from '@/models';
 
@@ -22,4 +22,16 @@ const useSelectedAthlete = () => {
   return { selectedAthlete, setSelectedAthlete };
 };
 
-export { useActivities, useSelectedAthlete };
+const selectedAthleteActivity = selector({
+  key: 'selected-athlete-activity',
+  get: ({ get }) => {
+    const activities = get(activitiesState);
+    const selectedAthlete = get(selectedAthleteState);
+
+    return activities.find((a) => {
+      return a.user_id === selectedAthlete;
+    });
+  },
+});
+
+export { useActivities, useSelectedAthlete, selectedAthleteActivity };

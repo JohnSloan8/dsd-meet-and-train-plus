@@ -10,6 +10,7 @@ import Meta from '@/components/Meta';
 import Attendance from '@/sections/Attendance';
 import ConnectStrava from '@/sections/ConnectStrava';
 import OpenMapCtrl from '@/sections/MapCtrl';
+import Performance from '@/sections/Performance';
 import TrainingSession from '@/sections/TrainingSession';
 import WeekDays from '@/sections/WeekDays';
 import { getStravaProfile } from '@/services/supabase';
@@ -49,10 +50,17 @@ function Welcome() {
       <WeekDays />
       <TrainingSession />
 
-      <Box height={200} width={'100%'} sx={{ position: 'relative' }}>
+      <Box height={150} width={'100%'} sx={{ position: 'relative' }}>
         <OpenMapCtrl />
       </Box>
+
       <Attendance />
+
+      {/* <CenteredFlexBox> */}
+      {/* <Box width={'90%'}> */}
+      <Performance />
+      {/* </Box> */}
+      {/* </CenteredFlexBox> */}
       {showConnectStrava ? <ConnectStrava /> : null}
     </>
   );

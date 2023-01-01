@@ -127,7 +127,7 @@ const OpenMap = ({ lat, lon, activities, selectedAthlete }: OpenMapProps) => {
         layers: transparentTileLayers,
         view: new View({
           center: center,
-          zoom: 15,
+          zoom: 14,
         }),
         target: mapRefTrans.current,
         controls: [],
