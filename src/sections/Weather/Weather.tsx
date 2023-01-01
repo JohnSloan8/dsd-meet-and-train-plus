@@ -139,7 +139,8 @@ const Weather = () => {
     }
   };
 
-  return trainingSessions[weekDay].weather === null ? null : (
+  return trainingSessions[weekDay].weather === null ||
+    trainingSessions[weekDay].weather.code === 0 ? null : (
     <Box>
       <CenteredFlexBox>
         <img src={symbolURL} />

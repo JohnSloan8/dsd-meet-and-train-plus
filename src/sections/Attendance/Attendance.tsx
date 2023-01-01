@@ -19,6 +19,7 @@ import {
   useTrainingSessionAttendanceProfiles,
   useTrainingSessions,
 } from '@/store/trainingSessions';
+import { useWeek } from '@/store/week';
 import { useWeekDay } from '@/store/weekDay';
 
 function Attendance() {
@@ -31,6 +32,7 @@ function Attendance() {
   const { selectedAthlete, setSelectedAthlete } = useSelectedAthlete();
   const [selectedAthleteName, setSelectedAthleteName] = useState('');
   const { weekDay } = useWeekDay();
+  const { week } = useWeek();
 
   useEffect(() => {
     if (trainingSessions.length !== 0 && trainingSessions[weekDay] !== undefined) {
@@ -45,8 +47,10 @@ function Attendance() {
       } else {
         setTrainingSessionAttendance([]);
       }
+    } else {
+      setTrainingSessionAttendance([]);
     }
-  }, [trainingSessions, weekDay]);
+  }, [trainingSessions, weekDay, week]);
 
   useEffect(() => {
     if (trainingSessionAttendance && trainingSessionAttendance.length > 0) {
