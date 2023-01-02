@@ -28,7 +28,7 @@ function MTCard({ title, icon: Icon, height, children }: Props) {
         }}
         elevation={4}
       >
-        <Box height={24} backgroundColor={'primary.light'} sx={{ position: 'relative' }}>
+        <Box height={24} sx={{ position: 'relative', backgroundColor: 'primary.light' }}>
           {title && Icon ? (
             <FlexBox height={'100%'} sx={{ alignItems: 'flex-end' }}>
               <Box sx={{ position: 'absolute', left: -2, bottom: -6 }}>
