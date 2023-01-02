@@ -5,6 +5,7 @@ const theme = {
     primary: {
       dark: blue[900],
       main: blue[400],
+      light: blue[300],
     },
     secondary: {
       main: red[400],
@@ -12,6 +13,9 @@ const theme = {
     background: {
       default: '#fafafa',
       paper: '#fff',
+    },
+    text: {
+      primary: '#fff',
     },
   },
   components: {

@@ -32,89 +32,95 @@ const Weather = () => {
 
   useEffect(() => {
     let weatherNeedsUpdating = false;
-    const sessionInPast =
-      Date.now() -
-        new Date(`${trainingSessions[weekDay].date}T${trainingSessions[weekDay].time}`).getTime() >
-      0
-        ? true
-        : false;
-    if (!sessionInPast) {
-      if (trainingSessions[weekDay].weather === null) {
-        console.log('weather is null');
-        weatherNeedsUpdating = true;
-      } else {
-        const timeElapsedSinceUpdate =
-          Date.now() - new Date(trainingSessions[weekDay].weather.updatedAt).getTime();
-        console.log('timeElapsedSinceUpdate:', timeElapsedSinceUpdate);
-        if (timeElapsedSinceUpdate / 3600000 > 60) {
-          weatherNeedsUpdating = true;
-          console.log('too much time elapsed');
-        }
-      }
-    } else {
-      console.log('no weather update - session in the past');
-    }
-    console.log('weatherNeedsUpdating:', weatherNeedsUpdating);
-
-    if (weatherNeedsUpdating) {
-      getWeather().then((w: any) => {
-        let apiCode = 0;
-        let apiTemperature = 0;
-        let apiWindSpeed = 0;
-        let apiWindDirection = 0;
-        const forecasts = getForecasts(w.weatherdata.product.time, trainingSessions[weekDay]);
-        console.log('forecasts:', forecasts);
-        forecasts.map((f: any) => {
-          if (f['@from'] !== f['@to']) {
-            apiCode = f.location.symbol['@number'];
-            setCode(apiCode);
-          } else {
-            apiTemperature = Math.round(f.location.temperature['@value']);
-            setTemperature(apiTemperature);
-            apiWindSpeed = Math.round(f.location.windSpeed['@mps'] * 3.6);
-            setWindSpeed(apiWindSpeed);
-            apiWindDirection = Math.round(f.location.windDirection['@deg']);
-            setWindDirection(apiWindDirection);
-          }
-        });
-
-        updateTrainingSessionWeather(trainingSessions[weekDay].id, {
-          code: apiCode,
-          temperature: apiTemperature,
-          windSpeed: apiWindSpeed,
-          windDirection: apiWindDirection,
-          updatedAt: Date.now(),
-        }).then((d: any) => {
-          console.log('weather updated:', d);
-        });
-      });
-    } else {
+    let sessionInPast = false;
+    if (trainingSessions.length !== 0 && trainingSessions[weekDay] !== undefined) {
+      sessionInPast =
+        Date.now() -
+          new Date(
+            `${trainingSessions[weekDay].date}T${trainingSessions[weekDay].time}`,
+          ).getTime() >
+        0
+          ? true
+          : false;
       if (!sessionInPast) {
-        setCode(trainingSessions[weekDay].weather.code);
-        setTemperature(Math.round(trainingSessions[weekDay].weather.temperature));
-        setWindSpeed(trainingSessions[weekDay].weather.windSpeed);
-        setWindDirection(trainingSessions[weekDay].weather.windDirection);
+        if (trainingSessions[weekDay].weather === null) {
+          console.log('weather is null');
+          weatherNeedsUpdating = true;
+        } else {
+          const timeElapsedSinceUpdate =
+            Date.now() - new Date(trainingSessions[weekDay].weather.updatedAt).getTime();
+          console.log('timeElapsedSinceUpdate:', timeElapsedSinceUpdate);
+          if (timeElapsedSinceUpdate / 3600000 > 60) {
+            weatherNeedsUpdating = true;
+            console.log('too much time elapsed');
+          }
+        }
       } else {
-        if (trainingSessions[weekDay].weather !== null) {
+        console.log('no weather update - session in the past');
+      }
+
+      console.log('weatherNeedsUpdating:', weatherNeedsUpdating);
+
+      if (weatherNeedsUpdating) {
+        getWeather().then((w: any) => {
+          let apiCode = 0;
+          let apiTemperature = 0;
+          let apiWindSpeed = 0;
+          let apiWindDirection = 0;
+          const forecasts = getForecasts(w.weatherdata.product.time, trainingSessions[weekDay]);
+          console.log('forecasts:', forecasts);
+          forecasts.map((f: any) => {
+            if (f['@from'] !== f['@to']) {
+              apiCode = f.location.symbol['@number'];
+              setCode(apiCode);
+            } else {
+              apiTemperature = Math.round(f.location.temperature['@value']);
+              setTemperature(apiTemperature);
+              apiWindSpeed = Math.round(f.location.windSpeed['@mps'] * 3.6);
+              setWindSpeed(apiWindSpeed);
+              apiWindDirection = Math.round(f.location.windDirection['@deg']);
+              setWindDirection(apiWindDirection);
+            }
+          });
+
+          updateTrainingSessionWeather(trainingSessions[weekDay].id, {
+            code: apiCode,
+            temperature: apiTemperature,
+            windSpeed: apiWindSpeed,
+            windDirection: apiWindDirection,
+            updatedAt: Date.now(),
+          }).then((d: any) => {
+            console.log('weather updated:', d);
+          });
+        });
+      } else {
+        if (!sessionInPast) {
           setCode(trainingSessions[weekDay].weather.code);
           setTemperature(Math.round(trainingSessions[weekDay].weather.temperature));
           setWindSpeed(trainingSessions[weekDay].weather.windSpeed);
           setWindDirection(trainingSessions[weekDay].weather.windDirection);
+        } else {
+          if (trainingSessions[weekDay].weather !== null) {
+            setCode(trainingSessions[weekDay].weather.code);
+            setTemperature(Math.round(trainingSessions[weekDay].weather.temperature));
+            setWindSpeed(trainingSessions[weekDay].weather.windSpeed);
+            setWindDirection(trainingSessions[weekDay].weather.windDirection);
+          }
         }
       }
-    }
 
-    if (trainingSessions[weekDay].sunset === null) {
-      getSunset(trainingSessions[weekDay].date).then((s: any) => {
-        const sunset24Hr = convert12HrTimeTo24(s.results.sunset);
-        updateTrainingSessionSunset(trainingSessions[weekDay].id, sunset24Hr);
-        checkDaylight(sunset24Hr);
-      });
-    } else {
-      checkDaylight(trainingSessions[weekDay].sunset);
-    }
+      if (trainingSessions[weekDay].sunset === null) {
+        getSunset(trainingSessions[weekDay].date).then((s: any) => {
+          const sunset24Hr = convert12HrTimeTo24(s.results.sunset);
+          updateTrainingSessionSunset(trainingSessions[weekDay].id, sunset24Hr);
+          checkDaylight(sunset24Hr);
+        });
+      } else {
+        checkDaylight(trainingSessions[weekDay].sunset);
+      }
 
-    console.log('weather data:', trainingSessions[weekDay].weather);
+      console.log('weather data:', trainingSessions[weekDay].weather);
+    }
   }, [weekDay, trainingSessions]);
 
   useEffect(() => {
@@ -139,8 +145,13 @@ const Weather = () => {
     }
   };
 
-  return trainingSessions[weekDay].weather === null ||
-    trainingSessions[weekDay].weather.code === 0 ? null : (
+  return trainingSessions[weekDay] !== undefined && trainingSessions[weekDay].weather !== null ? (
+    <CenteredFlexBox sx={{ height: '100%', alignItems: 'center' }}>
+      <Typography align="center" variant="body1">
+        no forecast
+      </Typography>
+    </CenteredFlexBox>
+  ) : (
     <Box>
       <CenteredFlexBox>
         <img src={symbolURL} />

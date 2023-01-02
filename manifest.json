@@ -1,7 +1,7 @@
 {
-  "name": "React PWA",
-  "short_name": "reactpwa",
-  "description": "Starter kit for modern web applications",
+  "name": "Meet and Train Plus",
+  "short_name": "M&T+",
+  "description": "Training Aid",
   "theme_color": "#ffffff",
   "icons": [
     {

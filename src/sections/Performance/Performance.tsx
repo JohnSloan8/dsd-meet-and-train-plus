@@ -23,15 +23,26 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 function Performance() {
   const selectedAthleteActivityState = useRecoilValue(selectedAthleteActivity);
-  const [data, setData] = useState(undefined);
+
+  interface DatasetModel {
+    id: number;
+    label: string;
+    data: number[];
+    backgroundColor: string;
+  }
+  interface ChartDataModel {
+    labels: string[];
+    datasets: DatasetModel[];
+  }
+  const [data, setData] = useState<ChartDataModel | undefined>(undefined);
 
   useEffect(() => {
     console.log('selectedAthleteActivityState:', selectedAthleteActivityState);
     if (selectedAthleteActivityState !== undefined) {
-      const tempSpeeds = [];
-      const tempDistances = [];
-      const tempLaps = [];
-      selectedAthleteActivityState.strava_data.laps.map((l, i) => {
+      const tempSpeeds: any[] = [];
+      const tempDistances: any[] = [];
+      const tempLaps: string[] = [];
+      selectedAthleteActivityState.strava_data.laps.map((l: any, i: number) => {
         if (l.average_speed > 1.5) {
           tempSpeeds.push(16.667 / l.average_speed);
           tempDistances.push(l.distance);

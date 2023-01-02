@@ -1,14 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 
 import { CenteredFlexBox } from '@/components/styled';
 import { getTrainingSessionAttendance } from '@/services/supabase';
@@ -30,7 +28,7 @@ function Attendance() {
 
   const { trainingSessions } = useTrainingSessions();
   const { selectedAthlete, setSelectedAthlete } = useSelectedAthlete();
-  const [selectedAthleteName, setSelectedAthleteName] = useState('');
+  // const [selectedAthleteName, setSelectedAthleteName] = useState('');
   const { weekDay } = useWeekDay();
   const { week } = useWeek();
 
@@ -74,17 +72,17 @@ function Attendance() {
     }
   };
 
-  useEffect(() => {
-    const selectedAthleteProfile = trainingSessionAttendanceProfiles.find((p) => {
-      return p.user_id === selectedAthlete;
-    });
-    if (selectedAthleteProfile !== undefined) {
-      const name = `${selectedAthleteProfile.first_name} ${selectedAthleteProfile.surname}`;
-      setSelectedAthleteName(name);
-    } else {
-      setSelectedAthleteName('');
-    }
-  }, [selectedAthlete]);
+  // useEffect(() => {
+  //   const selectedAthleteProfile = trainingSessionAttendanceProfiles.find((p) => {
+  //     return p.user_id === selectedAthlete;
+  //   });
+  //   if (selectedAthleteProfile !== undefined) {
+  //     const name = `${selectedAthleteProfile.first_name} ${selectedAthleteProfile.surname}`;
+  //     // setSelectedAthleteName(name);
+  //   } else {
+  //     setSelectedAthleteName('');
+  //   }
+  // }, [selectedAthlete]);
 
   useEffect(() => {
     setSelectedAthlete(undefined);
@@ -92,30 +90,19 @@ function Attendance() {
 
   return (
     <Box>
-      <CenteredFlexBox pt={1} pb={0.5} height={40}>
-        <DirectionsRunIcon sx={{ color: 'primary.dark' }} fontSize="medium" />
-
-        <Typography
-          color={'primary.dark'}
-          ml={0.5}
-          sx={{ visibility: selectedAthleteName !== '' ? 'visible' : 'hidden' }}
-        >
-          {selectedAthleteName}
-        </Typography>
-      </CenteredFlexBox>
       <CenteredFlexBox>
-        <Box px={3} py={0} width={440}>
+        <Box px={2} py={1} width={440}>
           <Grid container>
             {trainingSessionAttendanceProfiles.map((p, i) => (
-              <Grid key={i} item width={46} mb={-0.7}>
+              <Grid key={i} item width={56} mb={-0.7}>
                 <CenteredFlexBox>
                   <IconButton
                     onClick={() => {
                       clickAvatar(p.user_id);
                     }}
                     sx={{
-                      width: 58,
-                      height: 58,
+                      width: 64,
+                      height: 64,
                       zIndex: selectedAthlete === p.user_id ? 101 : 100 - i,
                     }}
                   >
@@ -125,8 +112,8 @@ function Attendance() {
                       sx={{
                         border:
                           selectedAthlete === p.user_id ? `2px solid #0d47a1` : '2px solid white',
-                        width: 58,
-                        height: 58,
+                        width: 64,
+                        height: 64,
                       }}
                     />
                   </IconButton>

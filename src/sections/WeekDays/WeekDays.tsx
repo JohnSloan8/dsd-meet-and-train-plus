@@ -6,14 +6,12 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 
 import { CenteredFlexBox } from '@/components/styled';
-import { useDaylight } from '@/store/trainingSessions';
 import { useWeek } from '@/store/week';
 import { useWeekDay } from '@/store/weekDay';
 
 function WeekDays() {
   const { week, setWeek } = useWeek();
   const { weekDay, setWeekDay } = useWeekDay();
-  const { daylight } = useDaylight();
 
   useEffect(() => {
     initWeekday();
@@ -63,7 +61,10 @@ function WeekDays() {
   const changeWeek = (backward: boolean) => {
     let change = 7;
     if (backward) {
+      setWeekDay(3);
       change = -7;
+    } else {
+      setWeekDay(0);
     }
     if (week !== undefined) {
       setWeek([
@@ -84,16 +85,13 @@ function WeekDays() {
   };
 
   return (
-    <CenteredFlexBox sx={{ backgroundColor: daylight === 'n' ? 'primary.dark' : 'primary.light' }}>
+    <CenteredFlexBox>
       <Tabs
         value={weekDay + 1}
         onChange={handleChange}
         variant="fullWidth"
         aria-label="basic tabs example"
-        TabIndicatorProps={{ sx: { backgroundColor: 'white' } }}
-        sx={{
-          color: 'white',
-        }}
+        TabIndicatorProps={{ sx: { backgroundColor: 'primary.main' } }}
       >
         {['<--', 'Tue', 'Thu', 'Sat', 'Sun', '-->'].map((d, i) => (
           <Tab
@@ -103,7 +101,7 @@ function WeekDays() {
               minWidth: 10,
               width: 60,
               color: 'lightgrey',
-              '&.Mui-selected': { color: 'white' },
+              '&.Mui-selected': { color: 'primary.main' },
             }}
           />
         ))}
