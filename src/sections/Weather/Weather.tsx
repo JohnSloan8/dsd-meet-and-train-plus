@@ -16,6 +16,7 @@ import { updateTrainingSessionSunset, updateTrainingSessionWeather } from '@/ser
 // import { useWeek } from '@/store/weekDay';
 import { useDaylight, useSessionInPast, useTrainingSessions } from '@/store/trainingSessions';
 import { useWeatherSymbolNumber } from '@/store/weather';
+import { useWeek } from '@/store/week';
 import { useWeekDay } from '@/store/weekDay';
 
 import { convert12HrTimeTo24, getForecasts } from './utils';
@@ -23,6 +24,7 @@ import { convert12HrTimeTo24, getForecasts } from './utils';
 const Weather = () => {
   const { trainingSessions, setTrainingSessions } = useTrainingSessions();
   const { weekDay } = useWeekDay();
+  const { week } = useWeek();
   const { weatherSymbolNumber, setWeatherSymbolNumber } = useWeatherSymbolNumber();
   const [temperature, setTemperature] = useState(0);
   const [windSpeed, setWindSpeed] = useState(0);
@@ -86,12 +88,15 @@ const Weather = () => {
               setCode(d.weather.code);
               setWindSpeed(d.weather.windSpeed);
               setWindDirection(d.weather.windDirection);
-              getTrainingSessions(
-                week[0].toISOString().substring(0, 10),
-                week[1].toISOString().substring(0, 10),
-              ).then((d: any) => {
-                setTrainingSessions(d);
-              });
+
+              if (week !== undefined) {
+                getTrainingSessions(
+                  week[0].toISOString().substring(0, 10),
+                  week[1].toISOString().substring(0, 10),
+                ).then((d: any) => {
+                  setTrainingSessions(d);
+                });
+              }
             });
           });
         } else {

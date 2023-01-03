@@ -13,7 +13,7 @@ import { useWeekDay } from '@/store/weekDay';
 function WeekDays() {
   const { week, setWeek } = useWeek();
   const { weekDay, setWeekDay } = useWeekDay();
-  const [weekDayNames, setWeekDayNames] = useState([]);
+  const [weekDayNames, setWeekDayNames] = useState<string[]>([]);
   const { trainingSessions } = useTrainingSessions();
   // const { setSessionInPast } = useSessionInPast();
 
@@ -137,7 +137,6 @@ function WeekDays() {
                   color: 'lightgrey',
                   '&.Mui-selected': { color: 'primary.main' },
                 }}
-                p={0}
               />
             ))
           : null}

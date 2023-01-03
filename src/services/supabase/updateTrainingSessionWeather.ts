@@ -7,8 +7,7 @@ const updateTrainingSessionWeather = async (id: number, weather: WeatherModel) =
       .from('training_sessions')
       .upsert({ id: id, weather: weather })
       .select()
-      .single()
-      .limit(1);
+      .single();
 
     if (data) {
       return data;

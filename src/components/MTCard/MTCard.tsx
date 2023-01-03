@@ -12,7 +12,7 @@ type Props = {
   title?: string;
   icon?: FC<SvgIconProps>;
   height: number;
-  color: 'primary' | 'warning';
+  color: 'primary' | 'warning' | 'secondary' | 'info';
   children?: React.ReactNode;
 };
 
