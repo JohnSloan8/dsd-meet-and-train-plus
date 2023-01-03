@@ -6,7 +6,9 @@ const updateTrainingSessionWeather = async (id: number, weather: WeatherModel) =
     const { data, error } = await supabase
       .from('training_sessions')
       .upsert({ id: id, weather: weather })
-      .select();
+      .select()
+      .single()
+      .limit(1);
 
     if (data) {
       return data;

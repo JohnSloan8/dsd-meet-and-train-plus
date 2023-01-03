@@ -46,9 +46,20 @@ const useDaylight = () => {
   return { daylight, setDaylight };
 };
 
+const sessionInPastState = atom<boolean>({
+  key: 'session-in-past-state',
+  default: false,
+});
+
+const useSessionInPast = () => {
+  const [sessionInPast, setSessionInPast] = useRecoilState(sessionInPastState);
+  return { sessionInPast, setSessionInPast };
+};
+
 export {
   useTrainingSessions,
   useTrainingSessionAttendance,
   useTrainingSessionAttendanceProfiles,
   useDaylight,
+  useSessionInPast,
 };

@@ -12,23 +12,24 @@ type Props = {
   title?: string;
   icon?: FC<SvgIconProps>;
   height: number;
+  color: 'primary' | 'warning';
   children?: React.ReactNode;
 };
 
-function MTCard({ title, icon: Icon, height, children }: Props) {
+function MTCard({ title, icon: Icon, height, color, children }: Props) {
   return (
     <CenteredFlexBox px={0.5}>
       <Card
         sx={{
           borderRadius: 3,
           width: '100%',
-          backgroundColor: 'primary.main',
+          backgroundColor: `${color}.main`,
           height: { height },
           position: 'relative',
         }}
         elevation={4}
       >
-        <Box height={24} sx={{ position: 'relative', backgroundColor: 'primary.light' }}>
+        <Box height={24} sx={{ position: 'relative', backgroundColor: `${color}.light` }}>
           {title && Icon ? (
             <FlexBox height={'100%'} sx={{ alignItems: 'flex-end' }}>
               <Box sx={{ position: 'absolute', left: -2, bottom: -6 }}>

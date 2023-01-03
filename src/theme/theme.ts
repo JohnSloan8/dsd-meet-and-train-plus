@@ -1,4 +1,4 @@
-import { blue, red } from '@mui/material/colors';
+import { blue, green, red } from '@mui/material/colors';
 
 const theme = {
   palette: {
@@ -13,6 +13,11 @@ const theme = {
     background: {
       default: '#fafafa',
       paper: '#fff',
+    },
+    info: {
+      dark: green[900],
+      main: green[400],
+      light: green[300],
     },
     text: {
       primary: '#fff',

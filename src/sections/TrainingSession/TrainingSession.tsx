@@ -9,7 +9,7 @@ import { CenteredFlexBox } from '@/components/styled';
 import { getTrainingSessions } from '@/services/supabase';
 import { getActivities } from '@/services/supabase';
 import { useActivities } from '@/store/activities';
-import { useTrainingSessions } from '@/store/trainingSessions';
+import { useSessionInPast, useTrainingSessions } from '@/store/trainingSessions';
 import { useWeek } from '@/store/week';
 import { useWeekDay } from '@/store/weekDay';
 
@@ -19,6 +19,7 @@ function TrainingSession() {
   const { week } = useWeek();
   const { weekDay } = useWeekDay();
   const [sessionString, setSessionString] = useState('');
+  const { setSessionInPast } = useSessionInPast();
 
   useEffect(() => {
     if (week !== undefined) {
@@ -66,6 +67,17 @@ function TrainingSession() {
         console.log('activities:', activities);
         setActivities(activities);
       });
+    }
+    if (trainingSessions.length !== 0 && trainingSessions[weekDay] !== undefined) {
+      const inPast =
+        Date.now() -
+          new Date(
+            `${trainingSessions[weekDay].date}T${trainingSessions[weekDay].time}`,
+          ).getTime() >
+        0
+          ? true
+          : false;
+      setSessionInPast(inPast);
     }
   }, [trainingSessions, weekDay]);
 

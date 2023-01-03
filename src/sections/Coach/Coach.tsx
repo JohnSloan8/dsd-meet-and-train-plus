@@ -18,11 +18,11 @@ function Coach() {
     <Box p={1}>
       {trainingSessions.length !== 0 && trainingSessions[weekDay] !== undefined ? (
         <Box>
-          <CenteredFlexBox p={1}>
+          <CenteredFlexBox p={0}>
             <Avatar
               src={trainingSessions[weekDay].coach.picture}
               sx={{
-                border: '2px solid white',
+                border: '2px solid orange',
                 width: 80,
                 height: 80,
               }}
@@ -30,7 +30,7 @@ function Coach() {
             />
           </CenteredFlexBox>
 
-          <Box>
+          <Box p={1}>
             <CenteredFlexBox>
               <Typography variant="body1">
                 {trainingSessions[weekDay].coach.name.split(' ')[0]}

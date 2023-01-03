@@ -1,17 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 
 import { CenteredFlexBox } from '@/components/styled';
+import { useTrainingSessions } from '@/store/trainingSessions';
 import { useWeek } from '@/store/week';
 import { useWeekDay } from '@/store/weekDay';
 
 function WeekDays() {
   const { week, setWeek } = useWeek();
   const { weekDay, setWeekDay } = useWeekDay();
+  const [weekDayNames, setWeekDayNames] = useState([]);
+  const { trainingSessions } = useTrainingSessions();
+  // const { setSessionInPast } = useSessionInPast();
 
   useEffect(() => {
     initWeekday();
@@ -58,6 +62,35 @@ function WeekDays() {
     }
   };
 
+  const weekDayBaseNames = ['<--', `Tue\n`, `Thu\n`, 'Sat\n', 'Sun\n', '-->'];
+  useEffect(() => {
+    const weekDayString =
+      trainingSessions[weekDay] !== undefined
+        ? `${new Date(trainingSessions[weekDay].date).toLocaleString('en-GB', {
+            day: 'numeric',
+            month: 'numeric',
+          })}`
+        : 'x';
+    const newList = [...weekDayBaseNames].map((item, i) => {
+      if (i === weekDay + 1) return `${weekDayString}\n${item}`;
+      else if (i > 0 && i < 5) return `.\n${item}`;
+      else return item;
+    });
+    setWeekDayNames(newList);
+
+    // if (trainingSessions.length !== 0 && trainingSessions[weekDay] !== undefined) {
+    //   const inPast =
+    //     Date.now() -
+    //       new Date(
+    //         `${trainingSessions[weekDay].date}T${trainingSessions[weekDay].time}`,
+    //       ).getTime() >
+    //     0
+    //       ? true
+    //       : false;
+    //   setSessionInPast(inPast);
+    // }
+  }, [weekDay, trainingSessions]);
+
   const changeWeek = (backward: boolean) => {
     let change = 7;
     if (backward) {
@@ -93,18 +126,21 @@ function WeekDays() {
         aria-label="basic tabs example"
         TabIndicatorProps={{ sx: { backgroundColor: 'primary.main' } }}
       >
-        {['<--', 'Tue', 'Thu', 'Sat', 'Sun', '-->'].map((d, i) => (
-          <Tab
-            label={d}
-            key={i}
-            sx={{
-              minWidth: 10,
-              width: 60,
-              color: 'lightgrey',
-              '&.Mui-selected': { color: 'primary.main' },
-            }}
-          />
-        ))}
+        {weekDayNames !== undefined
+          ? weekDayNames.map((d, i) => (
+              <Tab
+                label={d}
+                key={i}
+                sx={{
+                  minWidth: 10,
+                  width: 64,
+                  color: 'lightgrey',
+                  '&.Mui-selected': { color: 'primary.main' },
+                }}
+                p={0}
+              />
+            ))
+          : null}
       </Tabs>
     </CenteredFlexBox>
   );

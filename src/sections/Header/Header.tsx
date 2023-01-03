@@ -65,7 +65,7 @@ function Header() {
                   onClick={sidebarActions.toggle}
                   size="large"
                   edge="start"
-                  color="info"
+                  color="primary"
                   aria-label="menu"
                   sx={{ mr: 1 }}
                 >
@@ -79,7 +79,7 @@ function Header() {
                   onClick={() => {
                     navigate('/');
                   }}
-                  color="info"
+                  color="primary"
                 >
                   {title}
                 </Button>
