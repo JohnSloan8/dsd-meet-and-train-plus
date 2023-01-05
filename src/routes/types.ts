@@ -9,6 +9,7 @@ enum Pages {
   LogIn,
   StravaLink,
   NotFound,
+  Profile,
 }
 
 type PathRouteCustomProps = {

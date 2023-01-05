@@ -19,9 +19,6 @@ const theme = {
       main: green[400],
       light: green[300],
     },
-    text: {
-      primary: '#fff',
-    },
   },
   components: {
     MuiButtonBase: {

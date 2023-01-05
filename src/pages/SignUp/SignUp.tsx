@@ -38,7 +38,7 @@ function SignUp() {
     <FullSizeBox>
       <Meta title="sign up" />
 
-      <Typography m={4} variant="h3" align="center">
+      <Typography m={4} variant="h3" align="center" color="primary">
         Sign Up
       </Typography>
 
@@ -96,7 +96,7 @@ function SignUp() {
             </Grid>
           </Grid>
           <CenteredFlexBox sx={{ width: '100%' }}>
-            <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+            <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, color: 'white' }}>
               sign up
             </Button>
           </CenteredFlexBox>

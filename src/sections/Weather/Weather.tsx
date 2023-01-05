@@ -117,8 +117,6 @@ const Weather = () => {
         } else {
           checkDaylight(trainingSessions[weekDay].sunset);
         }
-
-        console.log('weather data:', trainingSessions[weekDay].weather);
       }
     } catch (error) {
       console.log('error', error);
@@ -159,7 +157,7 @@ const Weather = () => {
     <Box mt={0.5}>
       <CenteredFlexBox>
         <img src={symbolURL} />
-        <Typography ml={0.5} align="center" variant="body1">
+        <Typography ml={0.5} align="center" fontWeight="bold" variant="h6">
           {temperature}
         </Typography>
         <Typography variant="body2">&#8451;</Typography>
@@ -171,7 +169,7 @@ const Weather = () => {
         <Typography ml={0.2} variant="body2">{` kph`}</Typography>
         <ArrowDownwardIcon sx={{ transform: `rotate(${windDirection}deg)` }} />
       </CenteredFlexBox>
-      <Typography align="center" variant="body2">
+      <Typography mt={1} align="center" variant="body2">
         no warnings
       </Typography>
     </Box>

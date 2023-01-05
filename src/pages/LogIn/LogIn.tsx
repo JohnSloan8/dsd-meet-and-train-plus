@@ -27,7 +27,7 @@ function LogIn() {
     <FullSizeBox>
       <Meta title="log in" />
 
-      <Typography m={4} variant="h3" align="center">
+      <Typography m={4} variant="h3" align="center" color="primary">
         Log In
       </Typography>
 
@@ -71,13 +71,13 @@ function LogIn() {
             </Grid>
           </Grid>
           <CenteredFlexBox sx={{ width: '100%', mt: 3, mb: 2 }}>
-            <Button type="submit" variant="contained">
+            <Button type="submit" variant="contained" sx={{ color: 'white' }}>
               log in
             </Button>
           </CenteredFlexBox>
           <CenteredFlexBox sx={{ width: '100%', mt: 3, mb: 2 }}>
             <Button
-              sx={{ color: 'secondary.main' }}
+              sx={{ color: 'info.main' }}
               onClick={() => {
                 navigate('/sign-up', { replace: true });
               }}

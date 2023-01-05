@@ -15,7 +15,7 @@ function Coach() {
   const { weekDay } = useWeekDay();
 
   return (
-    <Box p={1}>
+    <Box p={1.5}>
       {trainingSessions.length !== 0 && trainingSessions[weekDay] !== undefined ? (
         <Box>
           <CenteredFlexBox p={0}>
@@ -23,8 +23,8 @@ function Coach() {
               src={trainingSessions[weekDay].coach.picture}
               sx={{
                 border: '2px solid orange',
-                width: 80,
-                height: 80,
+                width: 72,
+                height: 72,
               }}
               alt={trainingSessions[weekDay].coach.name}
             />
@@ -32,12 +32,12 @@ function Coach() {
 
           <Box p={1}>
             <CenteredFlexBox>
-              <Typography variant="body1">
+              <Typography variant="body2">
                 {trainingSessions[weekDay].coach.name.split(' ')[0]}
               </Typography>
             </CenteredFlexBox>
             <CenteredFlexBox>
-              <Typography variant="body1">
+              <Typography variant="body2" mt={-0.25}>
                 {trainingSessions[weekDay].coach.name.split(' ')[1]}
               </Typography>
             </CenteredFlexBox>

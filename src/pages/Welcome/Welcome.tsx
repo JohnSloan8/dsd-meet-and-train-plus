@@ -5,17 +5,17 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
+import AccessibilityIcon from '@mui/icons-material/Accessibility';
+import EqualizerIcon from '@mui/icons-material/Equalizer';
 import FilterDramaIcon from '@mui/icons-material/FilterDrama';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import MapIcon from '@mui/icons-material/Map';
 import PeopleIcon from '@mui/icons-material/People';
-import SpeedIcon from '@mui/icons-material/Speed';
 import SportsIcon from '@mui/icons-material/Sports';
 // import WarningAmberIcon from '@mui/icons-material/WarningAmber';
-import WatchIcon from '@mui/icons-material/Watch';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import MTCard from '@/components/MTCard';
 import Meta from '@/components/Meta';
@@ -24,7 +24,6 @@ import Attendance from '@/sections/Attendance';
 import Coach from '@/sections/Coach';
 import ConnectStrava from '@/sections/ConnectStrava';
 import OpenMapCtrl from '@/sections/MapCtrl';
-import MyPaces from '@/sections/MyPaces';
 import Performance from '@/sections/Performance';
 import TrainingLocation from '@/sections/TrainingLocation';
 import TrainingSession from '@/sections/TrainingSession';
@@ -64,104 +63,92 @@ function Welcome() {
     }
   }, [stravaProfile]);
 
-  return (
-    <Box sx={{ backgroundColor: '#225', minHeight: 'calc(100vh - 56px)' }} px={0.5} pb={2}>
-      <Meta title="Welcome" />
-      <WeekDays />
+  const welcomeTheme = createTheme({
+    palette: {
+      text: {
+        primary: '#fff',
+      },
+    },
+  });
 
-      {!sessionInPast ? (
-        <Box>
+  return (
+    <ThemeProvider theme={welcomeTheme}>
+      <Box sx={{ backgroundColor: '#225', minHeight: 'calc(100vh - 56px)' }} px={0.5} pb={2}>
+        <Meta title="Welcome" />
+        <WeekDays />
+
+        {!sessionInPast ? (
           <Box>
-            <Grid container mt={3} mb={1}>
-              <Grid item xs={8}>
-                <Grid container>
+            <Box>
+              <Grid container mt={2} mb={1}>
+                <Grid item xs={3.5}>
+                  <MTCard height={166} title={'coach'} icon={AccessibilityIcon} color={'primary'}>
+                    <Coach />
+                  </MTCard>
+                </Grid>
+
+                <Grid item xs={5}>
                   <Grid item xs={12}>
-                    <MTCard height={69} title={'location'} icon={LocationOnIcon} color={'primary'}>
+                    <MTCard height={79} title={'location'} icon={LocationOnIcon} color={'primary'}>
                       <TrainingLocation />
                     </MTCard>
                   </Grid>
                   <Grid item xs={12} mt={1}>
-                    <MTCard height={69} title={'time'} icon={AccessTimeIcon} color={'primary'}>
+                    <MTCard height={79} title={'time'} icon={AccessTimeIcon} color={'primary'}>
                       <TrainingTime />
                     </MTCard>
                   </Grid>
                 </Grid>
-              </Grid>
-              <Grid item xs={4}>
-                <MTCard height={146} title={'forecast'} icon={FilterDramaIcon} color={'primary'}>
-                  <Weather />
-                </MTCard>
-              </Grid>
-            </Grid>
-          </Box>
-          <Box>
-            <Grid container mt={3}>
-              <Grid item xs={4}>
-                <MTCard height={192} title={'coach'} icon={SportsIcon} color={'warning'}>
-                  <Coach />
-                </MTCard>
-              </Grid>
-              <Grid item xs={8}>
-                <Grid container>
-                  <Grid item xs={12}>
-                    <MTCard
-                      height={92}
-                      title={'session'}
-                      icon={DirectionsRunIcon}
-                      color={'warning'}
-                    >
-                      <TrainingSession />
-                    </MTCard>
-                  </Grid>
-                  <Grid item xs={12} mt={1}>
-                    <MTCard height={92} title={'my paces'} icon={WatchIcon} color={'warning'}>
-                      <MyPaces />
-                    </MTCard>
-                  </Grid>
+                <Grid item xs={3.5}>
+                  <MTCard height={166} title={'forecast'} icon={FilterDramaIcon} color={'primary'}>
+                    <Weather />
+                  </MTCard>
                 </Grid>
               </Grid>
-            </Grid>
+            </Box>
+            <Box mt={2}>
+              <MTCard height={180} title={'route'} icon={MapIcon} color={'secondary'}>
+                <Box height={156} width={'100%'} sx={{ position: 'relative' }}>
+                  <OpenMapCtrl />
+                </Box>
+              </MTCard>
+            </Box>
+            <Box mt={2}>
+              <MTCard height={158} title={'session'} icon={SportsIcon} color={'warning'}>
+                <TrainingSession />
+              </MTCard>
+            </Box>
           </Box>
+        ) : (
+          <Box>
+            <Box mt={2}>
+              <MTCard height={166} title={'attendance'} icon={PeopleIcon} color={'primary'}>
+                <Attendance />
+              </MTCard>
+            </Box>
+            <Box mt={2}>
+              <MTCard height={180} title={'routes'} icon={MapIcon} color={'secondary'}>
+                <Box height={156} width={'100%'} sx={{ position: 'relative' }}>
+                  <OpenMapCtrl />
+                </Box>
+              </MTCard>
+            </Box>
+            <Box mt={2}>
+              <MTCard height={158} title={'session & paces'} icon={SportsIcon} color={'warning'}>
+                <TrainingSession />
+              </MTCard>
+            </Box>
+            <Box mt={2}>
+              <MTCard height={230} title={'performance'} icon={EqualizerIcon} color={'info'}>
+                <Performance />
+              </MTCard>
+            </Box>
+          </Box>
+        )}
 
-          <Box mt={3}>
-            <MTCard height={240} title={'route'} icon={MapIcon} color={'secondary'}>
-              <Box height={216} width={'100%'} sx={{ position: 'relative' }}>
-                <OpenMapCtrl />
-              </Box>
-            </MTCard>
-          </Box>
-        </Box>
-      ) : (
-        <Box>
-          <Box mt={3}>
-            <MTCard height={92} title={'session'} icon={DirectionsRunIcon} color={'warning'}>
-              <TrainingSession />
-            </MTCard>
-          </Box>
-
-          <Box mt={1}>
-            <MTCard height={200} title={'routes'} icon={MapIcon} color={'secondary'}>
-              <Box height={176} width={'100%'} sx={{ position: 'relative' }}>
-                <OpenMapCtrl />
-              </Box>
-            </MTCard>
-          </Box>
-          <Box mt={1}>
-            <MTCard height={106} title={'attendance'} icon={PeopleIcon} color={'info'}>
-              <Attendance />
-            </MTCard>
-          </Box>
-
-          <Box mt={1}>
-            <MTCard height={230} title={'performance'} icon={SpeedIcon} color={'primary'}>
-              <Performance />
-            </MTCard>
-          </Box>
-        </Box>
-      )}
-
-      <Box>{showConnectStrava ? <ConnectStrava /> : null}</Box>
-    </Box>
+        <Box>{showConnectStrava ? <ConnectStrava /> : null}</Box>
+      </Box>
+    </ThemeProvider>
   );
 }
 

@@ -1,4 +1,5 @@
 import { ActivityModel } from './ActivityModel';
+import { ProfileModel } from './ProfileModel';
 import { StravaProfileModel } from './StravaProfileModel';
 import {
   TrainingSessionAttendanceProfileModel,
@@ -10,4 +11,5 @@ export type {
   TrainingSessionAttendanceProfileModel,
   TrainingSessionModel,
   ActivityModel,
+  ProfileModel,
 };
