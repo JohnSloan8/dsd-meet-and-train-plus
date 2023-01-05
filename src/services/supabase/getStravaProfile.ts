@@ -8,8 +8,7 @@ const getStravaProfile = async (userID: string) => {
         `id, user_id, access_token, refresh_token, first_name, surname, city, country, strava_id, profile_pic, profile_pic_medium, sex`,
       )
       .eq('user_id', userID)
-      .single()
-      .limit(1);
+      .single();
 
     if (data) {
       return data;

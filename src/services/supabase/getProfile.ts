@@ -7,7 +7,6 @@ const getProfile = async (userID: string) => {
       .from('profiles')
       .select(`id, target_race, target_time, equivalent_paces`)
       .single()
-      .limit(1)
       .eq('user_id', userID);
 
     if (data) {
