@@ -59,13 +59,13 @@ const Weather = () => {
 
         if (weatherNeedsUpdating) {
           getWeather().then((w: any) => {
-            console.log('w:', w);
+            // console.log('w:', w);
             let apiCode = 0;
             let apiTemperature = 0;
             let apiWindSpeed = 0;
             let apiWindDirection = 0;
             const forecasts = getForecasts(w.weatherdata.product.time, trainingSessions[weekDay]);
-            console.log('forecasts:', forecasts);
+            // console.log('forecasts:', forecasts);
             forecasts.map((f: any) => {
               if (f['@from'] !== f['@to']) {
                 apiCode = f.location.symbol['@number'];
@@ -83,7 +83,7 @@ const Weather = () => {
               windDirection: apiWindDirection,
               updatedAt: Date.now(),
             }).then((d: any) => {
-              console.log('weather updated:', d);
+              // console.log('weather updated:', d);
               setTemperature(d.weather.temperature);
               setCode(d.weather.code);
               setWindSpeed(d.weather.windSpeed);
@@ -154,7 +154,7 @@ const Weather = () => {
       </Typography>
     </CenteredFlexBox>
   ) : (
-    <Box mt={0.5}>
+    <Box pt={0.5}>
       <CenteredFlexBox>
         <img src={symbolURL} />
         <Typography ml={0.5} align="center" fontWeight="bold" variant="h6">
@@ -163,13 +163,13 @@ const Weather = () => {
         <Typography variant="body2">&#8451;</Typography>
       </CenteredFlexBox>
 
-      <CenteredFlexBox py={1}>
+      <CenteredFlexBox py={1.5}>
         <AirIcon />
-        <Typography ml={0.5} variant="body1">{`${windSpeed}`}</Typography>
+        <Typography ml={0.25} variant="body1">{`${windSpeed}`}</Typography>
         <Typography ml={0.2} variant="body2">{` kph`}</Typography>
         <ArrowDownwardIcon sx={{ transform: `rotate(${windDirection}deg)` }} />
       </CenteredFlexBox>
-      <Typography mt={1} align="center" variant="body2">
+      <Typography align="center" variant="body2">
         no warnings
       </Typography>
     </Box>

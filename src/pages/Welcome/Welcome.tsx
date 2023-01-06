@@ -114,7 +114,7 @@ function Welcome() {
               </MTCard>
             </Box>
             <Box mt={2}>
-              <MTCard height={158} title={'session'} icon={SportsIcon} color={'warning'}>
+              <MTCard height={28} title={'session'} icon={SportsIcon} color={'warning'}>
                 <TrainingSession />
               </MTCard>
             </Box>
@@ -134,7 +134,7 @@ function Welcome() {
               </MTCard>
             </Box>
             <Box mt={2}>
-              <MTCard height={158} title={'session & paces'} icon={SportsIcon} color={'warning'}>
+              <MTCard height={28} title={'session & paces'} icon={SportsIcon} color={'warning'}>
                 <TrainingSession />
               </MTCard>
             </Box>

@@ -1,4 +1,5 @@
 import Box from '@mui/material/Box';
+import Grid, { GridProps } from '@mui/material/Grid';
 import { styled } from '@mui/system';
 
 const FlexBox = styled(Box)({
@@ -25,4 +26,15 @@ const FullSizeCenteredFlexBox = styled(CenteredFlexBox)({
   height: '100%',
 });
 
-export { FlexBox, CenteredFlexBox, FullSizeFlexBox, FullSizeCenteredFlexBox, FullSizeBox };
+const WarningGrid = styled(Grid)<GridProps>(({ theme }) => ({
+  borderColor: theme.palette.warning.light,
+}));
+
+export {
+  FlexBox,
+  CenteredFlexBox,
+  FullSizeFlexBox,
+  FullSizeCenteredFlexBox,
+  FullSizeBox,
+  WarningGrid,
+};

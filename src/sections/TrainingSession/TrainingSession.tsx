@@ -2,17 +2,15 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import RestoreIcon from '@mui/icons-material/Restore';
 import SpeedIcon from '@mui/icons-material/Speed';
 import TimerIcon from '@mui/icons-material/Timer';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
+import { WarningGrid } from '@/components/styled';
 import { CenteredFlexBox, FullSizeBox } from '@/components/styled';
 import { getProfile } from '@/services/supabase';
 import { getTrainingSessions } from '@/services/supabase';
@@ -25,8 +23,6 @@ import { useWeek } from '@/store/week';
 import { useWeekDay } from '@/store/weekDay';
 
 function TrainingSession() {
-  const navigate = useNavigate();
-
   const { trainingSessions, setTrainingSessions } = useTrainingSessions();
   const { setActivities } = useActivities();
   const { week } = useWeek();
@@ -102,35 +98,35 @@ function TrainingSession() {
   }, [paces]);
 
   return trainingSessions.length !== 0 && trainingSessions[weekDay] !== undefined ? (
-    <FullSizeBox>
+    <FullSizeBox borderColor={'warning.light'}>
       <Box p={1}>
-        <Grid container>
-          <Grid item xs={5} borderRight={1}>
+        <WarningGrid container>
+          <WarningGrid item xs={5} borderRight={1}>
             <CenteredFlexBox pb={0.25}>
               <DirectionsRunIcon fontSize={'small'} />
             </CenteredFlexBox>
-          </Grid>
-          <Grid item xs={3} borderRight={1}>
+          </WarningGrid>
+          <WarningGrid item xs={3} borderRight={1}>
             <CenteredFlexBox>
               <SpeedIcon fontSize={'small'} />
             </CenteredFlexBox>
-          </Grid>
-          <Grid item xs={2} borderRight={1}>
+          </WarningGrid>
+          <WarningGrid item xs={2} borderRight={1}>
             <CenteredFlexBox>
               <TimerIcon fontSize={'small'} />
             </CenteredFlexBox>
-          </Grid>
-          <Grid item xs={2}>
+          </WarningGrid>
+          <WarningGrid item xs={2}>
             <CenteredFlexBox>
               <RestoreIcon fontSize={'small'} />
             </CenteredFlexBox>
-          </Grid>
-        </Grid>
+          </WarningGrid>
+        </WarningGrid>
         {paces.length > 0 &&
           paces.map((p: any, i) => (
             <Box key={i}>
-              <Grid container borderTop={1}>
-                <Grid item xs={5} borderRight={1}>
+              <WarningGrid container borderTop={1}>
+                <WarningGrid item xs={5} borderRight={1}>
                   {p.reps !== undefined && p.reps > 1 ? (
                     <Typography align="center">{`${p.reps} x ${p.distance ? p.distance : p.time} @${
                       p.pace
@@ -140,35 +136,25 @@ function TrainingSession() {
                       p.pace
                     }`}</Typography>
                   )}
-                </Grid>
-                <Grid item xs={3} borderRight={1}>
+                </WarningGrid>
+                <WarningGrid item xs={3} borderRight={1}>
                   <Typography align="center">
                     {p.paceSpeed ? p.paceSpeed.race_pace_km : null}
                   </Typography>
-                </Grid>
-                <Grid item xs={2} borderRight={1}>
+                </WarningGrid>
+                <WarningGrid item xs={2} borderRight={1}>
                   <Typography align="center">
                     {p.paceSpeed && p.paceSpeed.race_time ? p.paceSpeed.race_time : null}
                   </Typography>
-                </Grid>
-                <Grid item xs={2}>
+                </WarningGrid>
+                <WarningGrid item xs={2}>
                   <Typography align="center">
                     {p.recovery && p.recovery.race_time ? p.recovery.race_time : null}
                   </Typography>
-                </Grid>
-              </Grid>
+                </WarningGrid>
+              </WarningGrid>
             </Box>
           ))}
-        <CenteredFlexBox m={1}>
-          <Button
-            sx={{ backgroundColor: 'warning.dark' }}
-            onClick={() => {
-              navigate('/profile');
-            }}
-          >
-            Change Target
-          </Button>
-        </CenteredFlexBox>
       </Box>
     </FullSizeBox>
   ) : null;

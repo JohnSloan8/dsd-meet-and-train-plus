@@ -30,7 +30,7 @@ function Coach() {
             />
           </CenteredFlexBox>
 
-          <Box p={1}>
+          <Box pt={0.5}>
             <CenteredFlexBox>
               <Typography variant="body2">
                 {trainingSessions[weekDay].coach.name.split(' ')[0]}

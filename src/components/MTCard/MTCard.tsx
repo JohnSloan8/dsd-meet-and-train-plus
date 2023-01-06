@@ -24,7 +24,6 @@ function MTCard({ title, icon: Icon, height, color, children }: Props) {
           borderRadius: 3,
           width: '100%',
           backgroundColor: `${color}.main`,
-          height: { height },
           position: 'relative',
         }}
         elevation={4}
@@ -43,7 +42,7 @@ function MTCard({ title, icon: Icon, height, color, children }: Props) {
             </FlexBox>
           ) : null}
         </Box>
-        <Box height={height - 24}>{children}</Box>
+        <Box minHeight={height - 24}>{children}</Box>
       </Card>
     </CenteredFlexBox>
   );
