@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const createTargetTimeString = (
   targetTimeHours: number,
   targetTimeMinutes: number,
@@ -22,7 +23,7 @@ const createTargetTimeNumerics = (targetTimeString: string): [number, number, nu
   return [parseInt(h), parseInt(m), parseInt(s)];
 };
 
-const raceToMetres = {
+const raceToMetres: any = {
   '1 km': 1000,
   '1 mile': 1609,
   '5 km': 5000,
@@ -34,7 +35,7 @@ const raceToMetres = {
 };
 
 const calculateEquivalentPaces = (h: number, m: number, s: number, distance: string) => {
-  const equivalentPaces = {
+  const equivalentPaces: any = {
     '1 km': null,
     '1 mile': null,
     '5 km': null,
@@ -45,7 +46,7 @@ const calculateEquivalentPaces = (h: number, m: number, s: number, distance: str
     marathon: null,
   };
   const targetTimeInSeconds = numericsToSeconds(h, m, s);
-  Object.entries(raceToMetres).map((e) => {
+  Object.entries(raceToMetres).map((e: any) => {
     const totalSeconds = equivalencyFormula(targetTimeInSeconds, raceToMetres[distance], e[1]);
     const secondsPerKm = (1000 * totalSeconds) / e[1];
     const racePaceKm = raceTimeToKm(totalSeconds, e[1]);
@@ -87,9 +88,9 @@ const calculateEquivalentPaces = (h: number, m: number, s: number, distance: str
 };
 
 const numericsToSeconds = (h: number, m: number, s: number) => {
-  const hrs = parseInt(h) * 3600;
-  const mns = parseInt(m) * 60;
-  const scs = parseInt(s);
+  const hrs = h * 3600;
+  const mns = m * 60;
+  const scs = s;
   const totalSecs = hrs + mns + scs;
 
   return totalSecs;

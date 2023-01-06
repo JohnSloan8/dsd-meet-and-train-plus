@@ -6,8 +6,8 @@ const getProfile = async (userID: string) => {
     const { data, error } = await supabase
       .from('profiles')
       .select(`id, target_race, target_time, equivalent_paces`)
-      .single()
-      .eq('user_id', userID);
+      .eq('user_id', userID)
+      .single();
 
     if (data) {
       return data;

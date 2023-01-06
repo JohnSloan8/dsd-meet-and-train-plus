@@ -21,8 +21,8 @@ function MyPaces() {
     if (profile !== undefined) {
       console.log('profile:', profile);
     } else {
-      if (session.user.id !== undefined) {
-        getProfile(session.user.id).then((p) => {
+      if (session !== null && session.user.id !== undefined) {
+        getProfile(session.user.id).then((p: any) => {
           setProfile(p);
         });
       }

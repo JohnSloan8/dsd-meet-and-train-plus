@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 /* eslint-disable react-hooks/exhaustive-deps */
 import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -26,9 +28,9 @@ import {
 function Profile() {
   const [targetRace, setTargetRace] = useState('');
   const [updatingTarget, setUpdatingTarget] = useState(false);
-  const [targetTimeHours, setTargetTimeHours] = useState<number>(0);
-  const [targetTimeMinutes, setTargetTimeMinutes] = useState<number>(0);
-  const [targetTimeSeconds, setTargetTimeSeconds] = useState<number>(0);
+  const [targetTimeHours, setTargetTimeHours] = useState(0);
+  const [targetTimeMinutes, setTargetTimeMinutes] = useState(0);
+  const [targetTimeSeconds, setTargetTimeSeconds] = useState(0);
   const { profile, setProfile } = useProfile();
   const { session } = useSession();
   const navigate = useNavigate();
@@ -73,16 +75,28 @@ function Profile() {
       targetTimeSeconds,
       targetRace,
     );
-    updateProfile({
-      id: profile.id,
-      target_race: targetRace,
-      target_time: targetTimeString,
-      equivalent_paces: equivalentPaces,
-    }).then((d) => {
-      setProfile(d[0]);
-      setUpdatingTarget(false);
-      navigate('/');
-    });
+    if (profile !== undefined) {
+      updateProfile({
+        id: profile.id,
+        target_race: targetRace,
+        target_time: targetTimeString,
+        equivalent_paces: equivalentPaces,
+      }).then((d: any) => {
+        setProfile(d);
+        setUpdatingTarget(false);
+        navigate('/');
+      });
+    } else {
+      updateProfile({
+        target_race: targetRace,
+        target_time: targetTimeString,
+        equivalent_paces: equivalentPaces,
+      }).then((d: any) => {
+        setProfile(d);
+        setUpdatingTarget(false);
+        navigate('/');
+      });
+    }
   };
 
   return (
@@ -166,7 +180,9 @@ function Profile() {
                   id="hours"
                   InputProps={{ inputProps: { min: 0, max: 9 } }}
                   value={targetTimeHours}
-                  onChange={(e) => setTargetTimeHours(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+                    setTargetTimeHours(parseInt(e.target.value))
+                  }
                 />
               </Grid>
               <Grid item xs={4} my={1}>
@@ -179,7 +195,9 @@ function Profile() {
                   id="mins"
                   InputProps={{ inputProps: { min: 0, max: 59 } }}
                   value={targetTimeMinutes}
-                  onChange={(e) => setTargetTimeMinutes(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+                    setTargetTimeMinutes(parseInt(e.target.value))
+                  }
                 />
               </Grid>
               <Grid item xs={4} my={1}>
@@ -192,7 +210,9 @@ function Profile() {
                   id="secs"
                   InputProps={{ inputProps: { min: 0, max: 59 } }}
                   value={targetTimeSeconds}
-                  onChange={(e) => setTargetTimeSeconds(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+                    setTargetTimeSeconds(parseInt(e.target.value))
+                  }
                 />
               </Grid>
             </Grid>

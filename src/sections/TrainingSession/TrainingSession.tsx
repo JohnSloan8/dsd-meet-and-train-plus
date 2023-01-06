@@ -49,14 +49,14 @@ function TrainingSession() {
   }, [week]);
 
   useEffect(() => {
-    if (profile === undefined) {
+    if (profile === undefined && session !== null) {
       getProfile(session.user.id).then((p) => {
         if (p) {
           setProfile(p);
         }
       });
     } else {
-      console.log('profile undefined');
+      console.log('profile undefined or session null');
     }
   }, []);
 
@@ -64,7 +64,7 @@ function TrainingSession() {
     if (trainingSessions.length !== 0 && trainingSessions[weekDay] !== undefined) {
       if (profile !== undefined) {
         console.log('profile:', profile);
-        const tempPacesList = [];
+        const tempPacesList: any = [];
         trainingSessions[weekDay].session.map((s) => {
           const tempPaces = {
             reps: s.reps,
@@ -127,7 +127,7 @@ function TrainingSession() {
           </Grid>
         </Grid>
         {paces.length > 0 &&
-          paces.map((p, i) => (
+          paces.map((p: any, i) => (
             <Box key={i}>
               <Grid container borderTop={1}>
                 <Grid item xs={5} borderRight={1}>
@@ -161,8 +161,6 @@ function TrainingSession() {
           ))}
         <CenteredFlexBox m={1}>
           <Button
-            p={0}
-            m={0}
             sx={{ backgroundColor: 'warning.dark' }}
             onClick={() => {
               navigate('/profile');

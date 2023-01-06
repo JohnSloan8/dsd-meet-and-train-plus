@@ -1,5 +1,5 @@
 import { ActivityModel } from './ActivityModel';
-import { ProfileModel } from './ProfileModel';
+import ProfileModel from './ProfileModel';
 import { StravaProfileModel } from './StravaProfileModel';
 import {
   TrainingSessionAttendanceProfileModel,
