@@ -1,4 +1,4 @@
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import OpenMap from '@/components/OpenMap';
 import { useActivities } from '@/store/activities';
@@ -6,7 +6,7 @@ import { useSelectedAthlete } from '@/store/activities';
 import { currentSessionState } from '@/store/sessions';
 
 const OpenMapCtrl = () => {
-  const [currentSession] = useRecoilState(currentSessionState);
+  const currentSession = useRecoilValue(currentSessionState);
 
   const { activities } = useActivities();
 

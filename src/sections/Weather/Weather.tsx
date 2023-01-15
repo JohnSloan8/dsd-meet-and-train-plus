@@ -2,7 +2,7 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import AirIcon from '@mui/icons-material/Air';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -19,7 +19,7 @@ import { useWeatherSymbolNumber } from '@/store/weather';
 import { convert12HrTimeTo24, getForecasts } from './utils';
 
 const Weather = () => {
-  const [currentSession] = useRecoilState(currentSessionState);
+  const currentSession = useRecoilValue(currentSessionState);
 
   const { weatherSymbolNumber, setWeatherSymbolNumber } = useWeatherSymbolNumber();
   const [temperature, setTemperature] = useState(0);
@@ -27,7 +27,7 @@ const Weather = () => {
   const [windDirection, setWindDirection] = useState(0);
   const { daylight, setDaylight } = useDaylight();
   const [code, setCode] = useState(0);
-  const [sessionInPast] = useRecoilState(sessionInPastState);
+  const sessionInPast = useRecoilValue(sessionInPastState);
 
   const symbolURL = `https://cdn-a.metweb.ie//images/web-meteogram-small/${weatherSymbolNumber}.png?v=5001`;
 

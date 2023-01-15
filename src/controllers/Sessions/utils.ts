@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import dayjs, { Dayjs } from 'dayjs';
 
-import { Database } from '/types/supabase';
+import { Database } from '../../../types/supabase';
 
 const findCurrentSessionIndex = (
   date: Dayjs,
@@ -17,12 +18,12 @@ const findCurrentSessionIndex = (
   return index;
 };
 
-const searchForIndexInMiddle = (d, Ss) => {
+const searchForIndexInMiddle = (d: any, Ss: any) => {
   let dayMinus = 0;
   let index = -1;
 
   while (dayMinus <= 7) {
-    index = Ss.findIndex((s) => {
+    index = Ss.findIndex((s: any) => {
       const calcDate = d.subtract(dayMinus, 'days').format('YYYY-MM-DD');
       return s.date === calcDate;
     });

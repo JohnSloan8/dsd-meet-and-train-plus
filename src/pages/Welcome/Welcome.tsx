@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AccessibilityIcon from '@mui/icons-material/Accessibility';
@@ -46,8 +46,8 @@ function Welcome() {
   const { stravaProfile, setStravaProfile } = useStravaProfile();
   const [showConnectStrava, setShowConnectStrava] = useState(false);
   const navigate = useNavigate();
-  const [sessionInPast] = useRecoilState(sessionInPastState);
-  const [currentSession] = useRecoilState(currentSessionState);
+  const [sessionInPast] = useRecoilValue(sessionInPastState);
+  const currentSession = useRecoilValue(currentSessionState);
 
   useEffect(() => {
     if (session) {

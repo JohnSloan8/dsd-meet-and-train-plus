@@ -2,7 +2,7 @@
 
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -21,7 +21,7 @@ function Attendance() {
   const { SessionAttendanceProfiles, setSessionAttendanceProfiles } =
     useSessionAttendanceProfiles();
 
-  const [currentSession] = useRecoilState(currentSessionState);
+  const currentSession = useRecoilValue(currentSessionState);
 
   const { selectedAthlete, setSelectedAthlete } = useSelectedAthlete();
   // const [selectedAthleteName, setSelectedAthleteName] = useState('');

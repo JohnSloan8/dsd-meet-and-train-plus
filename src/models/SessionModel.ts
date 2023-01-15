@@ -33,14 +33,6 @@ interface LocationModel {
   longitude: number;
 }
 
-interface SessionModel {
-  reps: number;
-  distance?: string;
-  time?: string;
-  pace: string;
-  recovery?: string;
-}
-
 interface SessionAttendanceProfileModel {
   first_name: string;
   profile_pic: string;

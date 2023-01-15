@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import RestoreIcon from '@mui/icons-material/Restore';
@@ -22,7 +22,7 @@ import { currentSessionState } from '@/store/sessions';
 
 function Session() {
   const { setActivities } = useActivities();
-  const [currentSession] = useRecoilState(currentSessionState);
+  const currentSession = useRecoilValue(currentSessionState);
   const navigate = useNavigate();
 
   const [paces, setPaces] = useState([]);
@@ -31,7 +31,7 @@ function Session() {
   useEffect(() => {
     if (currentSession !== undefined && profile != undefined) {
       const tempPacesList: any = [];
-      currentSession.session.map((s) => {
+      currentSession.session.map((s: any) => {
         const tempPaces = {
           reps: s.reps,
           pace: s.pace,

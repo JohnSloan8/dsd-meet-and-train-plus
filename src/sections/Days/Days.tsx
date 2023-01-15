@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import Box from '@mui/material/Box';
@@ -19,10 +19,10 @@ import {
 } from '@/store/sessions';
 
 function Days() {
-  const [currentDateString, setCurrentDateString] = useState();
-  const [currentSession] = useRecoilState(currentSessionState);
-  const [nextSessionExists] = useRecoilState(nextSessionExistsState);
-  const [previousSessionExists] = useRecoilState(previousSessionExistsState);
+  const [currentDateString, setCurrentDateString] = useState('');
+  const currentSession = useRecoilValue(currentSessionState);
+  const nextSessionExists = useRecoilValue(nextSessionExistsState);
+  const previousSessionExists = useRecoilValue(previousSessionExistsState);
 
   const { currentSessionIndex, setCurrentSessionIndex } = useCurrentSessionIndex();
 
@@ -41,7 +41,7 @@ function Days() {
       {currentSession !== undefined ? (
         <CenteredFlexBox>
           <Box width="50px">
-            {previousSessionExists && (
+            {previousSessionExists && currentSessionIndex !== undefined && (
               <IconButton
                 onClick={() => {
                   setCurrentSessionIndex(currentSessionIndex - 1);
@@ -57,7 +57,7 @@ function Days() {
           </Typography>
 
           <Box width="50px">
-            {nextSessionExists && (
+            {nextSessionExists && currentSessionIndex !== undefined && (
               <IconButton
                 onClick={() => {
                   setCurrentSessionIndex(currentSessionIndex + 1);

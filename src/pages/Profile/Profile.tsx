@@ -27,9 +27,9 @@ import {
 function Profile() {
   const [targetRace, setTargetRace] = useState('');
   const [updatingTarget, setUpdatingTarget] = useState(false);
-  const [targetTimeHours, setTargetTimeHours] = useState('0');
-  const [targetTimeMinutes, setTargetTimeMinutes] = useState('0');
-  const [targetTimeSeconds, setTargetTimeSeconds] = useState('0');
+  const [targetTimeHours, setTargetTimeHours] = useState(0);
+  const [targetTimeMinutes, setTargetTimeMinutes] = useState(0);
+  const [targetTimeSeconds, setTargetTimeSeconds] = useState(0);
   const { profile, setProfile } = useProfile();
   const { session } = useSession();
   const navigate = useNavigate();

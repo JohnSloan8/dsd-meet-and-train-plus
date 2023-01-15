@@ -2,7 +2,7 @@ import { atom, selector, useRecoilState } from 'recoil';
 
 import * as dayjs from 'dayjs';
 
-import { Database } from '/types/database';
+import { Database } from '../../../types/supabase';
 
 const sessionsState = atom<Database['public']['Tables']['sessions']['Row'][]>({
   key: 'sessions',

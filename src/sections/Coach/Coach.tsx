@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -11,7 +11,7 @@ import { CenteredFlexBox } from '@/components/styled';
 import { currentSessionState } from '@/store/sessions';
 
 function Coach() {
-  const [currentSession] = useRecoilState(currentSessionState);
+  const currentSession = useRecoilValue(currentSessionState);
 
   return (
     <Box p={1.5}>
