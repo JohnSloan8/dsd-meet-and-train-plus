@@ -1,4 +1,4 @@
-interface TrainingSessionModel {
+interface SessionModel {
   coach: CoachModel;
   location: LocationModel;
   id: number;
@@ -41,11 +41,11 @@ interface SessionModel {
   recovery?: string;
 }
 
-interface TrainingSessionAttendanceProfileModel {
+interface SessionAttendanceProfileModel {
   first_name: string;
   profile_pic: string;
   surname: string;
   user_id: string;
 }
 
-export type { TrainingSessionModel, TrainingSessionAttendanceProfileModel, WeatherModel };
+export type { SessionModel, SessionAttendanceProfileModel, WeatherModel };

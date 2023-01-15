@@ -1,14 +1,17 @@
 import { supabase } from '@/services/supabase';
 
-const getActivities = async (id: number) => {
+const getSessionAttendance = async (tSID: number) => {
   try {
     const { data, error } = await supabase
-      .from('activities')
-      .select(`user_id, strava_data, coords`)
-      .eq('session_id', id);
+      .from('session_attendances')
+      .select(`user_id`)
+      .eq('session_id', tSID);
 
     if (data) {
-      return data;
+      const user_ids = data.map((d) => {
+        return d.user_id;
+      });
+      return user_ids;
     }
 
     if (error) {
@@ -20,4 +23,4 @@ const getActivities = async (id: number) => {
   }
 };
 
-export default getActivities;
+export default getSessionAttendance;

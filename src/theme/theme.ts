@@ -1,14 +1,16 @@
-import { blue, green, red } from '@mui/material/colors';
+import { blue, green, orange, red } from '@mui/material/colors';
+import { createTheme } from '@mui/material/styles';
 
-const theme = {
+const mainTheme = createTheme({
   palette: {
     primary: {
       dark: blue[900],
       main: blue[400],
-      light: blue[300],
+      light: blue[200],
     },
     secondary: {
-      main: red[400],
+      light: red[300],
+      main: red[500],
     },
     background: {
       default: '#fafafa',
@@ -16,32 +18,23 @@ const theme = {
     },
     info: {
       dark: green[900],
-      main: green[400],
+      main: green[500],
       light: green[300],
     },
-  },
-  components: {
-    MuiButtonBase: {
-      defaultProps: {
-        disableRipple: true,
-      },
-    },
-    MuiDivider: {
-      styleOverrides: {
-        vertical: {
-          marginRight: 10,
-          marginLeft: 10,
-        },
-        // TODO: open issue for missing "horizontal" CSS rule
-        // in Divider API - https://mui.com/material-ui/api/divider/#css
-        middle: {
-          marginTop: 10,
-          marginBottom: 10,
-          width: '80%',
-        },
-      },
+    warning: {
+      dark: orange[900],
+      main: orange[700],
+      light: orange[500],
     },
   },
-};
+});
 
-export default theme;
+const welcomeTheme = createTheme(mainTheme, {
+  palette: {
+    text: {
+      primary: '#fff',
+    },
+  },
+});
+
+export { mainTheme, welcomeTheme };

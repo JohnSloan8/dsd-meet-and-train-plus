@@ -1,11 +1,10 @@
 import { supabase } from '@/services/supabase';
 
-const getActivities = async (id: number) => {
+const createProfile = async (user_id: string) => {
   try {
-    const { data, error } = await supabase
-      .from('activities')
-      .select(`user_id, strava_data, coords`)
-      .eq('session_id', id);
+    const { data, error } = await supabase.from('profiles').insert({
+      user_id: user_id,
+    });
 
     if (data) {
       return data;
@@ -20,4 +19,4 @@ const getActivities = async (id: number) => {
   }
 };
 
-export default getActivities;
+export default createProfile;

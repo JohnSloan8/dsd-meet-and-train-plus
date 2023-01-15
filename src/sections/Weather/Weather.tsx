@@ -2,6 +2,7 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 
 import AirIcon from '@mui/icons-material/Air';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -11,42 +12,36 @@ import Typography from '@mui/material/Typography';
 import { CenteredFlexBox } from '@/components/styled';
 import { getWeather } from '@/services/met';
 import { getSunset } from '@/services/met';
-import { getTrainingSessions } from '@/services/supabase';
-import { updateTrainingSessionSunset, updateTrainingSessionWeather } from '@/services/supabase';
-// import { useWeek } from '@/store/weekDay';
-import { useDaylight, useSessionInPast, useTrainingSessions } from '@/store/trainingSessions';
+import { updateSessionSunset, updateSessionWeather } from '@/services/supabase';
+import { currentSessionState, sessionInPastState, useDaylight } from '@/store/sessions';
 import { useWeatherSymbolNumber } from '@/store/weather';
-import { useWeek } from '@/store/week';
-import { useWeekDay } from '@/store/weekDay';
 
 import { convert12HrTimeTo24, getForecasts } from './utils';
 
 const Weather = () => {
-  const { trainingSessions, setTrainingSessions } = useTrainingSessions();
-  const { weekDay } = useWeekDay();
-  const { week } = useWeek();
+  const [currentSession] = useRecoilState(currentSessionState);
+
   const { weatherSymbolNumber, setWeatherSymbolNumber } = useWeatherSymbolNumber();
   const [temperature, setTemperature] = useState(0);
   const [windSpeed, setWindSpeed] = useState(0);
   const [windDirection, setWindDirection] = useState(0);
   const { daylight, setDaylight } = useDaylight();
   const [code, setCode] = useState(0);
-  const { sessionInPast } = useSessionInPast();
+  const [sessionInPast] = useRecoilState(sessionInPastState);
 
   const symbolURL = `https://cdn-a.metweb.ie//images/web-meteogram-small/${weatherSymbolNumber}.png?v=5001`;
 
   useEffect(() => {
     try {
-      if (trainingSessions[weekDay] !== undefined) {
+      if (currentSession !== undefined) {
         let weatherNeedsUpdating = false;
 
         if (!sessionInPast) {
-          if (trainingSessions[weekDay].weather === null) {
-            console.log('weather is null');
+          if (currentSession.weather === null) {
             weatherNeedsUpdating = true;
           } else {
             const timeElapsedSinceUpdate =
-              Date.now() - new Date(trainingSessions[weekDay].weather.updatedAt).getTime();
+              Date.now() - new Date(currentSession.weather.updatedAt).getTime();
             console.log('timeElapsedSinceUpdate:', timeElapsedSinceUpdate);
             if (timeElapsedSinceUpdate / 3600000 > 60) {
               weatherNeedsUpdating = true;
@@ -64,7 +59,7 @@ const Weather = () => {
             let apiTemperature = 0;
             let apiWindSpeed = 0;
             let apiWindDirection = 0;
-            const forecasts = getForecasts(w.weatherdata.product.time, trainingSessions[weekDay]);
+            const forecasts = getForecasts(w.weatherdata.product.time, currentSession);
             // console.log('forecasts:', forecasts);
             forecasts.map((f: any) => {
               if (f['@from'] !== f['@to']) {
@@ -75,53 +70,47 @@ const Weather = () => {
                 apiWindDirection = Math.round(f.location.windDirection['@deg']);
               }
             });
-
-            updateTrainingSessionWeather(trainingSessions[weekDay].id, {
-              code: apiCode,
-              temperature: apiTemperature,
-              windSpeed: apiWindSpeed,
-              windDirection: apiWindDirection,
-              updatedAt: Date.now(),
-            }).then((d: any) => {
-              // console.log('weather updated:', d);
-              setTemperature(d.weather.temperature);
-              setCode(d.weather.code);
-              setWindSpeed(d.weather.windSpeed);
-              setWindDirection(d.weather.windDirection);
-
-              if (week !== undefined) {
-                getTrainingSessions(
-                  week[0].toISOString().substring(0, 10),
-                  week[1].toISOString().substring(0, 10),
-                ).then((d: any) => {
-                  setTrainingSessions(d);
-                });
-              }
-            });
+            if (apiCode !== 0) {
+              updateSessionWeather(currentSession.id, {
+                code: apiCode,
+                temperature: apiTemperature,
+                windSpeed: apiWindSpeed,
+                windDirection: apiWindDirection,
+                updatedAt: Date.now(),
+              }).then((d: any) => {
+                // console.log('weather updated:', d);
+                setTemperature(d.weather.temperature);
+                setCode(d.weather.code);
+                setWindSpeed(d.weather.windSpeed);
+                setWindDirection(d.weather.windDirection);
+              });
+            } else {
+              setCode(0);
+            }
           });
         } else {
-          if (!sessionInPast && trainingSessions[weekDay].weather !== null) {
-            setCode(trainingSessions[weekDay].weather.code);
-            setTemperature(Math.round(trainingSessions[weekDay].weather.temperature));
-            setWindSpeed(trainingSessions[weekDay].weather.windSpeed);
-            setWindDirection(trainingSessions[weekDay].weather.windDirection);
+          if (!sessionInPast && currentSession.weather !== null) {
+            setCode(currentSession.weather.code);
+            setTemperature(Math.round(currentSession.weather.temperature));
+            setWindSpeed(currentSession.weather.windSpeed);
+            setWindDirection(currentSession.weather.windDirection);
           }
         }
 
-        if (trainingSessions[weekDay].sunset === null) {
-          getSunset(trainingSessions[weekDay].date).then((s: any) => {
+        if (currentSession.sunset === null) {
+          getSunset(currentSession.date).then((s: any) => {
             const sunset24Hr = convert12HrTimeTo24(s.results.sunset);
-            updateTrainingSessionSunset(trainingSessions[weekDay].id, sunset24Hr);
+            updateSessionSunset(currentSession.id, sunset24Hr);
             checkDaylight(sunset24Hr);
           });
         } else {
-          checkDaylight(trainingSessions[weekDay].sunset);
+          checkDaylight(currentSession.sunset);
         }
       }
     } catch (error) {
       console.log('error', error);
     }
-  }, [weekDay, trainingSessions]);
+  }, [currentSession]);
 
   useEffect(() => {
     if (code !== undefined) {
@@ -136,10 +125,8 @@ const Weather = () => {
   }, [daylight, code]);
 
   const checkDaylight = (sunset24Hr: string) => {
-    const sunset = new Date(`${trainingSessions[weekDay].date}T${sunset24Hr}`);
-    const trainingTime = new Date(
-      `${trainingSessions[weekDay].date}T${trainingSessions[weekDay].time}`,
-    );
+    const sunset = new Date(`${currentSession.date}T${sunset24Hr}`);
+    const trainingTime = new Date(`${currentSession.date}T${currentSession.time}`);
     if (sunset < trainingTime) {
       setDaylight('n');
     } else {
@@ -147,7 +134,7 @@ const Weather = () => {
     }
   };
 
-  return weatherSymbolNumber === undefined ? (
+  return code === 0 ? (
     <CenteredFlexBox sx={{ height: '100%', alignItems: 'center' }}>
       <Typography align="center" variant="body1">
         no forecast

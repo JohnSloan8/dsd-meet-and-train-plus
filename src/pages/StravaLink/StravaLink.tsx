@@ -40,6 +40,7 @@ function StravaLink() {
             refresh_token: d.refresh_token,
             token_expires_at: d.expires_at,
           }).then((p: any) => {
+            console.log('strava profile:', p);
             setStravaProfile(p[0]);
             navigate('/', { replace: true });
           });

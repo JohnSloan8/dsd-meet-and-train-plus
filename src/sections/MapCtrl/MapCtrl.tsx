@@ -1,20 +1,22 @@
-import Map from '@/components/Map';
+import { useRecoilState } from 'recoil';
+
+import OpenMap from '@/components/OpenMap';
 import { useActivities } from '@/store/activities';
 import { useSelectedAthlete } from '@/store/activities';
-import { useTrainingSessions } from '@/store/trainingSessions';
-import { useWeekDay } from '@/store/weekDay';
+import { currentSessionState } from '@/store/sessions';
 
 const OpenMapCtrl = () => {
-  const { trainingSessions } = useTrainingSessions();
+  const [currentSession] = useRecoilState(currentSessionState);
+
   const { activities } = useActivities();
-  const { weekDay } = useWeekDay();
+
   const { selectedAthlete } = useSelectedAthlete();
 
-  if (trainingSessions.length !== 0 && trainingSessions[weekDay] !== undefined) {
+  if (currentSession !== undefined) {
     return (
-      <Map
-        lat={trainingSessions[weekDay].location.latitude}
-        lon={trainingSessions[weekDay].location.longitude}
+      <OpenMap
+        lat={currentSession.location.latitude}
+        lon={currentSession.location.longitude}
         activities={activities}
         selectedAthlete={selectedAthlete}
       />

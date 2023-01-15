@@ -1,13 +1,13 @@
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 
-import theme from './theme';
+import { mainTheme } from './theme';
 
 type CustomThemeProviderProps = {
   children: JSX.Element;
 };
 
 function CustomThemeProvider({ children }: CustomThemeProviderProps) {
-  return <ThemeProvider theme={createTheme(theme)}>{children}</ThemeProvider>;
+  return <ThemeProvider theme={mainTheme}>{children}</ThemeProvider>;
 }
 
 export default CustomThemeProvider;

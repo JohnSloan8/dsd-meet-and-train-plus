@@ -16,6 +16,10 @@ const CenteredFlexBox = styled(FlexBox)({
   alignItems: 'center',
 });
 
+const HorizontallyCenteredFlexBox = styled(FlexBox)({
+  justifyContent: 'center',
+});
+
 const FullSizeFlexBox = styled(FlexBox)({
   width: '100%',
   height: '100%',
@@ -33,6 +37,7 @@ const WarningGrid = styled(Grid)<GridProps>(({ theme }) => ({
 export {
   FlexBox,
   CenteredFlexBox,
+  HorizontallyCenteredFlexBox,
   FullSizeFlexBox,
   FullSizeCenteredFlexBox,
   FullSizeBox,

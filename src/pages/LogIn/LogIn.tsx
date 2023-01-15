@@ -24,7 +24,7 @@ function LogIn() {
   };
 
   return (
-    <FullSizeBox>
+    <FullSizeBox pt={8}>
       <Meta title="log in" />
 
       <Typography m={4} variant="h3" align="center" color="primary">

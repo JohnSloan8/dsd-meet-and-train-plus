@@ -2,6 +2,7 @@
 
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -9,60 +10,51 @@ import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 
 import { CenteredFlexBox } from '@/components/styled';
-import { getTrainingSessionAttendance } from '@/services/supabase';
-import { getTrainingSessionAttendanceProfiles } from '@/services/supabase';
+import { getSessionAttendance } from '@/services/supabase';
+import { getSessionAttendanceProfiles } from '@/services/supabase';
 import { useSelectedAthlete } from '@/store/activities';
-import {
-  useTrainingSessionAttendance,
-  useTrainingSessionAttendanceProfiles,
-  useTrainingSessions,
-} from '@/store/trainingSessions';
-import { useWeek } from '@/store/week';
-import { useWeekDay } from '@/store/weekDay';
+import { useSessionAttendance, useSessionAttendanceProfiles } from '@/store/sessions';
+import { currentSessionState } from '@/store/sessions';
 
 function Attendance() {
-  const { trainingSessionAttendance, setTrainingSessionAttendance } =
-    useTrainingSessionAttendance();
-  const { trainingSessionAttendanceProfiles, setTrainingSessionAttendanceProfiles } =
-    useTrainingSessionAttendanceProfiles();
+  const { SessionAttendance, setSessionAttendance } = useSessionAttendance();
+  const { SessionAttendanceProfiles, setSessionAttendanceProfiles } =
+    useSessionAttendanceProfiles();
 
-  const { trainingSessions } = useTrainingSessions();
+  const [currentSession] = useRecoilState(currentSessionState);
+
   const { selectedAthlete, setSelectedAthlete } = useSelectedAthlete();
   // const [selectedAthleteName, setSelectedAthleteName] = useState('');
-  const { weekDay } = useWeekDay();
-  const { week } = useWeek();
 
   useEffect(() => {
-    if (trainingSessions.length !== 0 && trainingSessions[weekDay] !== undefined) {
+    if (currentSession !== undefined) {
       const todaysDate = Date.now();
-      const trainingDate = new Date(
-        `${trainingSessions[weekDay].date} ${trainingSessions[weekDay].time}`,
-      );
+      const trainingDate = new Date(`${currentSession.date} ${currentSession.time}`);
       if (todaysDate - trainingDate.getTime() > 0) {
-        getTrainingSessionAttendance(trainingSessions[weekDay].id).then((user_id_list: any) => {
-          setTrainingSessionAttendance(user_id_list);
+        getSessionAttendance(currentSession.id).then((user_id_list: any) => {
+          setSessionAttendance(user_id_list);
         });
       } else {
-        setTrainingSessionAttendance([]);
+        setSessionAttendance([]);
       }
     } else {
-      setTrainingSessionAttendance([]);
+      setSessionAttendance([]);
     }
-  }, [trainingSessions, weekDay, week]);
+  }, [currentSession]);
 
   useEffect(() => {
-    if (trainingSessionAttendance && trainingSessionAttendance.length > 0) {
-      getTrainingSessionAttendanceProfiles(trainingSessionAttendance).then((d: any) => {
-        setTrainingSessionAttendanceProfiles(d);
+    if (SessionAttendance && SessionAttendance.length > 0) {
+      getSessionAttendanceProfiles(SessionAttendance).then((d: any) => {
+        setSessionAttendanceProfiles(d);
       });
     } else {
-      setTrainingSessionAttendanceProfiles([]);
+      setSessionAttendanceProfiles([]);
     }
-  }, [trainingSessionAttendance]);
+  }, [SessionAttendance]);
 
   useEffect(() => {
-    console.log('trainingSessionAttendanceProfiles:', trainingSessionAttendanceProfiles);
-  }, [trainingSessionAttendanceProfiles]);
+    console.log('SessionAttendanceProfiles:', SessionAttendanceProfiles);
+  }, [SessionAttendanceProfiles]);
 
   const clickAvatar = (userID: string) => {
     if (userID === selectedAthlete) {
@@ -73,7 +65,7 @@ function Attendance() {
   };
 
   // useEffect(() => {
-  //   const selectedAthleteProfile = trainingSessionAttendanceProfiles.find((p) => {
+  //   const selectedAthleteProfile = SessionAttendanceProfiles.find((p) => {
   //     return p.user_id === selectedAthlete;
   //   });
   //   if (selectedAthleteProfile !== undefined) {
@@ -86,14 +78,14 @@ function Attendance() {
 
   useEffect(() => {
     setSelectedAthlete(undefined);
-  }, [weekDay, trainingSessions]);
+  }, [currentSession]);
 
   return (
     <Box>
       <CenteredFlexBox>
         <Box px={2} py={1} width={440}>
           <Grid container>
-            {trainingSessionAttendanceProfiles.map((p, i) => (
+            {SessionAttendanceProfiles.map((p, i) => (
               <Grid key={i} item width={56} mb={-0.7}>
                 <CenteredFlexBox>
                   <IconButton

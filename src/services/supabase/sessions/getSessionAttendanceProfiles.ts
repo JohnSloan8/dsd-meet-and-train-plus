@@ -1,16 +1,14 @@
 import { supabase } from '@/services/supabase';
 
-const getStravaProfile = async (userID: string) => {
+const getSessionAttendanceProfiles = async (list_of_ids: string[]) => {
   try {
     const { data, error } = await supabase
       .from('strava_profile')
-      .select(
-        `id, user_id, access_token, refresh_token, first_name, surname, city, country, strava_id, profile_pic, profile_pic_medium, sex`,
-      )
-      .eq('user_id', userID);
+      .select(`user_id, first_name, surname, profile_pic`)
+      .filter('user_id', 'in', `(${list_of_ids})`);
 
     if (data) {
-      return data[0];
+      return data;
     }
 
     if (error) {
@@ -22,4 +20,4 @@ const getStravaProfile = async (userID: string) => {
   }
 };
 
-export default getStravaProfile;
+export default getSessionAttendanceProfiles;

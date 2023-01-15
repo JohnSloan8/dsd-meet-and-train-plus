@@ -1,11 +1,13 @@
+import { WeatherModel } from '@/models/SessionModel';
 import { supabase } from '@/services/supabase';
 
-const getActivities = async (id: number) => {
+const updateSessionWeather = async (id: number, weather: WeatherModel) => {
   try {
     const { data, error } = await supabase
-      .from('activities')
-      .select(`user_id, strava_data, coords`)
-      .eq('session_id', id);
+      .from('sessions')
+      .upsert({ id: id, weather: weather })
+      .select()
+      .single();
 
     if (data) {
       return data;
@@ -20,4 +22,4 @@ const getActivities = async (id: number) => {
   }
 };
 
-export default getActivities;
+export default updateSessionWeather;

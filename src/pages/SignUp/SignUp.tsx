@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 
 import Meta from '@/components/Meta';
 import { CenteredFlexBox, FullSizeBox } from '@/components/styled';
-import { supabase } from '@/services/supabase';
+import { createProfile, supabase } from '@/services/supabase';
 
 function SignUp() {
   const [email, setEmail] = useState('');
@@ -27,7 +27,10 @@ function SignUp() {
       console.log(error);
     } else {
       if (data.user !== null) {
-        navigate('/', { replace: true });
+        createProfile(data.user.id).then((p) => {
+          console.log('new profile created:', p);
+          navigate('/profile', { replace: true });
+        });
       } else {
         alert('data.user is null');
       }
@@ -35,7 +38,7 @@ function SignUp() {
   };
 
   return (
-    <FullSizeBox>
+    <FullSizeBox pt={8}>
       <Meta title="sign up" />
 
       <Typography m={4} variant="h3" align="center" color="primary">
@@ -88,7 +91,7 @@ function SignUp() {
                 name="confirm password"
                 label="confirmPassword"
                 type="password"
-                id="password"
+                id="confirm-password"
                 autoComplete="new-password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}

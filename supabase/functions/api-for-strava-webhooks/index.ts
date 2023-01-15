@@ -8,10 +8,10 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { generateNewAccessToken, getActivityFromStrava } from './apiCalls/strava.ts';
 import {
   createActivity,
-  createTrainingSessionAttendance,
+  createSessionAttendance,
   doesActivityExist,
   getActivity,
-  getTrainingSession,
+  getSession,
   getUserProfile,
   updateAccessToken,
   updateActivity,
@@ -67,7 +67,7 @@ serve(async (req) => {
         );
 
         const sessionDate = fullStravaActivityData.start_date_local.split('T')[0];
-        const thisSession = await getTrainingSession(supabaseClient, sessionDate);
+        const thisSession = await getSession(supabaseClient, sessionDate);
         if (thisSession !== undefined) {
           const runAtRightTime = await isActivityRunAtRightTime(
             fullStravaActivityData,
@@ -114,13 +114,11 @@ serve(async (req) => {
                 thisSession.id,
               );
 
-              createTrainingSessionAttendance(
-                supabaseClient,
-                userProfile.user_id,
-                thisSession.id,
-              ).then((a) => {
-                console.log('new attendance:', a);
-              });
+              createSessionAttendance(supabaseClient, userProfile.user_id, thisSession.id).then(
+                (a) => {
+                  console.log('new attendance:', a);
+                },
+              );
 
               console.log('updatedActivity:', updatedActivity);
             } else {

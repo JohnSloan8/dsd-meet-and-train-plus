@@ -4,15 +4,15 @@
 import Typography from '@mui/material/Typography';
 
 import { CenteredFlexBox } from '@/components/styled';
-import { useTrainingSessions } from '@/store/trainingSessions';
+import { useSessions } from '@/store/sessions';
 import { useWeekDay } from '@/store/weekDay';
 
 function Warnings() {
-  const { trainingSessions } = useTrainingSessions();
+  const { Sessions } = useSessions();
 
   const { weekDay } = useWeekDay();
 
-  return trainingSessions.length !== 0 && trainingSessions[weekDay] !== undefined ? (
+  return Sessions.length !== 0 && Sessions[weekDay] !== undefined ? (
     <CenteredFlexBox sx={{ height: '100%', alignItems: 'center' }}>
       <Typography variant="body1" align="center">
         none

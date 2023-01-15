@@ -1,16 +1,11 @@
 import { supabase } from '@/services/supabase';
 
 const getProfile = async (userID: string) => {
-  console.log('userID', userID);
   try {
-    const { data, error } = await supabase
-      .from('profiles')
-      .select(`id, target_race, target_time, equivalent_paces`)
-      .eq('user_id', userID)
-      .single();
+    const { data, error } = await supabase.from('profiles').select(`*`).eq('user_id', userID);
 
     if (data) {
-      return data;
+      return data[0];
     }
 
     if (error) {

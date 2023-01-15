@@ -2,7 +2,6 @@ import { ProfileModel } from '@/models';
 import { supabase } from '@/services/supabase';
 
 const updateProfile = async ({ id, target_race, target_time, equivalent_paces }: ProfileModel) => {
-  console.log('id:', id);
   console.log('target_race:', target_race);
   console.log('target_time:', target_time);
   console.log('equivalent_paces:', equivalent_paces);
@@ -18,7 +17,7 @@ const updateProfile = async ({ id, target_race, target_time, equivalent_paces }:
       .select();
 
     if (data) {
-      return data;
+      return data[0];
     }
 
     if (error) {

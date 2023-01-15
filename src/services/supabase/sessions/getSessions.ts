@@ -1,11 +1,13 @@
 import { supabase } from '@/services/supabase';
 
-const getActivities = async (id: number) => {
+const getSessions = async (startDate: string, endDate: string) => {
   try {
     const { data, error } = await supabase
-      .from('activities')
-      .select(`user_id, strava_data, coords`)
-      .eq('session_id', id);
+      .from('sessions')
+      .select(`*, coach(name, picture), location(name, latitude, longitude)`)
+      .gte('date', startDate)
+      .lte('date', endDate)
+      .order('date', { ascending: true });
 
     if (data) {
       return data;
@@ -20,4 +22,4 @@ const getActivities = async (id: number) => {
   }
 };
 
-export default getActivities;
+export default getSessions;

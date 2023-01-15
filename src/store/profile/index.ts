@@ -1,8 +1,8 @@
 import { atom, useRecoilState } from 'recoil';
 
-import { ProfileModel } from '@/models/index';
+import { Database } from '/types/supabase';
 
-const profileState = atom<ProfileModel | undefined>({
+const profileState = atom<Database['public']['Tables']['profiles']['Row'] | undefined>({
   key: 'profile',
   default: undefined,
 });

@@ -10,7 +10,6 @@ import Grid from '@mui/material/Grid';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
 import Meta from '@/components/Meta';
@@ -28,9 +27,9 @@ import {
 function Profile() {
   const [targetRace, setTargetRace] = useState('');
   const [updatingTarget, setUpdatingTarget] = useState(false);
-  const [targetTimeHours, setTargetTimeHours] = useState(0);
-  const [targetTimeMinutes, setTargetTimeMinutes] = useState(0);
-  const [targetTimeSeconds, setTargetTimeSeconds] = useState(0);
+  const [targetTimeHours, setTargetTimeHours] = useState('0');
+  const [targetTimeMinutes, setTargetTimeMinutes] = useState('0');
+  const [targetTimeSeconds, setTargetTimeSeconds] = useState('0');
   const { profile, setProfile } = useProfile();
   const { session } = useSession();
   const navigate = useNavigate();
@@ -52,12 +51,21 @@ function Profile() {
   }, []);
 
   useEffect(() => {
+    console.log('profile:', profile);
     if (profile !== undefined) {
-      setTargetRace(profile.target_race);
-      const [h, m, s] = createTargetTimeNumerics(profile.target_time);
-      setTargetTimeHours(h);
-      setTargetTimeMinutes(m);
-      setTargetTimeSeconds(s);
+      if (profile.target_race !== null && profile.target_race !== '') {
+        setTargetRace(profile.target_race);
+      }
+      if (profile.target_time !== null && profile.target_time !== '') {
+        const [h, m, s] = createTargetTimeNumerics(profile.target_time);
+        setTargetTimeHours(h);
+        setTargetTimeMinutes(m);
+        setTargetTimeSeconds(s);
+      } else {
+        setTargetTimeHours(0);
+        setTargetTimeMinutes(0);
+        setTargetTimeSeconds(0);
+      }
     }
   }, [profile]);
 
@@ -75,32 +83,20 @@ function Profile() {
       targetTimeSeconds,
       targetRace,
     );
-    if (profile !== undefined) {
-      updateProfile({
-        id: profile.id,
-        target_race: targetRace,
-        target_time: targetTimeString,
-        equivalent_paces: equivalentPaces,
-      }).then((d: any) => {
-        setProfile(d);
-        setUpdatingTarget(false);
-        navigate('/');
-      });
-    } else {
-      updateProfile({
-        target_race: targetRace,
-        target_time: targetTimeString,
-        equivalent_paces: equivalentPaces,
-      }).then((d: any) => {
-        setProfile(d);
-        setUpdatingTarget(false);
-        navigate('/');
-      });
-    }
+    updateProfile({
+      id: profile.id,
+      target_race: targetRace,
+      target_time: targetTimeString,
+      equivalent_paces: equivalentPaces,
+    }).then((d: any) => {
+      setProfile(d);
+      setUpdatingTarget(false);
+      navigate('/');
+    });
   };
 
   return (
-    <FullSizeBox>
+    <FullSizeBox pt={8}>
       <Meta title="sign up" />
 
       <Typography m={4} variant="h3" align="center" color="primary">
@@ -111,12 +107,10 @@ function Profile() {
           <Typography mt={4} variant="body1" align="center" color="primary">
             Target Race
           </Typography>
-          {profile.target_race ? (
+          {profile.target_race && (
             <Typography variant="h4" align="center" color="primary">
               {`${profile.target_race}`}
             </Typography>
-          ) : (
-            <p>-</p>
           )}
         </Box>
       )}
@@ -125,12 +119,10 @@ function Profile() {
           <Typography mt={1} variant="body1" align="center" color="primary">
             Target Time
           </Typography>
-          {profile.target_time ? (
+          {profile.target_time && (
             <Typography mb={4} variant="h4" align="center" color="primary">
               {`${profile.target_time}`}
             </Typography>
-          ) : (
-            <p>-</p>
           )}
         </Box>
       )}
@@ -142,12 +134,13 @@ function Profile() {
           onSubmit={(e: FormEvent<HTMLFormElement>) => {
             handleSubmit(e);
           }}
-          m={2}
-          maxWidth="sm"
+          my={2}
+          sx={{ width: '240px' }}
         >
-          <Grid container spacing={0} width={'100%'} px={1}>
+          <Grid container spacing={0} width={'100%'}>
             <InputLabel id="target-race">Set Target Race</InputLabel>
             <Grid item xs={12} my={1}>
+              <InputLabel id="mins">distance</InputLabel>
               <Select
                 required
                 fullWidth
@@ -167,63 +160,71 @@ function Profile() {
               </Select>
             </Grid>
           </Grid>
-          <Box mt={2} px={1}>
+          <Box mt={2}>
             <InputLabel id="hours">Set Target Time</InputLabel>
             <Grid container spacing={1}>
               <Grid item xs={4} my={1}>
-                <TextField
+                <InputLabel id="hrs">hours</InputLabel>
+                <Select
                   required
                   fullWidth
                   name="hours"
-                  label="hours"
-                  type="number"
                   id="hours"
-                  InputProps={{ inputProps: { min: 0, max: 9 } }}
                   value={targetTimeHours}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-                    setTargetTimeHours(parseInt(e.target.value))
-                  }
-                />
+                  onChange={(e) => setTargetTimeHours(e.target.value)}
+                >
+                  {[...Array(7).keys()].map((i) => (
+                    <MenuItem key={i} value={`${i}`}>
+                      {i}
+                    </MenuItem>
+                  ))}
+                </Select>
               </Grid>
               <Grid item xs={4} my={1}>
-                <TextField
+                <InputLabel id="mins">mins</InputLabel>
+                <Select
                   required
                   fullWidth
                   name="mins"
-                  label="mins"
-                  type="number"
                   id="mins"
-                  InputProps={{ inputProps: { min: 0, max: 59 } }}
                   value={targetTimeMinutes}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-                    setTargetTimeMinutes(parseInt(e.target.value))
-                  }
-                />
+                  onChange={(e) => setTargetTimeMinutes(e.target.value)}
+                >
+                  {[...Array(60).keys()].map((i) => (
+                    <MenuItem key={i} value={`${i}`}>
+                      {i}
+                    </MenuItem>
+                  ))}
+                </Select>
               </Grid>
               <Grid item xs={4} my={1}>
-                <TextField
+                <InputLabel id="mins">secs</InputLabel>
+                <Select
                   required
                   fullWidth
                   name="secs"
-                  label="secs"
-                  type="number"
                   id="secs"
-                  InputProps={{ inputProps: { min: 0, max: 59 } }}
                   value={targetTimeSeconds}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-                    setTargetTimeSeconds(parseInt(e.target.value))
-                  }
-                />
+                  onChange={(e) => setTargetTimeSeconds(e.target.value)}
+                >
+                  {[...Array(60).keys()].map((i) => (
+                    <MenuItem key={i} value={`${i}`}>
+                      {i}
+                    </MenuItem>
+                  ))}
+                </Select>
               </Grid>
             </Grid>
           </Box>
-          {!updatingTarget && (
-            <CenteredFlexBox sx={{ width: '100%' }}>
-              <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, color: 'white' }}>
-                submit
-              </Button>
-            </CenteredFlexBox>
-          )}
+          {!updatingTarget &&
+            targetRace !== '' &&
+            targetTimeHours + targetTimeMinutes + targetTimeSeconds !== 0 && (
+              <CenteredFlexBox sx={{ width: '100%' }}>
+                <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, color: 'white' }}>
+                  submit
+                </Button>
+              </CenteredFlexBox>
+            )}
         </Box>
       </CenteredFlexBox>
     </FullSizeBox>

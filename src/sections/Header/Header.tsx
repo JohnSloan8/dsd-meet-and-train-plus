@@ -7,7 +7,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 // import Alert from '@mui/material/Alert';
 // import AlertTitle from '@mui/material/AlertTitle';
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 // import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
@@ -55,68 +54,66 @@ function Header() {
   // }
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar color="transparent" elevation={1} position="static">
-        <Toolbar sx={{ justifyContent: 'center' }}>
-          <Grid container>
-            <Grid item xs={2}>
-              <FullSizeFlexBox sx={{ justifyContent: 'flex-start' }}>
-                <IconButton
-                  onClick={sidebarActions.toggle}
-                  size="large"
-                  edge="start"
-                  color="primary"
-                  aria-label="menu"
-                  sx={{ mr: 1 }}
-                >
-                  <MenuIcon />
-                </IconButton>
-              </FullSizeFlexBox>
-            </Grid>
-            <Grid item xs={8}>
-              <FullSizeCenteredFlexBox>
-                <Button
-                  onClick={() => {
-                    navigate('/');
-                  }}
-                  color="primary"
-                >
-                  {title}
-                </Button>
-              </FullSizeCenteredFlexBox>
-            </Grid>
-            <Grid item xs={2}>
-              <FullSizeFlexBox sx={{ justifyContent: 'flex-end' }}>
-                {session ? (
-                  //   <Chip icon={<FaceIcon />} label="" variant="outlined" />
-                  // ) : (
-                  <IconButton
-                    onClick={logOut}
-                    size="large"
-                    edge="end"
-                    sx={{ color: 'primary.main' }}
-                    aria-label="log in"
-                  >
-                    <LogoutIcon />
-                  </IconButton>
-                ) : (
-                  <IconButton
-                    component={Link}
-                    to="/log-in"
-                    size="large"
-                    edge="end"
-                    sx={{ color: 'primary.main' }}
-                    aria-label="log in"
-                  >
-                    <LoginIcon />
-                  </IconButton>
-                )}
-              </FullSizeFlexBox>
-            </Grid>
+    <AppBar color="background" elevation={1} position="fixed">
+      <Toolbar sx={{ justifyContent: 'center' }}>
+        <Grid container>
+          <Grid item xs={2}>
+            <FullSizeFlexBox sx={{ justifyContent: 'flex-start' }}>
+              <IconButton
+                onClick={sidebarActions.toggle}
+                size="large"
+                edge="start"
+                color="primary"
+                aria-label="menu"
+                sx={{ mr: 1 }}
+              >
+                <MenuIcon />
+              </IconButton>
+            </FullSizeFlexBox>
           </Grid>
-        </Toolbar>
-      </AppBar>
-    </Box>
+          <Grid item xs={8}>
+            <FullSizeCenteredFlexBox>
+              <Button
+                onClick={() => {
+                  navigate('/');
+                }}
+                color="primary"
+              >
+                {title}
+              </Button>
+            </FullSizeCenteredFlexBox>
+          </Grid>
+          <Grid item xs={2}>
+            <FullSizeFlexBox sx={{ justifyContent: 'flex-end' }}>
+              {session ? (
+                //   <Chip icon={<FaceIcon />} label="" variant="outlined" />
+                // ) : (
+                <IconButton
+                  onClick={logOut}
+                  size="large"
+                  edge="end"
+                  sx={{ color: 'primary.main' }}
+                  aria-label="log in"
+                >
+                  <LogoutIcon />
+                </IconButton>
+              ) : (
+                <IconButton
+                  component={Link}
+                  to="/log-in"
+                  size="large"
+                  edge="end"
+                  sx={{ color: 'primary.main' }}
+                  aria-label="log in"
+                >
+                  <LoginIcon />
+                </IconButton>
+              )}
+            </FullSizeFlexBox>
+          </Grid>
+        </Grid>
+      </Toolbar>
+    </AppBar>
   );
 }
 

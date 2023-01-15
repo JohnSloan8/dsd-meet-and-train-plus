@@ -83,16 +83,16 @@ const updateActivity = async (
 ) => {
   const { data, error } = await supabaseClient
     .from('activities')
-    .upsert({ id: id, strava_data: strava_data, coords: coords, training_session_id: session_id })
+    .upsert({ id: id, strava_data: strava_data, coords: coords, session_id: session_id })
     .select();
   if (error) throw error;
   return data;
 };
 
-const getTrainingSession = async (supabaseClient: SupabaseClient, sessionStartDate: string) => {
+const getSession = async (supabaseClient: SupabaseClient, sessionStartDate: string) => {
   try {
     const { data, error } = await supabaseClient
-      .from('training_sessions')
+      .from('sessions')
       .select(`id, location(latitude, longitude), time, date`)
       .single()
       .limit(1)
@@ -110,16 +110,16 @@ const getTrainingSession = async (supabaseClient: SupabaseClient, sessionStartDa
   }
 };
 
-const createTrainingSessionAttendance = async (
+const createSessionAttendance = async (
   supabaseClient: SupabaseClient,
   user_id: string,
   session_id: number,
 ) => {
   const { data, error } = await supabaseClient
-    .from('training_session_attendance')
+    .from('session_attendances')
     .insert({
       user_id: user_id,
-      training_session_id: session_id,
+      session_id: session_id,
     })
     .select();
 
@@ -135,6 +135,6 @@ export {
   createActivity,
   updateActivity,
   doesActivityExist,
-  getTrainingSession,
-  createTrainingSessionAttendance,
+  getSession,
+  createSessionAttendance,
 };
