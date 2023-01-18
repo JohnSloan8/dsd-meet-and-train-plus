@@ -10,11 +10,13 @@ const Profile = () => {
   const { session } = useSession();
 
   useEffect(() => {
-    getProfile(session.user.id).then((p) => {
-      if (p) {
-        setProfile(p);
-      }
-    });
+    if (session) {
+      getProfile(session.user.id).then((p) => {
+        if (p) {
+          setProfile(p);
+        }
+      });
+    }
   }, []);
 
   return null;

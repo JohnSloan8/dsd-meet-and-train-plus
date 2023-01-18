@@ -1,12 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import dayjs, { Dayjs } from 'dayjs';
 
-import { Database } from '../../../types/supabase';
-
-const findCurrentSessionIndex = (
-  date: Dayjs,
-  sessions: Database['public']['Tables']['sessions']['Row'],
-) => {
+const findCurrentSessionIndex = (date: Dayjs, sessions: any[]) => {
   let index = 0;
 
   if (dayjs(date) >= dayjs(sessions[sessions.length - 1].date)) {

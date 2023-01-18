@@ -46,7 +46,7 @@ function Welcome() {
   const { stravaProfile, setStravaProfile } = useStravaProfile();
   const [showConnectStrava, setShowConnectStrava] = useState(false);
   const navigate = useNavigate();
-  const [sessionInPast] = useRecoilValue(sessionInPastState);
+  const sessionInPast = useRecoilValue(sessionInPastState);
   const currentSession = useRecoilValue(currentSessionState);
 
   useEffect(() => {

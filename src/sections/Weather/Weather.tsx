@@ -89,7 +89,11 @@ const Weather = () => {
             }
           });
         } else {
-          if (!sessionInPast && currentSession.weather !== null) {
+          if (
+            !sessionInPast &&
+            typeof currentSession.weather === 'object' &&
+            currentSession.weather !== null
+          ) {
             setCode(currentSession.weather.code);
             setTemperature(Math.round(currentSession.weather.temperature));
             setWindSpeed(currentSession.weather.windSpeed);
@@ -107,6 +111,7 @@ const Weather = () => {
           checkDaylight(currentSession.sunset);
         }
       }
+      // console.log('currentSession:', typeof currentSession.weather === 'object');
     } catch (error) {
       console.log('error', error);
     }
@@ -125,12 +130,14 @@ const Weather = () => {
   }, [daylight, code]);
 
   const checkDaylight = (sunset24Hr: string) => {
-    const sunset = new Date(`${currentSession.date}T${sunset24Hr}`);
-    const trainingTime = new Date(`${currentSession.date}T${currentSession.time}`);
-    if (sunset < trainingTime) {
-      setDaylight('n');
-    } else {
-      setDaylight('d');
+    if (currentSession !== undefined) {
+      const sunset = new Date(`${currentSession.date}T${sunset24Hr}`);
+      const trainingTime = new Date(`${currentSession.date}T${currentSession.time}`);
+      if (sunset < trainingTime) {
+        setDaylight('n');
+      } else {
+        setDaylight('d');
+      }
     }
   };
 

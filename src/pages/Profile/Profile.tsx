@@ -83,16 +83,18 @@ function Profile() {
       targetTimeSeconds,
       targetRace,
     );
-    updateProfile({
-      id: profile.id,
-      target_race: targetRace,
-      target_time: targetTimeString,
-      equivalent_paces: equivalentPaces,
-    }).then((d: any) => {
-      setProfile(d);
-      setUpdatingTarget(false);
-      navigate('/');
-    });
+    if (profile !== undefined) {
+      updateProfile({
+        id: profile.id,
+        target_race: targetRace,
+        target_time: targetTimeString,
+        equivalent_paces: equivalentPaces,
+      }).then((d: any) => {
+        setProfile(d);
+        setUpdatingTarget(false);
+        navigate('/');
+      });
+    }
   };
 
   return (

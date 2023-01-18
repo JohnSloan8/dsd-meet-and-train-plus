@@ -4,7 +4,7 @@ const getSessions = async (startDate: string, endDate: string) => {
   try {
     const { data, error } = await supabase
       .from('sessions')
-      .select(`*, coach(name, picture), location(name, latitude, longitude)`)
+      .select(`*, coach(*), location(*)`)
       .gte('date', startDate)
       .lte('date', endDate)
       .order('date', { ascending: true });

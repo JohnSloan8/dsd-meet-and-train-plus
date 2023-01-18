@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const getSunset = async (date: string) => {
+const getSunset = async (date: string | null) => {
   try {
     const { data } = await axios({
       method: 'get',
