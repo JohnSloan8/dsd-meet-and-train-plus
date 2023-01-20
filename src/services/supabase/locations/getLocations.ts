@@ -1,13 +1,8 @@
 import { supabase } from '@/services/supabase';
 
-const getSessions = async (startDate: string, endDate: string) => {
+const getLocationes = async (locationIDs: number[]) => {
   try {
-    const { data, error } = await supabase
-      .from('sessions')
-      .select(`*`)
-      .gte('date', startDate)
-      .lte('date', endDate)
-      .order('date', { ascending: true });
+    const { data, error } = await supabase.from('locations').select(`*`).in('id', locationIDs);
 
     if (data) {
       return data;
@@ -17,12 +12,10 @@ const getSessions = async (startDate: string, endDate: string) => {
       console.log('error:', error);
       return;
     }
-
-    return [];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     alert(error.message);
   }
 };
 
-export default getSessions;
+export default getLocationes;

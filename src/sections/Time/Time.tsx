@@ -14,7 +14,7 @@ function Time() {
   return currentSession !== undefined ? (
     <CenteredFlexBox sx={{ height: '100%', alignItems: 'center' }}>
       <Typography variant="h4" align="center" sx={{ fontFamily: 'digital' }}>
-        {currentSession.time.substring(0, 5)}
+        {currentSession.time !== null && currentSession.time.substring(0, 5)}
       </Typography>
     </CenteredFlexBox>
   ) : null;

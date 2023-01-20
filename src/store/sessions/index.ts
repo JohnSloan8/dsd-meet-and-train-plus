@@ -1,6 +1,6 @@
 import { atom, selector, useRecoilState } from 'recoil';
 
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 
 import { Database } from '../../../types/supabase';
 

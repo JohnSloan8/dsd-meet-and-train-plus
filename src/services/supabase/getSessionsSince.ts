@@ -1,12 +1,14 @@
 import { supabase } from '@/services/supabase';
 
-const getSessions = async (startDate: string, endDate: string) => {
+const getTrainingSessionsSince = async (startDate: string) => {
+  console.log('');
   try {
     const { data, error } = await supabase
-      .from('sessions')
-      .select(`*`)
+      .from('training_sessions')
+      .select(
+        `id, location(name, latitude, longitude), time, date, session, coach(name, coaching_role(type), picture), weather, sunset`,
+      )
       .gte('date', startDate)
-      .lte('date', endDate)
       .order('date', { ascending: true });
 
     if (data) {
@@ -14,15 +16,12 @@ const getSessions = async (startDate: string, endDate: string) => {
     }
 
     if (error) {
-      console.log('error:', error);
-      return;
+      throw error;
     }
-
-    return [];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     alert(error.message);
   }
 };
 
-export default getSessions;
+export default getTrainingSessionsSince;

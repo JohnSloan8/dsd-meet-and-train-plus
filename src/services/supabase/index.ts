@@ -1,8 +1,10 @@
+import getCoaches from './coaches/getCoaches';
 import createProfile from './createProfile';
 import createStravaProfile from './createStravaProfile';
 import getActivities from './getActivities';
 import getProfile from './getProfile';
 import getStravaProfile from './getStravaProfile';
+import getLocations from './locations/getLocations';
 import getSessionAttendance from './sessions/getSessionAttendance';
 import getSessionAttendanceProfiles from './sessions/getSessionAttendanceProfiles';
 import getSessions from './sessions/getSessions';
@@ -15,6 +17,8 @@ export {
   supabase,
   createStravaProfile,
   getStravaProfile,
+  getCoaches,
+  getLocations,
   getSessions,
   getSessionAttendance,
   getSessionAttendanceProfiles,

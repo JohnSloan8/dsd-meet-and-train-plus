@@ -8,34 +8,36 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 import { CenteredFlexBox } from '@/components/styled';
-import { currentSessionState } from '@/store/sessions';
+import { currentCoachState } from '@/store/coaches';
 
 function Coach() {
-  const currentSession = useRecoilValue(currentSessionState);
+  const currentCoach = useRecoilValue(currentCoachState);
 
   return (
     <Box p={1.5}>
-      {currentSession !== undefined ? (
+      {currentCoach !== undefined ? (
         <Box>
           <CenteredFlexBox p={0}>
             <Avatar
-              src={currentSession.coach.picture}
+              src={currentCoach.picture !== null ? currentCoach.picture : '#'}
               sx={{
                 border: '2px solid orange',
                 width: 72,
                 height: 72,
               }}
-              alt={currentSession.coach.name}
+              alt={currentCoach.name !== null ? currentCoach.name : ''}
             />
           </CenteredFlexBox>
 
           <Box pt={0.5}>
             <CenteredFlexBox>
-              <Typography variant="body2">{currentSession.coach.name.split(' ')[0]}</Typography>
+              <Typography variant="body2">
+                {currentCoach.name !== null ? currentCoach.name.split(' ')[0] : ''}
+              </Typography>
             </CenteredFlexBox>
             <CenteredFlexBox>
               <Typography variant="body2" mt={-0.25}>
-                {currentSession.coach.name.split(' ')[1]}
+                {currentCoach.name !== null ? currentCoach.name.split(' ')[1] : ''}
               </Typography>
             </CenteredFlexBox>
           </Box>

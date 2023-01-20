@@ -23,13 +23,13 @@ import Meta from '@/components/Meta';
 import { CenteredFlexBox } from '@/components/styled';
 import Profile from '@/controllers/Profile';
 import Sessions from '@/controllers/Sessions';
-import Attendance from '@/sections/Attendance';
+// import Attendance from '@/sections/Attendance';
 import Coach from '@/sections/Coach';
 import ConnectStrava from '@/sections/ConnectStrava';
 import Days from '@/sections/Days';
 import Location from '@/sections/Location';
 import MapCtrl from '@/sections/MapCtrl';
-import Performance from '@/sections/Performance';
+// import Performance from '@/sections/Performance';
 import Session from '@/sections/Session';
 import Time from '@/sections/Time';
 // import Warnings from '@/sections/Warnings';
@@ -133,7 +133,9 @@ function Welcome() {
                 <Box mt={2}>
                   <MTCard
                     height={
-                      currentSession !== undefined ? 104 + currentSession.session.length * 28 : 24
+                      currentSession !== undefined && Array.isArray(currentSession.session)
+                        ? 104 + currentSession.session.length * 28
+                        : 24
                     }
                     title={'session'}
                     icon={SportsIcon}
@@ -141,7 +143,9 @@ function Welcome() {
                   >
                     <Box
                       height={
-                        currentSession !== undefined ? 80 + currentSession.session.length * 28 : 0
+                        currentSession !== undefined && Array.isArray(currentSession.session)
+                          ? 80 + currentSession.session.length * 28
+                          : 0
                       }
                       width={'100%'}
                       sx={{ position: 'relative' }}
@@ -155,7 +159,7 @@ function Welcome() {
               <Box>
                 <Box>
                   <MTCard height={166} title={'attendance'} icon={PeopleIcon} color={'primary'}>
-                    <Attendance />
+                    {/* <Attendance /> */}
                   </MTCard>
                 </Box>
                 <Box mt={2}>
@@ -168,7 +172,9 @@ function Welcome() {
                 <Box mt={2}>
                   <MTCard
                     height={
-                      currentSession !== undefined ? 104 + currentSession.session.length * 28 : 24
+                      currentSession !== undefined && Array.isArray(currentSession.session)
+                        ? 104 + currentSession.session.length * 28
+                        : 24
                     }
                     title={'session & paces'}
                     icon={SportsIcon}
@@ -176,7 +182,9 @@ function Welcome() {
                   >
                     <Box
                       height={
-                        currentSession !== undefined ? 80 + currentSession.session.length * 28 : 0
+                        currentSession !== undefined && Array.isArray(currentSession.session)
+                          ? 80 + currentSession.session.length * 28
+                          : 0
                       }
                       width={'100%'}
                       sx={{ position: 'relative' }}
@@ -188,7 +196,7 @@ function Welcome() {
                 <Box mt={2}>
                   <MTCard height={200} title={'performance'} icon={EqualizerIcon} color={'info'}>
                     <Box height={176} width={'100%'} sx={{ position: 'relative' }}>
-                      <Performance />
+                      {/* <Performance /> */}
                     </Box>
                   </MTCard>
                 </Box>

@@ -40,12 +40,14 @@ const Weather = () => {
           if (currentSession.weather === null) {
             weatherNeedsUpdating = true;
           } else {
-            const timeElapsedSinceUpdate =
-              Date.now() - new Date(currentSession.weather.updatedAt).getTime();
-            console.log('timeElapsedSinceUpdate:', timeElapsedSinceUpdate);
-            if (timeElapsedSinceUpdate / 3600000 > 60) {
-              weatherNeedsUpdating = true;
-              console.log('too much time elapsed');
+            if (typeof currentSession.weather === 'object') {
+              const timeElapsedSinceUpdate =
+                Date.now() - new Date(currentSession.weather.updatedAt).getTime();
+              console.log('timeElapsedSinceUpdate:', timeElapsedSinceUpdate);
+              if (timeElapsedSinceUpdate / 3600000 > 60) {
+                weatherNeedsUpdating = true;
+                console.log('too much time elapsed');
+              }
             }
           }
         } else {

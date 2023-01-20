@@ -19,7 +19,7 @@ const searchForIndexInMiddle = (d: any, Ss: any) => {
 
   while (dayMinus <= 7) {
     index = Ss.findIndex((s: any) => {
-      const calcDate = d.subtract(dayMinus, 'days').format('YYYY-MM-DD');
+      const calcDate = d.add(dayMinus, 'days').format('YYYY-MM-DD');
       return s.date === calcDate;
     });
     if (index !== -1) {

@@ -6,15 +6,15 @@ import { useRecoilValue } from 'recoil';
 import Typography from '@mui/material/Typography';
 
 import { CenteredFlexBox } from '@/components/styled';
-import { currentSessionState } from '@/store/sessions';
+import { currentLocationState } from '@/store/locations';
 
 function Location() {
-  const currentSession = useRecoilValue(currentSessionState);
+  const currentLocation = useRecoilValue(currentLocationState);
 
-  return currentSession !== undefined ? (
+  return currentLocation !== undefined ? (
     <CenteredFlexBox sx={{ height: '100%', alignItems: 'center' }}>
       <Typography align="center" sx={{ fontWeight: 'bold' }} variant="h6">
-        {currentSession.location.name}
+        {currentLocation.name !== null ? currentLocation.name : ''}
       </Typography>
     </CenteredFlexBox>
   ) : null;
