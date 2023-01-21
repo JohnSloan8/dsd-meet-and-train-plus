@@ -2,12 +2,7 @@ import { supabase } from '@/services/supabase';
 
 const getStravaProfile = async (userID: string) => {
   try {
-    const { data, error } = await supabase
-      .from('strava_profile')
-      .select(
-        `id, user_id, access_token, refresh_token, first_name, surname, city, country, strava_id, profile_pic, profile_pic_medium, sex`,
-      )
-      .eq('user_id', userID);
+    const { data, error } = await supabase.from('strava_profile').select(`*`).eq('user_id', userID);
 
     if (data) {
       return data[0];

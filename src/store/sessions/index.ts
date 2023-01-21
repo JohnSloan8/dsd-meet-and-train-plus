@@ -82,28 +82,14 @@ const sessionInPastState = selector({
   },
 });
 
-const SessionAttendanceState = atom<[] | string[]>({
+const sessionAttendanceState = atom<[] | string[]>({
   key: 'session-attendance',
   default: [],
 });
 
 const useSessionAttendance = () => {
-  const [SessionAttendance, setSessionAttendance] = useRecoilState(SessionAttendanceState);
-  return { SessionAttendance, setSessionAttendance };
-};
-
-const SessionAttendanceProfilesState = atom<
-  Database['public']['Tables']['session_attendances']['Row'][]
->({
-  key: 'session-attendance-profiles',
-  default: [],
-});
-
-const useSessionAttendanceProfiles = () => {
-  const [SessionAttendanceProfiles, setSessionAttendanceProfiles] = useRecoilState(
-    SessionAttendanceProfilesState,
-  );
-  return { SessionAttendanceProfiles, setSessionAttendanceProfiles };
+  const [sessionAttendance, setSessionAttendance] = useRecoilState(sessionAttendanceState);
+  return { sessionAttendance, setSessionAttendance };
 };
 
 const daylightState = atom<'d' | 'n'>({
@@ -123,7 +109,6 @@ export {
   nextSessionExistsState,
   previousSessionExistsState,
   useSessionAttendance,
-  useSessionAttendanceProfiles,
   useDaylight,
   sessionInPastState,
 };

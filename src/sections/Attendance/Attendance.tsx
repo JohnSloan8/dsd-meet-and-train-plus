@@ -11,15 +11,14 @@ import IconButton from '@mui/material/IconButton';
 
 import { CenteredFlexBox } from '@/components/styled';
 import { getSessionAttendance } from '@/services/supabase';
-import { getSessionAttendanceProfiles } from '@/services/supabase';
+import { getStravaProfiles } from '@/services/supabase';
 import { useSelectedAthlete } from '@/store/activities';
-import { useSessionAttendance, useSessionAttendanceProfiles } from '@/store/sessions';
-import { currentSessionState } from '@/store/sessions';
+import { currentSessionState, useSessionAttendance } from '@/store/sessions';
+import { useStravaProfiles } from '@/store/stravaProfile';
 
 function Attendance() {
-  const { SessionAttendance, setSessionAttendance } = useSessionAttendance();
-  const { SessionAttendanceProfiles, setSessionAttendanceProfiles } =
-    useSessionAttendanceProfiles();
+  const { sessionAttendance, setSessionAttendance } = useSessionAttendance();
+  const { stravaProfiles, setStravaProfiles } = useStravaProfiles();
 
   const currentSession = useRecoilValue(currentSessionState);
 
@@ -43,18 +42,18 @@ function Attendance() {
   }, [currentSession]);
 
   useEffect(() => {
-    if (SessionAttendance && SessionAttendance.length > 0) {
-      getSessionAttendanceProfiles(SessionAttendance).then((d: any) => {
-        setSessionAttendanceProfiles(d);
+    if (sessionAttendance && sessionAttendance.length > 0) {
+      getStravaProfiles(sessionAttendance).then((d: any) => {
+        setStravaProfiles(d);
       });
     } else {
-      setSessionAttendanceProfiles([]);
+      setStravaProfiles([]);
     }
-  }, [SessionAttendance]);
+  }, [sessionAttendance]);
 
   useEffect(() => {
-    console.log('SessionAttendanceProfiles:', SessionAttendanceProfiles);
-  }, [SessionAttendanceProfiles]);
+    console.log('stravaProfiles:', stravaProfiles);
+  }, [stravaProfiles]);
 
   const clickAvatar = (userID: string) => {
     if (userID === selectedAthlete) {
@@ -65,7 +64,7 @@ function Attendance() {
   };
 
   // useEffect(() => {
-  //   const selectedAthleteProfile = SessionAttendanceProfiles.find((p) => {
+  //   const selectedAthleteProfile = StravaProfiles.find((p) => {
   //     return p.user_id === selectedAthlete;
   //   });
   //   if (selectedAthleteProfile !== undefined) {
@@ -85,12 +84,12 @@ function Attendance() {
       <CenteredFlexBox>
         <Box px={2} py={1} width={440}>
           <Grid container>
-            {SessionAttendanceProfiles.map((p, i) => (
+            {stravaProfiles.map((p, i: number) => (
               <Grid key={i} item width={56} mb={-0.7}>
                 <CenteredFlexBox>
                   <IconButton
                     onClick={() => {
-                      clickAvatar(p.user_id);
+                      clickAvatar(p.user_id !== null ? p.user_id : '');
                     }}
                     sx={{
                       width: 64,
@@ -99,8 +98,8 @@ function Attendance() {
                     }}
                   >
                     <Avatar
-                      src={p.profile_pic}
-                      alt={p.first_name}
+                      src={p.profile_pic !== null ? p.profile_pic : ''}
+                      alt={p.first_name !== null ? p.first_name : ''}
                       sx={{
                         border:
                           selectedAthlete === p.user_id ? `2px solid #0d47a1` : '2px solid white',

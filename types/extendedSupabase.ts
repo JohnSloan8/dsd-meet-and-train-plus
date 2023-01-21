@@ -1,27 +1,27 @@
-import {Database} from './supabase'
+// import { EquivalentPacesModel, SessionModel, WeatherModel } from './extendedSupabase';
 
-interface Session {
-    pace: string
-    reps: number
-    time?: string
-    distance?: string
-    recovery: string
+interface SessionModel {
+  pace: string;
+  reps: number;
+  time?: string;
+  distance?: string;
+  recovery: string;
 }
 
-interface Weather {
-  code: number
-  updatedAt: number
-  windSpeed: number
-  temperature: number
-  windDirection: number
+interface WeatherModel {
+  code: number;
+  updatedAt: number;
+  windSpeed: number;
+  temperature: number;
+  windDirection: number;
 }
 
-interface SessionDatabase extends Omit<Database, 'public.Tables.sessions.Row.session'> {
-  session: Session[]
+interface EquivalentPacesModel {
+  distance: string;
+  race_time: number;
+  seconds_per_km: number;
+  race_pace_km: number;
+  race_pace_mile: number;
+  race_time_list: [number, number, number];
 }
-
-interface extendedDatabase extends Omit<SessionDatabase, 'public.Tables.sessions.Row.weather'> {
-  weather: Weather
-}
-
-export type {extendedDatabase}
+export type { SessionModel, WeatherModel, EquivalentPacesModel };

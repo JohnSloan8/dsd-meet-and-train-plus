@@ -2,9 +2,9 @@ import { atom, selector, useRecoilState } from 'recoil';
 
 import { currentSessionState } from '@/store/sessions';
 
-import { extendedDatabase } from '../../../types/extendedSupabase';
+import { Database } from '../../../types/supabase';
 
-const coachesState = atom<extendedDatabase['public']['Tables']['coaches']['Row'][]>({
+const coachesState = atom<Database['public']['Tables']['coaches']['Row'][]>({
   key: 'coaches',
   default: [],
 });

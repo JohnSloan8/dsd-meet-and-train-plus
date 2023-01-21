@@ -1,7 +1,10 @@
-import { StravaProfileModel } from '@/models';
 import { supabase } from '@/services/supabase';
 
-const createStravaProfile = async (profileData: StravaProfileModel) => {
+import { Database } from '../../../types/supabase';
+
+const createStravaProfile = async (
+  profileData: Database['public']['Tables']['strava_profiles']['Insert'],
+) => {
   try {
     const { data, error } = await supabase.from('strava_profile').insert(profileData).select();
 

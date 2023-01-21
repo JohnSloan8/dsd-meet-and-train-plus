@@ -1,0 +1,46 @@
+// https://www.met.ie/Open_Data/json/warning_IRELAND.json
+[
+  {
+    "id": 4,
+    "capId": "2.49.0.1.372.0.230118054301.N_Norm020_Advisory",
+    "type": "Advisory",
+    "severity": "Moderate",
+    "certainty": "Possible",
+    "level": "Yellow",
+    "issued": "2023-01-18T05:43:01-00:00",
+    "updated": "2023-01-18T05:43:01-00:00",
+    "onset": "2023-01-18T05:42:50-00:00",
+    "expiry": "2023-01-20T09:00:00-00:00",
+    "headline": "Winter Weather Advisory for Ireland",
+    "description": "Staying cold until Friday with sharp to severe frosts and icy stretches on roads and footpaths. Some showers of hail, sleet and snow are expected with the potential for freezing fog.  For winter weather preparation visit www.winterready.ie  Get your 10-day location forecast on www.met.ie",
+    "regions": [
+      "EI30",
+      "EI21",
+      "EI31",
+      "EI23",
+      "EI19",
+      "EI18",
+      "EI01",
+      "EI15",
+      "EI29",
+      "EI13",
+      "EI12",
+      "EI07",
+      "EI02",
+      "EI22",
+      "EI06",
+      "EI26",
+      "EI27",
+      "EI16",
+      "EI03",
+      "EI04",
+      "EI11",
+      "EI25",
+      "EI24",
+      "EI14",
+      "EI20",
+      "EI10"
+    ],
+    "status": "Advisory"
+  }
+]

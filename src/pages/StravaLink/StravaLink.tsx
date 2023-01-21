@@ -11,7 +11,7 @@ import Meta from '@/components/Meta';
 import { getProfile } from '@/services/strava';
 import { createStravaProfile } from '@/services/supabase';
 import { useSession } from '@/store/auth';
-import { useStravaProfile } from '@/store/strava-profile';
+import { useStravaProfile } from '@/store/stravaProfile';
 
 function StravaLink() {
   const [searchParams] = useSearchParams();

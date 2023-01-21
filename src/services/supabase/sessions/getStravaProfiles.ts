@@ -1,11 +1,12 @@
 import { supabase } from '@/services/supabase';
 
-const getSessionAttendanceProfiles = async (list_of_ids: string[]) => {
+const getStravaProfiles = async (list_of_ids: string[]) => {
   try {
     const { data, error } = await supabase
       .from('strava_profile')
-      .select(`user_id, first_name, surname, profile_pic`)
-      .filter('user_id', 'in', `(${list_of_ids})`);
+      .select(`*`)
+      // .filter('user_id', 'in', `(${list_of_ids})`);
+      .in('user_id', list_of_ids);
 
     if (data) {
       return data;
@@ -20,4 +21,4 @@ const getSessionAttendanceProfiles = async (list_of_ids: string[]) => {
   }
 };
 
-export default getSessionAttendanceProfiles;
+export default getStravaProfiles;

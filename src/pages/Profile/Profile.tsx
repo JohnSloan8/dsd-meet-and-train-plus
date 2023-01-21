@@ -173,7 +173,7 @@ function Profile() {
                   name="hours"
                   id="hours"
                   value={targetTimeHours}
-                  onChange={(e) => setTargetTimeHours(e.target.value)}
+                  onChange={(e) => setTargetTimeHours(e.target.value as number as number)}
                 >
                   {[...Array(7).keys()].map((i) => (
                     <MenuItem key={i} value={`${i}`}>
@@ -190,7 +190,7 @@ function Profile() {
                   name="mins"
                   id="mins"
                   value={targetTimeMinutes}
-                  onChange={(e) => setTargetTimeMinutes(e.target.value)}
+                  onChange={(e) => setTargetTimeMinutes(e.target.value as number)}
                 >
                   {[...Array(60).keys()].map((i) => (
                     <MenuItem key={i} value={`${i}`}>
@@ -207,7 +207,7 @@ function Profile() {
                   name="secs"
                   id="secs"
                   value={targetTimeSeconds}
-                  onChange={(e) => setTargetTimeSeconds(e.target.value)}
+                  onChange={(e) => setTargetTimeSeconds(e.target.value as number)}
                 >
                   {[...Array(60).keys()].map((i) => (
                     <MenuItem key={i} value={`${i}`}>

@@ -23,7 +23,7 @@ import Meta from '@/components/Meta';
 import { CenteredFlexBox } from '@/components/styled';
 import Profile from '@/controllers/Profile';
 import Sessions from '@/controllers/Sessions';
-// import Attendance from '@/sections/Attendance';
+import Attendance from '@/sections/Attendance';
 import Coach from '@/sections/Coach';
 import ConnectStrava from '@/sections/ConnectStrava';
 import Days from '@/sections/Days';
@@ -38,7 +38,7 @@ import { getStravaProfile } from '@/services/supabase';
 import { useSession } from '@/store/auth';
 import { sessionInPastState } from '@/store/sessions';
 import { currentSessionState } from '@/store/sessions';
-import { useStravaProfile } from '@/store/strava-profile';
+import { useStravaProfile } from '@/store/stravaProfile';
 import { welcomeTheme } from '@/theme/theme';
 
 function Welcome() {
@@ -159,7 +159,7 @@ function Welcome() {
               <Box>
                 <Box>
                   <MTCard height={166} title={'attendance'} icon={PeopleIcon} color={'primary'}>
-                    {/* <Attendance /> */}
+                    <Attendance />
                   </MTCard>
                 </Box>
                 <Box mt={2}>

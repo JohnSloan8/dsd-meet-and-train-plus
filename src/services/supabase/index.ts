@@ -6,8 +6,8 @@ import getProfile from './getProfile';
 import getStravaProfile from './getStravaProfile';
 import getLocations from './locations/getLocations';
 import getSessionAttendance from './sessions/getSessionAttendance';
-import getSessionAttendanceProfiles from './sessions/getSessionAttendanceProfiles';
 import getSessions from './sessions/getSessions';
+import getStravaProfiles from './sessions/getStravaProfiles';
 import updateSessionSunset from './sessions/updateSessionSunset';
 import updateSessionWeather from './sessions/updateSessionWeather';
 import supabase from './supabase';
@@ -21,7 +21,7 @@ export {
   getLocations,
   getSessions,
   getSessionAttendance,
-  getSessionAttendanceProfiles,
+  getStravaProfiles,
   updateSessionWeather,
   updateSessionSunset,
   getActivities,

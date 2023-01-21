@@ -1,13 +1,11 @@
 import { supabase } from '@/services/supabase';
 
-const getTrainingSessionsSince = async (startDate: string) => {
+const getSessionsSince = async (startDate: string) => {
   console.log('');
   try {
     const { data, error } = await supabase
-      .from('training_sessions')
-      .select(
-        `id, location(name, latitude, longitude), time, date, session, coach(name, coaching_role(type), picture), weather, sunset`,
-      )
+      .from('sessions')
+      .select(`*`)
       .gte('date', startDate)
       .order('date', { ascending: true });
 
@@ -24,4 +22,4 @@ const getTrainingSessionsSince = async (startDate: string) => {
   }
 };
 
-export default getTrainingSessionsSince;
+export default getSessionsSince;

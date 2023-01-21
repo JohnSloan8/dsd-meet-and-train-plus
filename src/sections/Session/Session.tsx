@@ -29,21 +29,22 @@ function Session() {
   const { profile } = useProfile();
 
   useEffect(() => {
-    if (currentSession !== undefined && profile != undefined) {
+    if (
+      currentSession !== undefined &&
+      Array.isArray(currentSession.session) &&
+      profile != undefined
+    ) {
       const tempPacesList: any = [];
-      currentSession.session.map((s: any) => {
+      currentSession.session.map((s) => {
         const tempPaces = {
           reps: s.reps,
           pace: s.pace,
           distance: s.distance ? s.distance : undefined,
           time: s.time ? s.time : undefined,
           recovery: s.recovery ? s.recovery : undefined,
-          paceSpeed:
-            profile.equivalent_paces !== null &&
-            profile.equivalent_paces !== undefined &&
-            profile.equivalent_paces[s.pace] !== undefined
-              ? profile.equivalent_paces[s.pace]
-              : undefined,
+          paceSpeed: Array.isArray(profile.equivalent_paces)
+            ? profile.equivalent_paces.find((e_p) => e_p.pace === s.pace)
+            : undefined,
         };
         tempPacesList.push(tempPaces);
       });
