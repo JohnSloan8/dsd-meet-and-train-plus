@@ -3,7 +3,7 @@ import { SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const getUserProfile = async (supabaseClient: SupabaseClient, strava_id: number) => {
   const { data, error } = await supabaseClient
-    .from('strava_profile')
+    .from('strava_profiles')
     .select(`id, user_id, access_token, refresh_token, token_expires_at`)
     .single()
     .limit(1)
@@ -21,7 +21,7 @@ const updateAccessToken = async (
   supabaseClient: SupabaseClient,
 ) => {
   const { data, error } = await supabaseClient
-    .from('strava_profile')
+    .from('strava_profiles')
     .upsert({ id: id, access_token: access_token, token_expires_at: expires_at })
     .select();
   if (error) throw error;

@@ -6,7 +6,7 @@ const createStravaProfile = async (
   profileData: Database['public']['Tables']['strava_profiles']['Insert'],
 ) => {
   try {
-    const { data, error } = await supabase.from('strava_profile').insert(profileData).select();
+    const { data, error } = await supabase.from('strava_profiles').insert(profileData).select();
 
     if (error) {
       throw error;

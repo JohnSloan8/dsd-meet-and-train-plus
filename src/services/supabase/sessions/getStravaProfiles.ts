@@ -3,7 +3,7 @@ import { supabase } from '@/services/supabase';
 const getStravaProfiles = async (list_of_ids: string[]) => {
   try {
     const { data, error } = await supabase
-      .from('strava_profile')
+      .from('strava_profiles')
       .select(`*`)
       // .filter('user_id', 'in', `(${list_of_ids})`);
       .in('user_id', list_of_ids);
