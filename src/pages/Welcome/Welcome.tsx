@@ -16,8 +16,8 @@ import SportsIcon from '@mui/icons-material/Sports';
 // import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import { ThemeProvider } from '@mui/material/styles';
 
+// import { ThemeProvider } from '@mui/material/styles';
 import MTCard from '@/components/MTCard';
 import Meta from '@/components/Meta';
 import { CenteredFlexBox } from '@/components/styled';
@@ -39,7 +39,8 @@ import { useSession } from '@/store/auth';
 import { sessionInPastState } from '@/store/sessions';
 import { currentSessionState } from '@/store/sessions';
 import { useStravaProfile } from '@/store/stravaProfile';
-import { welcomeTheme } from '@/theme/theme';
+
+// import { welcomeTheme } from '@/theme/theme';
 
 function Welcome() {
   const { session } = useSession();
@@ -70,7 +71,8 @@ function Welcome() {
   }, [stravaProfile]);
 
   return session ? (
-    <ThemeProvider theme={welcomeTheme}>
+    // <ThemeProvider theme={welcomeTheme}>
+    <Box>
       <Sessions />
       <Profile />
       <Box sx={{ backgroundColor: '#225', minHeight: '100vh', width: '100%' }}>
@@ -205,8 +207,9 @@ function Welcome() {
           </Box>
         </CenteredFlexBox>
       </Box>
-    </ThemeProvider>
-  ) : null;
+    </Box>
+  ) : // </ThemeProvider>
+  null;
 }
 
 export default Welcome;
