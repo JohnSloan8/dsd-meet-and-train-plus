@@ -54,7 +54,7 @@ function Header() {
   // }
 
   return (
-    <AppBar sx={{ color: 'background.paper' }} elevation={1} position="fixed">
+    <AppBar sx={{ backgroundColor: 'background.paper' }} elevation={1} position="fixed">
       <Toolbar sx={{ justifyContent: 'center' }}>
         <Grid container>
           <Grid item xs={2}>
