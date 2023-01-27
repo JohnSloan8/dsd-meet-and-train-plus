@@ -13,12 +13,12 @@ import { transform } from 'ol/proj';
 import { OSM, Vector as VectorSource } from 'ol/source';
 import { Icon, Stroke, Style } from 'ol/style.js';
 
-import { ActivityModel } from '@/models';
+import { Database } from '../../../types/supabase';
 
 interface OpenMapProps {
   lat: number;
   lon: number;
-  activities: ActivityModel[];
+  activities: Database['public']['Tables']['activities']['Row'][];
   selectedAthlete: string | undefined;
 }
 
@@ -64,7 +64,7 @@ const OpenMap = ({ lat, lon, activities, selectedAthlete }: OpenMapProps) => {
 
   interface GeometryModel {
     type: string;
-    coordinates: [number, number][];
+    coordinates: [number, number][] | null;
   }
 
   // const hexValues = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F'];

@@ -1,8 +1,8 @@
 import { atom, selector, useRecoilState } from 'recoil';
 
-import { ActivityModel } from '@/models';
+import { Database } from '../../../types/supabase';
 
-const activitiesState = atom<ActivityModel[]>({
+const activitiesState = atom<Database['public']['Tables']['activities']['Row'][]>({
   key: 'activities-state',
   default: [],
 });

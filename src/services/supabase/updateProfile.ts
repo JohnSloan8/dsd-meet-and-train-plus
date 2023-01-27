@@ -1,10 +1,13 @@
-import { ProfileModel } from '@/models';
+// import { Database } from '../../../types/supabase';
+import { EquivalentPacesModel } from '@/models';
 import { supabase } from '@/services/supabase';
 
-const updateProfile = async ({ id, target_race, target_time, equivalent_paces }: ProfileModel) => {
-  console.log('target_race:', target_race);
-  console.log('target_time:', target_time);
-  console.log('equivalent_paces:', equivalent_paces);
+const updateProfile = async (
+  id: number,
+  target_race: string,
+  target_time: string,
+  equivalent_paces: EquivalentPacesModel[],
+) => {
   try {
     const { data, error } = await supabase
       .from('profiles')

@@ -42,13 +42,18 @@ function Performance() {
       const tempSpeeds: any[] = [];
       const tempDistances: any[] = [];
       const tempLaps: string[] = [];
-      selectedAthleteActivityState.strava_data.laps.map((l: any, i: number) => {
-        if (l.average_speed > 1.5) {
-          tempSpeeds.push(16.667 / l.average_speed);
-          tempDistances.push(l.distance);
-          tempLaps.push((i + 1).toString());
-        }
-      });
+      if (
+        selectedAthleteActivityState.strava_data !== null &&
+        Array.isArray(selectedAthleteActivityState.strava_data.laps)
+      ) {
+        selectedAthleteActivityState.strava_data.laps.map((l: any, i: number) => {
+          if (l.average_speed > 1.5) {
+            tempSpeeds.push(16.667 / l.average_speed);
+            tempDistances.push(l.distance);
+            tempLaps.push((i + 1).toString());
+          }
+        });
+      }
       setData({
         labels: tempLaps,
         datasets: [

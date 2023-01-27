@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { EquivalentPacesModel, SessionModel, WeatherModel } from '@/models';
 
 export type Json = string | number | boolean | null | { [key: string]: Json } | Json[];
@@ -7,12 +8,12 @@ export interface Database {
     Tables: {
       activities: {
         Row: {
-          coords: Json | null;
+          coords: [number, number][] | null;
           created_at: string | null;
           id: number;
           session_id: number | null;
           strava_activity_id: number | null;
-          strava_data: Json | null;
+          strava_data: any | null;
           user_id: string | null;
         };
         Insert: {
@@ -21,7 +22,7 @@ export interface Database {
           id?: number;
           session_id?: number | null;
           strava_activity_id?: number | null;
-          strava_data?: Json | null;
+          strava_data?: any | null;
           user_id?: string | null;
         };
         Update: {
@@ -30,7 +31,7 @@ export interface Database {
           id?: number;
           session_id?: number | null;
           strava_activity_id?: number | null;
-          strava_data?: Json | null;
+          strava_data?: any | null;
           user_id?: string | null;
         };
       };
@@ -100,7 +101,7 @@ export interface Database {
       profiles: {
         Row: {
           created_at: string | null;
-          equivalent_paces: EquivalentPacesModel | null;
+          equivalent_paces: EquivalentPacesModel[] | null;
           id: number;
           target_race: string | null;
           target_time: string | null;

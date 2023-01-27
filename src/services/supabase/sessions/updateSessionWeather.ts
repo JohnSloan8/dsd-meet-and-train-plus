@@ -1,4 +1,4 @@
-import { WeatherModel } from '@/models/SessionModel';
+import { WeatherModel } from '@/models';
 import { supabase } from '@/services/supabase';
 
 const updateSessionWeather = async (id: number, weather: WeatherModel) => {

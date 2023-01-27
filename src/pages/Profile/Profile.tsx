@@ -84,12 +84,7 @@ function Profile() {
       targetRace,
     );
     if (profile !== undefined) {
-      updateProfile({
-        id: profile.id,
-        target_race: targetRace,
-        target_time: targetTimeString,
-        equivalent_paces: equivalentPaces,
-      }).then((d: any) => {
+      updateProfile(profile.id, targetRace, targetTimeString, equivalentPaces).then((d: any) => {
         setProfile(d);
         setUpdatingTarget(false);
         navigate('/');
