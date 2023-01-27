@@ -16,8 +16,8 @@ import SportsIcon from '@mui/icons-material/Sports';
 // import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import { ThemeProvider } from '@mui/material/styles';
 
-// import { ThemeProvider } from '@mui/material/styles';
 import MTCard from '@/components/MTCard';
 import Meta from '@/components/Meta';
 import { CenteredFlexBox } from '@/components/styled';
@@ -39,8 +39,7 @@ import { useSession } from '@/store/auth';
 import { sessionInPastState } from '@/store/sessions';
 import { currentSessionState } from '@/store/sessions';
 import { useStravaProfile } from '@/store/stravaProfile';
-
-// import { welcomeTheme } from '@/theme/theme';
+import { welcomeTheme } from '@/theme/theme';
 
 function Welcome() {
   const { session } = useSession();
@@ -71,145 +70,150 @@ function Welcome() {
   }, [stravaProfile]);
 
   return session ? (
-    // <ThemeProvider theme={welcomeTheme}>
-    <Box>
-      <Sessions />
-      <Profile />
-      <Box sx={{ backgroundColor: '#225', minHeight: '100vh', width: '100%' }}>
-        <CenteredFlexBox>
-          <Meta title="Welcome" />
-          <Days />
-          <Box px={1} pt={9} pb={8} maxWidth="sm" width="100%">
-            <Box>{showConnectStrava ? <ConnectStrava /> : null}</Box>
-            {!sessionInPast ? (
-              <Box>
+    <ThemeProvider theme={welcomeTheme}>
+      <Box>
+        <Sessions />
+        <Profile />
+        <Box sx={{ backgroundColor: '#225', minHeight: '100vh', width: '100%' }}>
+          <CenteredFlexBox>
+            <Meta title="Welcome" />
+            <Days />
+            <Box px={1} pt={9} pb={8} maxWidth="sm" width="100%">
+              <Box>{showConnectStrava ? <ConnectStrava /> : null}</Box>
+              {!sessionInPast ? (
                 <Box>
-                  <Grid container mt={0} mb={1}>
-                    <Grid item xs={3.5} pr={0.5}>
-                      <MTCard
-                        height={166}
-                        title={'coach'}
-                        icon={AccessibilityIcon}
-                        color={'primary'}
-                      >
-                        <Coach />
-                      </MTCard>
-                    </Grid>
-
-                    <Grid item xs={5} px={0.5}>
-                      <Grid item xs={12}>
+                  <Box>
+                    <Grid container mt={0} mb={1}>
+                      <Grid item xs={3.5} pr={0.5}>
                         <MTCard
-                          height={79}
-                          title={'location'}
-                          icon={LocationOnIcon}
+                          height={166}
+                          title={'coach'}
+                          icon={AccessibilityIcon}
                           color={'primary'}
                         >
-                          <Location />
+                          <Coach />
                         </MTCard>
                       </Grid>
-                      <Grid item xs={12} mt={1}>
-                        <MTCard height={79} title={'time'} icon={AccessTimeIcon} color={'primary'}>
-                          <Time />
+
+                      <Grid item xs={5} px={0.5}>
+                        <Grid item xs={12}>
+                          <MTCard
+                            height={79}
+                            title={'location'}
+                            icon={LocationOnIcon}
+                            color={'primary'}
+                          >
+                            <Location />
+                          </MTCard>
+                        </Grid>
+                        <Grid item xs={12} mt={1}>
+                          <MTCard
+                            height={79}
+                            title={'time'}
+                            icon={AccessTimeIcon}
+                            color={'primary'}
+                          >
+                            <Time />
+                          </MTCard>
+                        </Grid>
+                      </Grid>
+                      <Grid item xs={3.5} pl={0.5}>
+                        <MTCard
+                          height={166}
+                          title={'forecast'}
+                          icon={FilterDramaIcon}
+                          color={'primary'}
+                        >
+                          <Weather />
                         </MTCard>
                       </Grid>
                     </Grid>
-                    <Grid item xs={3.5} pl={0.5}>
-                      <MTCard
-                        height={166}
-                        title={'forecast'}
-                        icon={FilterDramaIcon}
-                        color={'primary'}
+                  </Box>
+                  <Box mt={2}>
+                    <MTCard height={180} title={'route'} icon={MapIcon} color={'secondary'}>
+                      <Box height={156} width={'100%'} sx={{ position: 'relative' }}>
+                        <MapCtrl />
+                      </Box>
+                    </MTCard>
+                  </Box>
+                  <Box mt={2}>
+                    <MTCard
+                      height={
+                        currentSession !== undefined && Array.isArray(currentSession.session)
+                          ? 104 + currentSession.session.length * 28
+                          : 24
+                      }
+                      title={'session'}
+                      icon={SportsIcon}
+                      color={'warning'}
+                    >
+                      <Box
+                        height={
+                          currentSession !== undefined && Array.isArray(currentSession.session)
+                            ? 80 + currentSession.session.length * 28
+                            : 0
+                        }
+                        width={'100%'}
+                        sx={{ position: 'relative' }}
                       >
-                        <Weather />
-                      </MTCard>
-                    </Grid>
-                  </Grid>
+                        <Session />
+                      </Box>
+                    </MTCard>
+                  </Box>
                 </Box>
-                <Box mt={2}>
-                  <MTCard height={180} title={'route'} icon={MapIcon} color={'secondary'}>
-                    <Box height={156} width={'100%'} sx={{ position: 'relative' }}>
-                      <MapCtrl />
-                    </Box>
-                  </MTCard>
-                </Box>
-                <Box mt={2}>
-                  <MTCard
-                    height={
-                      currentSession !== undefined && Array.isArray(currentSession.session)
-                        ? 104 + currentSession.session.length * 28
-                        : 24
-                    }
-                    title={'session'}
-                    icon={SportsIcon}
-                    color={'warning'}
-                  >
-                    <Box
-                      height={
-                        currentSession !== undefined && Array.isArray(currentSession.session)
-                          ? 80 + currentSession.session.length * 28
-                          : 0
-                      }
-                      width={'100%'}
-                      sx={{ position: 'relative' }}
-                    >
-                      <Session />
-                    </Box>
-                  </MTCard>
-                </Box>
-              </Box>
-            ) : (
-              <Box>
+              ) : (
                 <Box>
-                  <MTCard height={166} title={'attendance'} icon={PeopleIcon} color={'primary'}>
-                    <Attendance />
-                  </MTCard>
-                </Box>
-                <Box mt={2}>
-                  <MTCard height={180} title={'routes'} icon={MapIcon} color={'secondary'}>
-                    <Box height={156} width={'100%'} sx={{ position: 'relative' }}>
-                      <MapCtrl />
-                    </Box>
-                  </MTCard>
-                </Box>
-                <Box mt={2}>
-                  <MTCard
-                    height={
-                      currentSession !== undefined && Array.isArray(currentSession.session)
-                        ? 104 + currentSession.session.length * 28
-                        : 24
-                    }
-                    title={'session & paces'}
-                    icon={SportsIcon}
-                    color={'warning'}
-                  >
-                    <Box
+                  <Box>
+                    <MTCard height={166} title={'attendance'} icon={PeopleIcon} color={'primary'}>
+                      <Attendance />
+                    </MTCard>
+                  </Box>
+                  <Box mt={2}>
+                    <MTCard height={180} title={'routes'} icon={MapIcon} color={'secondary'}>
+                      <Box height={156} width={'100%'} sx={{ position: 'relative' }}>
+                        <MapCtrl />
+                      </Box>
+                    </MTCard>
+                  </Box>
+                  <Box mt={2}>
+                    <MTCard
                       height={
                         currentSession !== undefined && Array.isArray(currentSession.session)
-                          ? 80 + currentSession.session.length * 28
-                          : 0
+                          ? 104 + currentSession.session.length * 28
+                          : 24
                       }
-                      width={'100%'}
-                      sx={{ position: 'relative' }}
+                      title={'session & paces'}
+                      icon={SportsIcon}
+                      color={'warning'}
                     >
-                      <Session />
-                    </Box>
-                  </MTCard>
+                      <Box
+                        height={
+                          currentSession !== undefined && Array.isArray(currentSession.session)
+                            ? 80 + currentSession.session.length * 28
+                            : 0
+                        }
+                        width={'100%'}
+                        sx={{ position: 'relative' }}
+                      >
+                        <Session />
+                      </Box>
+                    </MTCard>
+                  </Box>
+                  <Box mt={2}>
+                    <MTCard height={200} title={'performance'} icon={EqualizerIcon} color={'info'}>
+                      <Box height={176} width={'100%'} sx={{ position: 'relative' }}>
+                        {/* <Performance /> */}
+                      </Box>
+                    </MTCard>
+                  </Box>
                 </Box>
-                <Box mt={2}>
-                  <MTCard height={200} title={'performance'} icon={EqualizerIcon} color={'info'}>
-                    <Box height={176} width={'100%'} sx={{ position: 'relative' }}>
-                      {/* <Performance /> */}
-                    </Box>
-                  </MTCard>
-                </Box>
-              </Box>
-            )}
-          </Box>
-        </CenteredFlexBox>
+              )}
+            </Box>
+          </CenteredFlexBox>
+        </Box>
       </Box>
-    </Box>
-  ) : // </ThemeProvider>
-  null;
+    </ThemeProvider>
+  ) : null;
 }
 
 export default Welcome;
