@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { EquivalentPacesModel } from '@/models';
+
 const createTargetTimeString = (
   targetTimeHours: number,
   targetTimeMinutes: number,
@@ -23,7 +25,7 @@ const createTargetTimeNumerics = (targetTimeString: string): [number, number, nu
   return [parseInt(h), parseInt(m), parseInt(s)];
 };
 
-const raceToMetres: any = {
+const raceToMetres: { [key: string]: number } = {
   '1 km': 1000,
   '1 mile': 1609,
   '5 km': 5000,
@@ -35,16 +37,33 @@ const raceToMetres: any = {
 };
 
 const calculateEquivalentPaces = (h: number, m: number, s: number, distance: string) => {
-  const equivalentPaces: any = {
-    '1 km': null,
-    '1 mile': null,
-    '5 km': null,
-    '5 mile': null,
-    '10 km': null,
-    '10 mile': null,
-    'half marathon': null,
-    marathon: null,
-  };
+  const equivalentPaces: EquivalentPacesModel[] = [
+    {
+      pace: '1 km',
+    },
+    {
+      pace: '1 mile',
+    },
+    {
+      pace: '5 km',
+    },
+    {
+      pace: '5 mile',
+    },
+    {
+      pace: '10 km',
+    },
+    {
+      pace: '10 mile',
+    },
+    {
+      pace: 'half marathon',
+    },
+    {
+      pace: 'marathon',
+    },
+  ];
+
   const targetTimeInSeconds = numericsToSeconds(h, m, s);
   Object.entries(raceToMetres).map((e: any) => {
     const totalSeconds = equivalencyFormula(targetTimeInSeconds, raceToMetres[distance], e[1]);
@@ -53,7 +72,10 @@ const calculateEquivalentPaces = (h: number, m: number, s: number, distance: str
     const racePaceMile = racePaceKmToMile(racePaceKm);
     const raceTime = secondsToNumerics(totalSeconds);
 
-    equivalentPaces[e[0]] = {
+    const index = equivalentPaces.findIndex((eP) => eP.pace === e[0]);
+    console.log('index:', index);
+    equivalentPaces[index] = {
+      pace: e[0],
       race_time: totalSeconds,
       seconds_per_km: secondsPerKm,
       race_pace_km: `${decimalPaceToMinsString(racePaceKm)}/km`,
@@ -63,24 +85,26 @@ const calculateEquivalentPaces = (h: number, m: number, s: number, distance: str
 
     if (e[0] === '5 km') {
       // TEMPO
-      equivalentPaces['tempo'] = {
+      equivalentPaces.push({
+        pace: 'tempo',
         race_time: 3600,
         seconds_per_km: secondsPerKm + 0.5,
         race_pace_km: `${decimalPaceToMinsString(racePaceKm + 0.5)}/km`,
         race_pace_mile: `${decimalPaceToMinsString(racePaceKmToMile(racePaceKm + 0.5))}/mile`,
         race_time_list: [1, 0, 0],
-      };
+      });
     }
 
     if (e[0] === '10 km') {
       // Easy - https://www.runnersworld.com/uk/training/beginners/a26514237/running-pacing-easy-miles/
-      equivalentPaces['easy'] = {
+      equivalentPaces.push({
+        pace: 'easy',
         race_time: null,
         seconds_per_km: 1.3 * secondsPerKm,
         race_pace_km: `${decimalPaceToMinsString(1.3 * racePaceKm)}/km`,
         race_pace_mile: `${decimalPaceToMinsString(racePaceKmToMile(1.3 * racePaceKm))}/mile`,
         race_time_list: null,
-      };
+      });
     }
   });
 

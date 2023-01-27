@@ -1,5 +1,5 @@
-import { ActivityModel } from './ActivityModel';
-import ProfileModel from './ProfileModel';
-import { SessionAttendanceProfileModel, SessionModel } from './SessionModel';
+import { EquivalentPacesModel } from './EquivalentPaces';
+import { SessionModel } from './Session';
+import { WeatherModel } from './Weather';
 
-export type { SessionAttendanceProfileModel, SessionModel, ActivityModel, ProfileModel };
+export type { EquivalentPacesModel, SessionModel, WeatherModel };

@@ -48,6 +48,8 @@ function Session() {
         };
         tempPacesList.push(tempPaces);
       });
+      console.log('tempPacesList:', tempPacesList);
+      console.log('profile.equivalent_paces:', profile.equivalent_paces);
       setPaces(tempPacesList);
       getActivities(currentSession.id).then((activities: any) => {
         setActivities(activities);

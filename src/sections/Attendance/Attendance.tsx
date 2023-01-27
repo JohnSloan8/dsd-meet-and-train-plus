@@ -51,9 +51,9 @@ function Attendance() {
     }
   }, [sessionAttendance]);
 
-  useEffect(() => {
-    console.log('stravaProfiles:', stravaProfiles);
-  }, [stravaProfiles]);
+  // useEffect(() => {
+  //   console.log('stravaProfiles:', stravaProfiles);
+  // }, [stravaProfiles]);
 
   const clickAvatar = (userID: string) => {
     if (userID === selectedAthlete) {

@@ -1,4 +1,4 @@
-import { EquivalentPacesModel, SessionModel, WeatherModel } from './extendedSupabase';
+import { EquivalentPacesModel, SessionModel, WeatherModel } from '@/models';
 
 export type Json = string | number | boolean | null | { [key: string]: Json } | Json[];
 
