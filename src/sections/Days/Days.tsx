@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 
 import { CenteredFlexBox } from '@/components/styled';
 import {
