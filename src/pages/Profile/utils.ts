@@ -37,6 +37,7 @@ const raceToMetres: { [key: string]: number } = {
 };
 
 const calculateEquivalentPaces = (h: number, m: number, s: number, distance: string) => {
+  console.log('distance:', distance);
   const equivalentPaces: EquivalentPacesModel[] = [
     {
       pace: '1 km',
@@ -65,15 +66,16 @@ const calculateEquivalentPaces = (h: number, m: number, s: number, distance: str
   ];
 
   const targetTimeInSeconds = numericsToSeconds(h, m, s);
+  console.log('targetTimeInSeconds:', targetTimeInSeconds);
   Object.entries(raceToMetres).map((e: any) => {
     const totalSeconds = equivalencyFormula(targetTimeInSeconds, raceToMetres[distance], e[1]);
+    console.log('totalSeconds:', totalSeconds);
     const secondsPerKm = (1000 * totalSeconds) / e[1];
     const racePaceKm = raceTimeToKm(totalSeconds, e[1]);
     const racePaceMile = racePaceKmToMile(racePaceKm);
     const raceTime = secondsToNumerics(totalSeconds);
 
     const index = equivalentPaces.findIndex((eP) => eP.pace === e[0]);
-    console.log('index:', index);
     equivalentPaces[index] = {
       pace: e[0],
       race_time: totalSeconds,
@@ -111,11 +113,16 @@ const calculateEquivalentPaces = (h: number, m: number, s: number, distance: str
   return equivalentPaces;
 };
 
-const numericsToSeconds = (h: number, m: number, s: number) => {
+const numericsToSeconds = (h: number, m: number, s: number): number => {
+  console.log(`h:m:s ${h}, ${m}, ${s}`);
   const hrs = h * 3600;
+  console.log('hrs:', typeof hrs);
   const mns = m * 60;
+  console.log('mns:', typeof mns);
   const scs = s;
+  console.log('scs:', typeof scs);
   const totalSecs = hrs + mns + scs;
+  console.log('totalSecs:', totalSecs);
 
   return totalSecs;
 };

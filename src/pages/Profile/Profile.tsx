@@ -27,9 +27,9 @@ import {
 function Profile() {
   const [targetRace, setTargetRace] = useState('');
   const [updatingTarget, setUpdatingTarget] = useState(false);
-  const [targetTimeHours, setTargetTimeHours] = useState(0);
-  const [targetTimeMinutes, setTargetTimeMinutes] = useState(0);
-  const [targetTimeSeconds, setTargetTimeSeconds] = useState(0);
+  const [targetTimeHours, setTargetTimeHours] = useState<number>(0);
+  const [targetTimeMinutes, setTargetTimeMinutes] = useState<number>(0);
+  const [targetTimeSeconds, setTargetTimeSeconds] = useState<number>(0);
   const { profile, setProfile } = useProfile();
   const { session } = useSession();
   const navigate = useNavigate();
@@ -168,7 +168,7 @@ function Profile() {
                   name="hours"
                   id="hours"
                   value={targetTimeHours}
-                  onChange={(e) => setTargetTimeHours(e.target.value as number as number)}
+                  onChange={(e) => setTargetTimeHours(parseInt(e.target.value))}
                 >
                   {[...Array(7).keys()].map((i) => (
                     <MenuItem key={i} value={`${i}`}>
@@ -185,7 +185,7 @@ function Profile() {
                   name="mins"
                   id="mins"
                   value={targetTimeMinutes}
-                  onChange={(e) => setTargetTimeMinutes(e.target.value as number)}
+                  onChange={(e) => setTargetTimeMinutes(parseInt(e.target.value))}
                 >
                   {[...Array(60).keys()].map((i) => (
                     <MenuItem key={i} value={`${i}`}>
@@ -202,7 +202,7 @@ function Profile() {
                   name="secs"
                   id="secs"
                   value={targetTimeSeconds}
-                  onChange={(e) => setTargetTimeSeconds(e.target.value as number)}
+                  onChange={(e) => setTargetTimeSeconds(parseInt(e.target.value))}
                 >
                   {[...Array(60).keys()].map((i) => (
                     <MenuItem key={i} value={`${i}`}>
