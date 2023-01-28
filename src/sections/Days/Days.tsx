@@ -43,7 +43,6 @@ function Days() {
         height: 56,
         backgroundColor: 'background.paper',
       }}
-      elevation={1}
     >
       {currentSession !== undefined ? (
         <CenteredFlexBox>

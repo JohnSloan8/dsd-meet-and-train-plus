@@ -31,17 +31,6 @@ const mainTheme = createTheme({
       secondary: '#555',
     },
   },
-  select: {
-    '&:before': {
-      borderColor: blue[400],
-    },
-    '&:after': {
-      borderColor: blue[400],
-    },
-  },
-  icon: {
-    fill: blue[400],
-  },
 });
 
 const profileTheme = createTheme(mainTheme, {
