@@ -13,8 +13,8 @@ const mainTheme = createTheme({
       main: red[500],
     },
     background: {
-      default: '#fafafa',
-      paper: '#fff',
+      default: '#225',
+      paper: '#236',
     },
     info: {
       dark: green[900],
@@ -26,10 +26,25 @@ const mainTheme = createTheme({
       main: orange[700],
       light: orange[500],
     },
+    text: {
+      primary: '#fff',
+      secondary: '#555',
+    },
+  },
+  select: {
+    '&:before': {
+      borderColor: blue[400],
+    },
+    '&:after': {
+      borderColor: blue[400],
+    },
+  },
+  icon: {
+    fill: blue[400],
   },
 });
 
-const welcomeTheme = createTheme(mainTheme, {
+const profileTheme = createTheme(mainTheme, {
   palette: {
     text: {
       primary: '#fff',
@@ -37,4 +52,4 @@ const welcomeTheme = createTheme(mainTheme, {
   },
 });
 
-export { mainTheme, welcomeTheme };
+export { mainTheme, profileTheme };

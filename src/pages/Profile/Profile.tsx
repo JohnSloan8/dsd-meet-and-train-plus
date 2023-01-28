@@ -7,16 +7,19 @@ import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import InputLabel from '@mui/material/InputLabel';
+// import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
+import { ThemeProvider } from '@mui/material/styles';
 
+// import { styled } from '@mui/system';
 import Meta from '@/components/Meta';
 import { CenteredFlexBox, FullSizeBox } from '@/components/styled';
 import { getProfile, updateProfile } from '@/services/supabase';
 import { useSession } from '@/store/auth';
 import { useProfile } from '@/store/profile';
+import { profileTheme } from '@/theme/theme';
 
 import {
   calculateEquivalentPaces,
@@ -93,138 +96,170 @@ function Profile() {
   };
 
   return (
-    <FullSizeBox pt={8}>
-      <Meta title="sign up" />
+    <ThemeProvider theme={profileTheme}>
+      <FullSizeBox pt={8} px={1}>
+        <Meta title="profile" />
+        <Grid container spacing={0} width={'100%'}>
+          <Grid item xs={6}>
+            <Box>
+              <Typography variant="h6" align="center" color="primary">
+                Target Race
+              </Typography>
 
-      <Typography m={4} variant="h3" align="center" color="primary">
-        Profile
-      </Typography>
-      {profile !== undefined && (
-        <Box>
-          <Typography mt={4} variant="body1" align="center" color="primary">
-            Target Race
-          </Typography>
-          {profile.target_race && (
-            <Typography variant="h4" align="center" color="primary">
-              {`${profile.target_race}`}
-            </Typography>
-          )}
-        </Box>
-      )}
-      {profile !== undefined && (
-        <Box>
-          <Typography mt={1} variant="body1" align="center" color="primary">
-            Target Time
-          </Typography>
-          {profile.target_time && (
-            <Typography mb={4} variant="h4" align="center" color="primary">
-              {`${profile.target_time}`}
-            </Typography>
-          )}
-        </Box>
-      )}
-
-      <CenteredFlexBox>
-        <Box
-          component="form"
-          noValidate
-          onSubmit={(e: FormEvent<HTMLFormElement>) => {
-            handleSubmit(e);
-          }}
-          my={2}
-          sx={{ width: '240px' }}
-        >
-          <Grid container spacing={0} width={'100%'}>
-            <InputLabel id="target-race">Set Target Race</InputLabel>
-            <Grid item xs={12} my={1}>
-              <InputLabel id="mins">distance</InputLabel>
-              <Select
-                required
-                fullWidth
-                name="target race"
-                id="target-race"
-                value={targetRace}
-                // label="target race"
-                onChange={(e) => setTargetRace(e.target.value)}
-              >
-                <MenuItem value={'1 mile'}>1 mile</MenuItem>
-                <MenuItem value={'5 km'}>5 km</MenuItem>
-                <MenuItem value={'5 mile'}>5 mile</MenuItem>
-                <MenuItem value={'10 km'}>10 km</MenuItem>
-                <MenuItem value={'10 mile'}>10 mile</MenuItem>
-                <MenuItem value={'half marathon'}>half marathon</MenuItem>
-                <MenuItem value={'marathon'}>marathon</MenuItem>
-              </Select>
-            </Grid>
+              {profile !== undefined && profile.target_race && (
+                <Typography variant="h4" align="center" color="primary">
+                  {`${profile.target_race}`}
+                </Typography>
+              )}
+            </Box>
           </Grid>
-          <Box mt={2}>
-            <InputLabel id="hours">Set Target Time</InputLabel>
-            <Grid container spacing={1}>
-              <Grid item xs={4} my={1}>
-                <InputLabel id="hrs">hours</InputLabel>
+
+          <Grid item xs={6}>
+            <Box>
+              <Typography variant="h6" align="center" color="primary">
+                Target Time
+              </Typography>
+              {profile !== undefined && profile.target_time && (
+                <Typography variant="h4" align="center" color="primary">
+                  {`${profile.target_time}`}
+                </Typography>
+              )}
+            </Box>
+          </Grid>
+        </Grid>
+
+        <Typography my={1} variant="h6" align="center" color="primary">
+          Equivalent Paces
+        </Typography>
+        <Grid container spacing={0} width={'100%'}>
+          {profile.equivalent_paces.map((eP, i) => (
+            <Grid item key={i} xs={3} mb={1}>
+              <Typography variant="body2" align="center" color="primary">
+                {`${eP.pace}: ${eP.race_pace_km}`}
+              </Typography>
+            </Grid>
+          ))}
+        </Grid>
+
+        <CenteredFlexBox>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={(e: FormEvent<HTMLFormElement>) => {
+              handleSubmit(e);
+            }}
+            my={2}
+            p={4}
+            border={1}
+            borderColor="primary.dark"
+            sx={{ borderRadius: 2, width: '280px' }}
+            backgroundColor="primary.dark"
+          >
+            <Grid container spacing={0} width={'100%'}>
+              <Typography color="#fff" id="target-race">
+                Set Target Race
+              </Typography>
+              <Grid item xs={12} my={1}>
                 <Select
                   required
                   fullWidth
-                  name="hours"
-                  id="hours"
-                  value={targetTimeHours}
-                  onChange={(e) => setTargetTimeHours(parseInt(e.target.value))}
+                  name="target race"
+                  id="target-race"
+                  value={targetRace}
+                  // label="target race"
+                  onChange={(e) => setTargetRace(e.target.value)}
                 >
-                  {[...Array(7).keys()].map((i) => (
-                    <MenuItem key={i} value={`${i}`}>
-                      {i}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </Grid>
-              <Grid item xs={4} my={1}>
-                <InputLabel id="mins">mins</InputLabel>
-                <Select
-                  required
-                  fullWidth
-                  name="mins"
-                  id="mins"
-                  value={targetTimeMinutes}
-                  onChange={(e) => setTargetTimeMinutes(parseInt(e.target.value))}
-                >
-                  {[...Array(60).keys()].map((i) => (
-                    <MenuItem key={i} value={`${i}`}>
-                      {i}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </Grid>
-              <Grid item xs={4} my={1}>
-                <InputLabel id="mins">secs</InputLabel>
-                <Select
-                  required
-                  fullWidth
-                  name="secs"
-                  id="secs"
-                  value={targetTimeSeconds}
-                  onChange={(e) => setTargetTimeSeconds(parseInt(e.target.value))}
-                >
-                  {[...Array(60).keys()].map((i) => (
-                    <MenuItem key={i} value={`${i}`}>
-                      {i}
-                    </MenuItem>
-                  ))}
+                  <MenuItem value={'1 mile'}>1 mile</MenuItem>
+                  <MenuItem value={'5 km'}>5 km</MenuItem>
+                  <MenuItem value={'5 mile'}>5 mile</MenuItem>
+                  <MenuItem value={'10 km'}>10 km</MenuItem>
+                  <MenuItem value={'10 mile'}>10 mile</MenuItem>
+                  <MenuItem value={'half marathon'}>half marathon</MenuItem>
+                  <MenuItem value={'marathon'}>marathon</MenuItem>
                 </Select>
               </Grid>
             </Grid>
+            <Box mt={2}>
+              <Typography color="#fff" id="target-race">
+                Set Target Time
+              </Typography>
+              <Grid container spacing={1}>
+                <Grid item xs={4} my={1}>
+                  <Typography color="#fff" id="target-race">
+                    hours
+                  </Typography>
+                  <Select
+                    required
+                    fullWidth
+                    name="hours"
+                    id="hours"
+                    value={targetTimeHours}
+                    onChange={(e) => setTargetTimeHours(parseInt(e.target.value))}
+                  >
+                    {[...Array(7).keys()].map((i) => (
+                      <MenuItem key={i} value={`${i}`}>
+                        {i}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Grid>
+                <Grid item xs={4} my={1}>
+                  <Typography color="#fff" id="target-race">
+                    mins
+                  </Typography>
+                  <Select
+                    required
+                    fullWidth
+                    name="mins"
+                    id="mins"
+                    value={targetTimeMinutes}
+                    onChange={(e) => setTargetTimeMinutes(parseInt(e.target.value))}
+                  >
+                    {[...Array(60).keys()].map((i) => (
+                      <MenuItem key={i} value={`${i}`}>
+                        {i}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Grid>
+                <Grid item xs={4} my={1}>
+                  <Typography color="#fff" id="target-race">
+                    secs
+                  </Typography>
+                  <Select
+                    required
+                    fullWidth
+                    name="secs"
+                    id="secs"
+                    value={targetTimeSeconds}
+                    onChange={(e) => setTargetTimeSeconds(parseInt(e.target.value))}
+                  >
+                    {[...Array(60).keys()].map((i) => (
+                      <MenuItem key={i} value={`${i}`}>
+                        {i}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Grid>
+              </Grid>
+            </Box>
+            {!updatingTarget &&
+              targetRace !== '' &&
+              targetTimeHours + targetTimeMinutes + targetTimeSeconds !== 0 && (
+                <CenteredFlexBox sx={{ width: '100%' }}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2, color: '#fff', backgroundColor: 'background.paper' }}
+                  >
+                    submit
+                  </Button>
+                </CenteredFlexBox>
+              )}
           </Box>
-          {!updatingTarget &&
-            targetRace !== '' &&
-            targetTimeHours + targetTimeMinutes + targetTimeSeconds !== 0 && (
-              <CenteredFlexBox sx={{ width: '100%' }}>
-                <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2, color: 'white' }}>
-                  submit
-                </Button>
-              </CenteredFlexBox>
-            )}
-        </Box>
-      </CenteredFlexBox>
-    </FullSizeBox>
+        </CenteredFlexBox>
+      </FullSizeBox>
+    </ThemeProvider>
   );
 }
 

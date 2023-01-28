@@ -35,9 +35,15 @@ function Days() {
 
   return (
     <CenteredFlexBox
-      borderTop={1}
-      borderColor="primary.light"
-      sx={{ position: 'fixed', width: '100%', bottom: 0, zIndex: 1000, backgroundColor: '#225' }}
+      sx={{
+        position: 'fixed',
+        width: '100%',
+        bottom: 0,
+        zIndex: 1000,
+        height: 56,
+        backgroundColor: 'background.paper',
+      }}
+      elevation={1}
     >
       {currentSession !== undefined ? (
         <CenteredFlexBox>
@@ -48,12 +54,12 @@ function Days() {
                   setCurrentSessionIndex(currentSessionIndex - 1);
                 }}
               >
-                <ArrowCircleLeftIcon sx={{ color: 'white' }} fontSize={'large'} />
+                <ArrowCircleLeftIcon sx={{ color: 'primary.light' }} fontSize={'large'} />
               </IconButton>
             )}
           </Box>
 
-          <Typography variant="h6" color="#fff" align="center" minWidth="150px">
+          <Typography variant="h6" color="primary.light" align="center" minWidth="150px">
             {currentDateString}
           </Typography>
 
@@ -65,7 +71,7 @@ function Days() {
                 }}
               >
                 <ArrowCircleLeftIcon
-                  sx={{ transform: `rotate(180deg)`, color: 'white' }}
+                  sx={{ transform: `rotate(180deg)`, color: 'primary.light' }}
                   fontSize={'large'}
                 />
               </IconButton>

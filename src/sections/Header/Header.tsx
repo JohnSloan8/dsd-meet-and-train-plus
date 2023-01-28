@@ -12,6 +12,7 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 
 import { FullSizeCenteredFlexBox, FullSizeFlexBox } from '@/components/styled';
 import { title } from '@/config';
@@ -54,7 +55,7 @@ function Header() {
   // }
 
   return (
-    <AppBar sx={{ backgroundColor: 'background.paper' }} elevation={1} position="fixed">
+    <AppBar elevation={1} position="fixed" sx={{ backgroundColor: 'background.paper' }}>
       <Toolbar sx={{ justifyContent: 'center' }}>
         <Grid container>
           <Grid item xs={2}>
@@ -63,11 +64,10 @@ function Header() {
                 onClick={sidebarActions.toggle}
                 size="large"
                 edge="start"
-                color="primary"
                 aria-label="menu"
                 sx={{ mr: 1 }}
               >
-                <MenuIcon />
+                <MenuIcon sx={{ color: 'primary.light' }} />
               </IconButton>
             </FullSizeFlexBox>
           </Grid>
@@ -77,9 +77,10 @@ function Header() {
                 onClick={() => {
                   navigate('/');
                 }}
-                color="primary"
               >
-                {title}
+                <Typography variant="h6" color="primary.light">
+                  {title}
+                </Typography>
               </Button>
             </FullSizeCenteredFlexBox>
           </Grid>
@@ -88,14 +89,8 @@ function Header() {
               {session ? (
                 //   <Chip icon={<FaceIcon />} label="" variant="outlined" />
                 // ) : (
-                <IconButton
-                  onClick={logOut}
-                  size="large"
-                  edge="end"
-                  sx={{ color: 'primary.main' }}
-                  aria-label="log in"
-                >
-                  <LogoutIcon />
+                <IconButton onClick={logOut} size="large" edge="end" aria-label="log in">
+                  <LogoutIcon sx={{ color: 'primary.light' }} />
                 </IconButton>
               ) : (
                 <IconButton
@@ -103,10 +98,9 @@ function Header() {
                   to="/log-in"
                   size="large"
                   edge="end"
-                  sx={{ color: 'primary.main' }}
                   aria-label="log in"
                 >
-                  <LoginIcon />
+                  <LoginIcon sx={{ color: 'primary.light' }} />
                 </IconButton>
               )}
             </FullSizeFlexBox>

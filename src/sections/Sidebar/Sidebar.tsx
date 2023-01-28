@@ -29,8 +29,14 @@ function Sidebar() {
           .map(({ path, title, icon: Icon }) => (
             <ListItem sx={{ p: 0 }} key={path}>
               <ListItemButton onClick={sidebarActions.close} component={Link} to={path}>
-                <ListItemIcon>{Icon ? <Icon /> : <DefaultIcon />}</ListItemIcon>
-                <ListItemText>{title}</ListItemText>
+                <ListItemIcon>
+                  {Icon ? (
+                    <Icon sx={{ color: 'primary.light' }} />
+                  ) : (
+                    <DefaultIcon sx={{ color: 'primary.light' }} />
+                  )}
+                </ListItemIcon>
+                <ListItemText sx={{ color: 'primary.light' }}>{title}</ListItemText>
               </ListItemButton>
             </ListItem>
           ))}

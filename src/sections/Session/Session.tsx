@@ -2,15 +2,12 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import RestoreIcon from '@mui/icons-material/Restore';
 import SpeedIcon from '@mui/icons-material/Speed';
-// import TimerIcon from '@mui/icons-material/Timer';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 import { WarningGrid } from '@/components/styled';
@@ -23,7 +20,6 @@ import { currentSessionState } from '@/store/sessions';
 function Session() {
   const { setActivities } = useActivities();
   const currentSession = useRecoilValue(currentSessionState);
-  const navigate = useNavigate();
 
   const [paces, setPaces] = useState([]);
   const { profile } = useProfile();
@@ -113,16 +109,6 @@ function Session() {
               </Box>
             ))}
         </Box>
-      </CenteredFlexBox>
-      <CenteredFlexBox>
-        <Button
-          onClick={() => {
-            navigate('/profile');
-          }}
-          sx={{ backgroundColor: 'warning.dark', color: '#fff' }}
-        >
-          Set Race Target
-        </Button>
       </CenteredFlexBox>
     </Box>
   ) : null;
