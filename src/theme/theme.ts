@@ -1,21 +1,16 @@
 import { blue, green, orange, red } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
 
-const mainTheme = createTheme({
+const baseTheme = createTheme({
   palette: {
     primary: {
       dark: blue[900],
       main: blue[800],
       light: blue[600],
-      wafer: blue[100],
     },
     secondary: {
       light: red[700],
       main: red[800],
-    },
-    background: {
-      default: '#225',
-      paper: '#236',
     },
     info: {
       dark: green[900],
@@ -34,12 +29,37 @@ const mainTheme = createTheme({
   },
 });
 
-const profileTheme = createTheme(mainTheme, {
+const mainTheme = createTheme(baseTheme, {
   palette: {
     text: {
       primary: '#fff',
     },
+    background: {
+      default: '#225',
+      paper: '#236',
+    },
   },
 });
 
-export { mainTheme, profileTheme };
+const profileTheme = createTheme(baseTheme, {
+  palette: {
+    text: {
+      primary: '#fff',
+    },
+    background: {
+      default: '#225',
+      paper: '#236',
+    },
+  },
+});
+
+const loginTheme = createTheme(baseTheme, {
+  palette: {
+    background: {
+      default: '#fff',
+      paper: '#f3f3f3',
+    },
+  },
+});
+
+export { mainTheme, profileTheme, loginTheme };

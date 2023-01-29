@@ -45,6 +45,7 @@ function Session() {
         tempPacesList.push(tempPaces);
       });
       setPaces(tempPacesList);
+      console.log('tempPacesList:', tempPacesList);
       getActivities(currentSession.id).then((activities: any) => {
         setActivities(activities);
       });

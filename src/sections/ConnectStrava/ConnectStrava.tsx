@@ -4,7 +4,7 @@ import { CenteredFlexBox } from '@/components/styled';
 
 function ConnectStrava() {
   return (
-    <CenteredFlexBox pb={2} sx={{ width: '100%' }}>
+    <CenteredFlexBox py={2} sx={{ width: '100%' }}>
       <Button
         size="large"
         variant="contained"

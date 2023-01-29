@@ -67,7 +67,7 @@ function Header() {
                 aria-label="menu"
                 sx={{ mr: 1 }}
               >
-                <MenuIcon sx={{ color: 'primary.wafer' }} />
+                <MenuIcon sx={{ color: '#fff' }} />
               </IconButton>
             </FullSizeFlexBox>
           </Grid>
@@ -78,7 +78,7 @@ function Header() {
                   navigate('/');
                 }}
               >
-                <Typography variant="h6" color="primary.wafer">
+                <Typography variant="h6" color="#fff">
                   {title}
                 </Typography>
               </Button>
@@ -90,7 +90,7 @@ function Header() {
                 //   <Chip icon={<FaceIcon />} label="" variant="outlined" />
                 // ) : (
                 <IconButton onClick={logOut} size="large" edge="end" aria-label="log in">
-                  <LogoutIcon sx={{ color: 'primary.wafer' }} />
+                  <LogoutIcon sx={{ color: '#fff' }} />
                 </IconButton>
               ) : (
                 <IconButton
@@ -100,7 +100,7 @@ function Header() {
                   edge="end"
                   aria-label="log in"
                 >
-                  <LoginIcon sx={{ color: 'primary.wafer' }} />
+                  <LoginIcon sx={{ color: '#fff' }} />
                 </IconButton>
               )}
             </FullSizeFlexBox>
