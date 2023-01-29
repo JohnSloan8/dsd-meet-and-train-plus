@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box';
 import Grid, { GridProps } from '@mui/material/Grid';
+import ToggleButton, { ToggleButtonProps } from '@mui/material/ToggleButton';
 import { styled } from '@mui/system';
 
 const FlexBox = styled(Box)({
@@ -31,7 +32,16 @@ const FullSizeCenteredFlexBox = styled(CenteredFlexBox)({
 });
 
 const WarningGrid = styled(Grid)<GridProps>(({ theme }) => ({
-  borderColor: theme.palette.warning.light,
+  borderColor: theme.palette.info.light,
+}));
+
+const PaceUnitToggleButton = styled(ToggleButton)<ToggleButtonProps>(({ theme }) => ({
+  '&.MuiToggleButton-root': {
+    color: theme.palette.primary.main,
+  },
+  '&.Mui-selected': {
+    color: '#fff',
+  },
 }));
 
 export {
@@ -42,4 +52,5 @@ export {
   FullSizeCenteredFlexBox,
   FullSizeBox,
   WarningGrid,
+  PaceUnitToggleButton,
 };

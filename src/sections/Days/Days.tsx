@@ -53,12 +53,12 @@ function Days() {
                   setCurrentSessionIndex(currentSessionIndex - 1);
                 }}
               >
-                <ArrowCircleLeftIcon sx={{ color: 'primary.light' }} fontSize={'large'} />
+                <ArrowCircleLeftIcon sx={{ color: 'primary.wafer' }} fontSize={'large'} />
               </IconButton>
             )}
           </Box>
 
-          <Typography variant="h6" color="primary.light" align="center" minWidth="150px">
+          <Typography variant="h6" color="primary.wafer" align="center" minWidth="150px">
             {currentDateString}
           </Typography>
 
@@ -70,7 +70,7 @@ function Days() {
                 }}
               >
                 <ArrowCircleLeftIcon
-                  sx={{ transform: `rotate(180deg)`, color: 'primary.light' }}
+                  sx={{ transform: `rotate(180deg)`, color: 'primary.wafer' }}
                   fontSize={'large'}
                 />
               </IconButton>

@@ -10,7 +10,7 @@ const createTargetTimeString = (
   const minutesString = `${targetTimeMinutes}`;
   const secondsString = `${targetTimeSeconds}`;
   let timeString = '';
-  hoursString.length == 1 ? (timeString += `0${hoursString}:`) : (timeString += `${hoursString}:`);
+  hoursString !== '0' ? (timeString += `${hoursString}:`) : (timeString += ``);
   minutesString.length == 1
     ? (timeString += `0${minutesString}:`)
     : (timeString += `${minutesString}:`);

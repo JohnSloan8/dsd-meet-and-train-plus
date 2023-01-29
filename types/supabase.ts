@@ -106,6 +106,7 @@ export interface Database {
           target_race: string | null;
           target_time: string | null;
           user_id: string | null;
+          pace_in_km: boolean;
         };
         Insert: {
           created_at?: string | null;
@@ -114,6 +115,7 @@ export interface Database {
           target_race?: string | null;
           target_time?: string | null;
           user_id?: string | null;
+          pace_in_km: boolean;
         };
         Update: {
           created_at?: string | null;
@@ -122,6 +124,7 @@ export interface Database {
           target_race?: string | null;
           target_time?: string | null;
           user_id?: string | null;
+          pace_in_km: boolean;
         };
       };
       session_attendances: {

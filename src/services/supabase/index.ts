@@ -12,6 +12,7 @@ import updateSessionSunset from './sessions/updateSessionSunset';
 import updateSessionWeather from './sessions/updateSessionWeather';
 import supabase from './supabase';
 import updateProfile from './updateProfile';
+import updateProfilePaceUnits from './updateProfilePaceUnits';
 
 export {
   supabase,
@@ -28,4 +29,5 @@ export {
   getProfile,
   updateProfile,
   createProfile,
+  updateProfilePaceUnits,
 };

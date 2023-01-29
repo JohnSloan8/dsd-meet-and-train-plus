@@ -9,13 +9,14 @@ import Grid from '@mui/material/Grid';
 // import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Typography from '@mui/material/Typography';
 import { ThemeProvider } from '@mui/material/styles';
 
 // import { styled } from '@mui/system';
 import Meta from '@/components/Meta';
-import { CenteredFlexBox, FullSizeBox } from '@/components/styled';
-import { getProfile, updateProfile } from '@/services/supabase';
+import { CenteredFlexBox, FullSizeBox, PaceUnitToggleButton } from '@/components/styled';
+import { getProfile, updateProfile, updateProfilePaceUnits } from '@/services/supabase';
 import { useSession } from '@/store/auth';
 import { useProfile } from '@/store/profile';
 import { profileTheme } from '@/theme/theme';
@@ -28,6 +29,7 @@ import {
 
 function Profile() {
   const [targetRace, setTargetRace] = useState('');
+  const [paceUnits, setPaceUnits] = useState('kilometers');
   const [updatingTarget, setUpdatingTarget] = useState(false);
   const [targetTimeHours, setTargetTimeHours] = useState<string>('0');
   const [targetTimeMinutes, setTargetTimeMinutes] = useState<string>('0');
@@ -41,6 +43,11 @@ function Profile() {
         getProfile(session.user.id).then((p) => {
           if (p) {
             setProfile(p);
+            if (p.pace_in_km) {
+              setPaceUnits('kilometers');
+            } else {
+              setPaceUnits('miles');
+            }
           }
         });
       } else {
@@ -52,7 +59,6 @@ function Profile() {
   }, []);
 
   useEffect(() => {
-    console.log('profile:', profile);
     if (profile !== undefined) {
       if (profile.target_race !== null && profile.target_race !== '') {
         setTargetRace(profile.target_race);
@@ -85,9 +91,27 @@ function Profile() {
       targetRace,
     );
     if (profile !== undefined) {
-      updateProfile(profile.id, targetRace, targetTimeString, equivalentPaces).then((d: any) => {
-        setProfile(d);
+      updateProfile(profile.id, targetRace, targetTimeString, equivalentPaces).then((p) => {
+        setProfile(p);
         setUpdatingTarget(false);
+        if (p.pace_in_km) {
+          setPaceUnits('kilometers');
+        } else {
+          setPaceUnits('miles');
+        }
+      });
+    }
+  };
+
+  const changePaceUnits = (e) => {
+    if (paceUnits !== e.target.value) {
+      setPaceUnits(e.target.value);
+      let paceUnitsKm = true;
+      if (e.target.value === 'miles') {
+        paceUnitsKm = false;
+      }
+      updateProfilePaceUnits(profile.id, paceUnitsKm).then((p) => {
+        setProfile(p);
       });
     }
   };
@@ -101,12 +125,12 @@ function Profile() {
           <Grid container spacing={0} width={'100%'} mt={2}>
             <Grid item xs={6}>
               <Box>
-                <Typography variant="h6" align="center" color="primary">
+                <Typography variant="h6" align="center" sx={{ color: 'primary.wafer' }}>
                   Target Race
                 </Typography>
 
                 {profile.target_race && (
-                  <Typography variant="h4" align="center" color="primary">
+                  <Typography variant="h4" align="center" sx={{ color: '#fff' }}>
                     {`${profile.target_race}`}
                   </Typography>
                 )}
@@ -115,11 +139,11 @@ function Profile() {
 
             <Grid item xs={6}>
               <Box>
-                <Typography variant="h6" align="center" color="primary">
+                <Typography variant="h6" align="center" sx={{ color: 'primary.wafer' }}>
                   Target Time
                 </Typography>
                 {profile.target_time && (
-                  <Typography variant="h4" align="center" color="primary">
+                  <Typography variant="h4" align="center" sx={{ color: '#fff' }}>
                     {`${profile.target_time}`}
                   </Typography>
                 )}
@@ -127,15 +151,45 @@ function Profile() {
             </Grid>
           </Grid>
 
-          <Typography mt={2} variant="h6" align="center" color="primary">
+          <Typography mt={2} mb={1} variant="h6" align="center" sx={{ color: 'primary.wafer' }}>
             Equivalent Paces
           </Typography>
+          <CenteredFlexBox mb={2}>
+            <ToggleButtonGroup
+              color="primary"
+              value={paceUnits}
+              exclusive
+              onChange={changePaceUnits}
+              aria-label="Platform"
+              sx={{ border: 1, borderColor: 'primary.main' }}
+            >
+              <PaceUnitToggleButton value="kilometers">kilometers</PaceUnitToggleButton>
+              <PaceUnitToggleButton value="miles">miles</PaceUnitToggleButton>
+            </ToggleButtonGroup>
+          </CenteredFlexBox>
           <Grid container spacing={0} width={'100%'} mb={1}>
             {Array.isArray(profile.equivalent_paces) &&
               profile.equivalent_paces.map((eP, i) => (
-                <Grid item key={i} xs={3} mb={1}>
-                  <Typography variant="body2" align="center" color="primary">
-                    {`${eP.pace}: ${eP.race_pace_km}`}
+                <Grid item key={i} xs={4} mb={1.5}>
+                  <Typography
+                    variant="body2"
+                    fontWeight="bold"
+                    align="center"
+                    sx={{ color: 'primary.wafer' }}
+                  >
+                    {`${eP.pace}:`}
+                  </Typography>
+                  <Typography variant="body2" align="center" sx={{ color: '#fff' }}>
+                    {paceUnits === 'kilometers' ? `${eP.race_pace_km}` : `${eP.race_pace_mile}`}
+                  </Typography>
+                  <Typography variant="body2" align="center" sx={{ color: '#fff' }}>
+                    {eP.race_time_list
+                      ? createTargetTimeString(
+                          eP.race_time_list[0],
+                          eP.race_time_list[1],
+                          eP.race_time_list[2],
+                        )
+                      : ''}
                   </Typography>
                 </Grid>
               ))}
@@ -151,7 +205,7 @@ function Profile() {
               my={2}
               p={4}
               border={1}
-              borderColor="primary.dark"
+              borderColor="primary.light"
               sx={{ borderRadius: 2, width: '280px', backgroundColor: 'primary.dark' }}
             >
               <Grid container spacing={0} width={'100%'}>
@@ -244,9 +298,10 @@ function Profile() {
               </Box>
               {!updatingTarget &&
                 targetRace !== '' &&
-                targetTimeHours !== '0' &&
-                targetTimeMinutes !== '0' &&
-                targetTimeSeconds !== '0' && (
+                parseInt(targetTimeHours) +
+                  parseInt(targetTimeMinutes) +
+                  parseInt(targetTimeSeconds) !==
+                  0 && (
                   <CenteredFlexBox sx={{ width: '100%' }}>
                     <Button
                       type="submit"

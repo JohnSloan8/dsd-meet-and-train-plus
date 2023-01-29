@@ -7,7 +7,7 @@ import { useRecoilValue } from 'recoil';
 
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AccessibilityIcon from '@mui/icons-material/Accessibility';
-import EqualizerIcon from '@mui/icons-material/Equalizer';
+// import EqualizerIcon from '@mui/icons-material/Equalizer';
 import FilterDramaIcon from '@mui/icons-material/FilterDrama';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import MapIcon from '@mui/icons-material/Map';
@@ -80,7 +80,6 @@ function Home() {
           <Meta title="Home" />
           <Days />
           <Box px={1} pt={9} pb={8} maxWidth="sm" width="100%">
-            <Box>{showConnectStrava ? <ConnectStrava /> : null}</Box>
             {!sessionInPast ? (
               <Box>
                 <Box>
@@ -141,7 +140,7 @@ function Home() {
                     }
                     title={'session'}
                     icon={SportsIcon}
-                    color={'warning'}
+                    color={'info'}
                   >
                     <Box
                       height={
@@ -195,15 +194,16 @@ function Home() {
                     </Box>
                   </MTCard>
                 </Box>
-                <Box mt={2}>
+                {/* <Box mt={2}>
                   <MTCard height={200} title={'performance'} icon={EqualizerIcon} color={'info'}>
                     <Box height={176} width={'100%'} sx={{ position: 'relative' }}>
-                      {/* <Performance /> */}
+                      <Performance />
                     </Box>
                   </MTCard>
-                </Box>
+                </Box> */}
               </Box>
             )}
+            <Box>{showConnectStrava ? <ConnectStrava /> : null}</Box>
           </Box>
         </CenteredFlexBox>
       </Box>

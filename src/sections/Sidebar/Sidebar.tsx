@@ -31,12 +31,12 @@ function Sidebar() {
               <ListItemButton onClick={sidebarActions.close} component={Link} to={path}>
                 <ListItemIcon>
                   {Icon ? (
-                    <Icon sx={{ color: 'primary.light' }} />
+                    <Icon sx={{ color: 'primary.wafer' }} />
                   ) : (
-                    <DefaultIcon sx={{ color: 'primary.light' }} />
+                    <DefaultIcon sx={{ color: 'primary.wafer' }} />
                   )}
                 </ListItemIcon>
-                <ListItemText sx={{ color: 'primary.light' }}>{title}</ListItemText>
+                <ListItemText sx={{ color: 'primary.wafer' }}>{title}</ListItemText>
               </ListItemButton>
             </ListItem>
           ))}
