@@ -103,16 +103,18 @@ function Profile() {
     }
   };
 
-  const changePaceUnits = (e) => {
+  const changePaceUnits = (e: any) => {
     if (paceUnits !== e.target.value) {
       setPaceUnits(e.target.value);
       let paceUnitsKm = true;
       if (e.target.value === 'miles') {
         paceUnitsKm = false;
       }
-      updateProfilePaceUnits(profile.id, paceUnitsKm).then((p) => {
-        setProfile(p);
-      });
+      if (profile !== undefined) {
+        updateProfilePaceUnits(profile.id, paceUnitsKm).then((p) => {
+          setProfile(p);
+        });
+      }
     }
   };
 
