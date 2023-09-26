@@ -10,8 +10,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 import { CenteredFlexBox } from '@/components/styled';
-import { getWeather } from '@/services/met';
-import { getSunset } from '@/services/met';
+import { getSunset, getWarnings, getWeather } from '@/services/met';
 import { updateSessionSunset, updateSessionWeather } from '@/services/supabase';
 import { currentSessionState, sessionInPastState, useDaylight } from '@/store/sessions';
 import { useWeatherSymbolNumber } from '@/store/weather';
@@ -43,10 +42,11 @@ const Weather = () => {
             if (typeof currentSession.weather === 'object') {
               const timeElapsedSinceUpdate =
                 Date.now() - new Date(currentSession.weather.updatedAt).getTime();
-              console.log('timeElapsedSinceUpdate:', timeElapsedSinceUpdate);
+
               if (timeElapsedSinceUpdate / 3600000 > 60) {
                 weatherNeedsUpdating = true;
-                console.log('too much time elapsed');
+              } else {
+                console.log("weather doesn't need update");
               }
             }
           }
@@ -56,39 +56,42 @@ const Weather = () => {
 
         if (weatherNeedsUpdating) {
           getWeather().then((w: any) => {
-            // console.log('w:', w);
-            let apiCode = 0;
-            let apiTemperature = 0;
-            let apiWindSpeed = 0;
-            let apiWindDirection = 0;
-            const forecasts = getForecasts(w.weatherdata.product.time, currentSession);
-            // console.log('forecasts:', forecasts);
-            forecasts.map((f: any) => {
-              if (f['@from'] !== f['@to']) {
-                apiCode = f.location.symbol['@number'];
+            getWarnings().then((warnings: any) => {
+              console.log('warnings', warnings);
+              const dublinWarnings = warnings.filter((w) => w.regions.includes('EI07'));
+              console.log('weather:', w);
+              console.log('dublinWarnings:', dublinWarnings);
+              let apiCode = 0;
+              let apiTemperature = 0;
+              let apiWindSpeed = 0;
+              let apiWindDirection = 0;
+              const forecasts = getForecasts(w.weatherdata.product.time, currentSession);
+              forecasts.map((f: any) => {
+                if (f['@from'] !== f['@to']) {
+                  apiCode = f.location.symbol['@number'];
+                } else {
+                  apiTemperature = Math.round(f.location.temperature['@value']);
+                  apiWindSpeed = Math.round(f.location.windSpeed['@mps'] * 3.6);
+                  apiWindDirection = Math.round(f.location.windDirection['@deg']);
+                }
+              });
+              if (apiCode !== 0) {
+                updateSessionWeather(currentSession.id, {
+                  code: apiCode,
+                  temperature: apiTemperature,
+                  windSpeed: apiWindSpeed,
+                  windDirection: apiWindDirection,
+                  updatedAt: Date.now(),
+                }).then((d: any) => {
+                  setTemperature(d.weather.temperature);
+                  setCode(d.weather.code);
+                  setWindSpeed(d.weather.windSpeed);
+                  setWindDirection(d.weather.windDirection);
+                });
               } else {
-                apiTemperature = Math.round(f.location.temperature['@value']);
-                apiWindSpeed = Math.round(f.location.windSpeed['@mps'] * 3.6);
-                apiWindDirection = Math.round(f.location.windDirection['@deg']);
+                setCode(0);
               }
             });
-            if (apiCode !== 0) {
-              updateSessionWeather(currentSession.id, {
-                code: apiCode,
-                temperature: apiTemperature,
-                windSpeed: apiWindSpeed,
-                windDirection: apiWindDirection,
-                updatedAt: Date.now(),
-              }).then((d: any) => {
-                // console.log('weather updated:', d);
-                setTemperature(d.weather.temperature);
-                setCode(d.weather.code);
-                setWindSpeed(d.weather.windSpeed);
-                setWindDirection(d.weather.windDirection);
-              });
-            } else {
-              setCode(0);
-            }
           });
         } else {
           if (
@@ -113,7 +116,6 @@ const Weather = () => {
           checkDaylight(currentSession.sunset);
         }
       }
-      // console.log('currentSession:', typeof currentSession.weather === 'object');
     } catch (error) {
       console.log('error', error);
     }

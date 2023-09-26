@@ -31,12 +31,9 @@ const baseTheme = createTheme({
 
 const mainTheme = createTheme(baseTheme, {
   palette: {
-    text: {
-      primary: '#fff',
-    },
     background: {
-      default: '#225',
-      paper: '#236',
+      default: '#ddd',
+      paper: '#888',
     },
   },
 });

@@ -29,7 +29,6 @@ function Days() {
   useEffect(() => {
     if (currentSession !== undefined) {
       setCurrentDateString(dayjs(currentSession.date).format('ddd D MMM'));
-      console.log('currentSession:', currentSession);
     }
   }, [currentSession]);
 

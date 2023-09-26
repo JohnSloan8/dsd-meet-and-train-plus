@@ -6,7 +6,6 @@ import { parse } from 'https://deno.land/x/xml/mod.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  // 'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey',
 };
 
 serve(async (req) => {
@@ -15,12 +14,6 @@ serve(async (req) => {
   const reqType = reqParams.get('requestType');
 
   try {
-    // Create a Supabase client with the Auth context of the logged in user.
-    // const supabaseClient = createClient(
-    //   Deno.env.get('SUPABASE_URL'),
-    //   Deno.env.get('SUPABASE_ANON_KEY'),
-    // );
-
     const requestOptions = {
       method: 'GET',
     };
@@ -57,7 +50,22 @@ serve(async (req) => {
           });
         }
       } catch (error) {
-        console.log('error in getActivityFromStrava:', error.message);
+        console.log('error in getting sunset:', error.message);
+      }
+    } else if (reqType === 'warnings') {
+      try {
+        const url = 'https://www.met.ie/Open_Data/json/warning_IRELAND.json';
+
+        const data = await fetch(url, requestOptions);
+        if (data) {
+          const warningsData = await data.json();
+
+          return new Response(JSON.stringify(warningsData), {
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          });
+        }
+      } catch (error) {
+        console.log('error in getting warnings:', error.message);
       }
     }
   } catch (error) {
